@@ -185,7 +185,7 @@ describe('SessionCard', () => {
     expect(card?.classList.contains('mode-default')).toBe(true)
     expect(card?.classList.contains('mode-active')).toBe(false)
     expect(badge).not.toBeNull()
-    expect(badge?.getAttribute('aria-label')).toBe('Permission mode: Default (ask)')
+    expect(badge?.getAttribute('aria-label')).toBe('Permission mode: 默认（每次询问）')
   })
 
   it('calls onSelect when clicked', () => {
