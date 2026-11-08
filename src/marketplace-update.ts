@@ -3,10 +3,10 @@
 
 /** Client-side budget for `POST …/check-updates`, in ms.
  *
- *  The server runs one `git ls-remote` per marketplace via Promise.allSettled,
+ *  The server runs one `git ls-远程` per marketplace via Promise.allSettled,
  *  so the batch's worst case is the SLOWEST single call, not their sum. But
  *  `gitLsRemoteHead` is not one call: it asks for `HEAD`, and when the remote
- *  doesn't advertise one (some don't) it retries with a bare `ls-remote` — two
+ *  doesn't advertise one (some don't) it retries with a bare `ls-远程` — two
  *  sequential calls, each capped at PULL_TIMEOUT_MS (60s) in
  *  server/git-clone.ts. So the true ceiling is ~120s, and the transport's 30s
  *  default would abort a batch the server was about to answer successfully,

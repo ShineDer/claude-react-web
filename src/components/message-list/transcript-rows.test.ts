@@ -362,7 +362,7 @@ describe('buildTranscriptRows: synthetic rows', () => {
       items: [assistant('c', 'child', 'agent-1')],
       parentToolUseIdFilter: 'agent-1',
       isResultConsumed: never,
-      leadingItems: [user('p', 'prompt', 'agent-1')],
+      leadingItems: [user('p', '提示词', 'agent-1')],
       trailingItems: [assistant('r', 'result', 'agent-1')],
     })
     const byId = new Map(rows.map((r) => [r.id, r.itemIndex]))
@@ -465,7 +465,7 @@ describe('advanceRowAnchor', () => {
     const after = buildTranscriptRows({
       items: [
         assistant('p0', 'older page text'),
-        toolOnlyAssistant('t0', 'Edit'),
+        toolOnlyAssistant('t0', '编辑'),
         ...headRunItems(),
       ],
       isResultConsumed: never,
@@ -487,7 +487,7 @@ describe('advanceRowAnchor', () => {
     // The page is nothing but a tool run continuing the head group backward:
     // the fold re-keys the group ('t1'→'t0') and adds ZERO rows.
     const after = buildTranscriptRows({
-      items: [toolOnlyAssistant('t0', 'Edit'), ...headRunItems()],
+      items: [toolOnlyAssistant('t0', '编辑'), ...headRunItems()],
       isResultConsumed: never,
     }).rows
     expect(ids(after)).toEqual(['t0', 'k1', 'a1'])
@@ -518,7 +518,7 @@ describe('advanceRowAnchor', () => {
     const after = buildTranscriptRows({
       items: [
         assistant('p0', 'older page text'),
-        toolOnlyAssistant('t0', 'Edit'),
+        toolOnlyAssistant('t0', '编辑'),
         ...headRunItems(),
         toolResultFrame('r1', 'orphan-tool'),
       ],
@@ -547,7 +547,7 @@ describe('advanceRowAnchor', () => {
     }).rows
     expect(ids(before)).toEqual(['t1', 'k1', 'a1', 'a2'])
     const after = buildTranscriptRows({
-      items: [toolOnlyAssistant('t0', 'Edit'), toolOnlyAssistant('t1', 'Read'), assistant('a2', 'two')],
+      items: [toolOnlyAssistant('t0', '编辑'), toolOnlyAssistant('t1', 'Read'), assistant('a2', 'two')],
       isResultConsumed: never,
     }).rows
     expect(ids(after)).toEqual(['t0', 'a2'])
@@ -566,7 +566,7 @@ describe('advanceRowAnchor', () => {
     const after = buildTranscriptRows({
       items: [
         assistant('p0', 'older page text'),
-        toolOnlyAssistant('t0', 'Edit'),
+        toolOnlyAssistant('t0', '编辑'),
         ...headRunItems(),
         assistant('a2', 'streamed while the page loaded'),
       ],
@@ -760,7 +760,7 @@ describe('buildTranscriptRows: tool-group fold', () => {
         toolOnlyAssistant('t1', 'Read'),
         toolOnlyAssistant('wt-in', 'EnterWorktree'),
         toolOnlyAssistant('t2', 'Grep'),
-        toolOnlyAssistant('t3', 'Edit'),
+        toolOnlyAssistant('t3', '编辑'),
         toolOnlyAssistant('wt-out', 'ExitWorktree'),
         toolOnlyAssistant('t4', 'Glob'),
       ],
@@ -778,7 +778,7 @@ describe('buildTranscriptRows: tool-group fold', () => {
 
   it('treats EnterPlanMode as a run boundary like the worktree markers', () => {
     // Same marker family (tool-views/markers.tsx), same visibility rule: the
-    // thin "Entered plan mode" cue must not be buried in a collapsed fold.
+    // thin "已进入计划模式" cue must not be buried in a collapsed fold.
     const { rows } = buildTranscriptRows({
       items: [
         toolOnlyAssistant('t1', 'Read'),
@@ -804,7 +804,7 @@ describe('buildTranscriptRows: tool-group fold', () => {
         toolOnlyAssistant('t2', 'Grep'),
         toolOnlyAssistant('plan', 'ExitPlanMode'),
         toolOnlyAssistant('t3', 'Glob'),
-        toolOnlyAssistant('t4', 'Edit'),
+        toolOnlyAssistant('t4', '编辑'),
       ],
       isResultConsumed: () => true,
     })

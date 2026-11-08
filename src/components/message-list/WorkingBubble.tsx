@@ -24,7 +24,7 @@ import { SubagentSwarmPill } from './SubagentSwarm'
  *  fresh array identity to the memoized pill on every render. */
 const EMPTY_SUBAGENTS: ActiveSubagent[] = []
 
-/** Wire shape of an `api_retry` system frame. The fields are all optional
+/** Wire shape of an `api_重试` system frame. The fields are all optional
  *  from the renderer's perspective — older / partial frames may omit any of
  *  them — but the cast lives here once instead of at every read site.
  *  `receivedAt` is host-stamped (server pump), not SDK wire shape. */
@@ -37,7 +37,7 @@ interface ApiRetryMessage {
   receivedAt?: number
 }
 
-/** The retry pill for the working bar — the transient `mirror.apiRetry`
+/** The retry pill for the working bar — the transient `mirror.api重试`
  *  slot rendered as a compact amber chip (wait time + attempt count, e.g.
  *  "26s 7/10"). It does NOT replace the phase label: the pill sits beside
  *  the timer/rate chips so the stale-but-contextual phase text ("Calling
@@ -45,7 +45,7 @@ interface ApiRetryMessage {
  *  component so the 1Hz countdown tick re-renders only this subtree, not
  *  the whole memoized bubble (timer, countUp, swarm pill stay untouched).
  *
- *  The SDK emits one `api_retry` frame per retry attempt with
+ *  The SDK emits one `api_重试` frame per retry attempt with
  *  `retry_delay_ms` set, but no follow-up when the delay elapses — so a
  *  static render would freeze the countdown at e.g. "9s" until the next
  *  attempt landed. This component runs a local 1Hz clock so the user
@@ -54,8 +54,8 @@ interface ApiRetryMessage {
  *  Anchor strategy: we derive an absolute `deadline` (wall-clock ms at
  *  which the retry will fire) by combining the frame's arrival time with
  *  `retry_delay_ms`. The deadline is held in state and reset whenever a
- *  fresh frame lands — the reducer routes consecutive `api_retry` frames
- *  to the `mirror.apiRetry` slot (overwriting the previous), so every
+ *  fresh frame lands — the reducer routes consecutive `api_重试` frames
+ *  to the `mirror.api重试` slot (overwriting the previous), so every
  *  frame is a new `msg` identity and the effect re-anchors on it. That
  *  identity (not a delayMs comparison) is the reset trigger: consecutive
  *  attempts after a fixed server Retry-After carry the SAME delay, and
@@ -158,9 +158,9 @@ export interface WorkingBubbleProps {
    *  compressed. Probe-verified to fire for MANUAL /compact pass-throughs
    *  too, not just CLI auto-compact — hence the trigger-neutral label. */
   recapping?: boolean
-  /** Transient `api_retry` frame (rate-limit retry indicator) from the
-   *  `mirror.apiRetry` slot, or null when no retry is in flight. While set
-   *  (and not `waiting`) an amber retry pill (RetryPill) renders to the
+  /** Transient `api_重试` frame (rate-limit retry indicator) from the
+   *  `mirror.api重试` slot, or null when no retry is in flight. While set
+   *  (and not `等待中`) an amber retry pill (RetryPill) renders to the
    *  right of the timer / token-rate chips; the phase label keeps its slot. */
   apiRetry?: SdkMessage | null
   /** True when the parent turn has ended but `pending` background subagents
@@ -236,11 +236,11 @@ export const WorkingBubble = memo(function WorkingBubble({
   const labelText = waiting
     ? 'Waiting...'
     : recapping
-      ? 'Recap...'
+      ? '回顾中...'
       : activePhase === 'thinking'
-        ? 'Thinking...'
+        ? '思考中...'
         : activePhase === 'writing'
-          ? 'Writing...'
+          ? '撰写中...'
           : phaseKey
             ? phaseKey === 'mcp'
               ? 'Calling MCP...'
@@ -268,7 +268,7 @@ export const WorkingBubble = memo(function WorkingBubble({
   // so an idle bubble with no subagents has nothing left to render. Return
   // null rather than an empty bar shell (the BottomCardMotion wrapper around
   // it paints nothing at zero height). All other render branches below are
-  // gated on `!idle` or `hasSubagents`, so this is the complete empty case.
+  // gated on `!idle` or `has子 agent`, so this is the complete empty case.
   if (idle && !hasSubagents) return null
 
   return (
@@ -360,7 +360,7 @@ export type LiveWorkingBubbleProps = Omit<WorkingBubbleProps, 'tokenRate' | 'act
  *      dwell state now lives with the bubble instead of the panel, which is
  *      equivalent: a non-null → non-null phase transition can only happen
  *      while a turn is active, and an active (non-terminated) turn always
- *      mounts the bubble (`shouldMountWorkingBubble` ⊇ `turnActive` ⊇
+ *      mounts the bubble (`shouldMountWorkingBubble` ⊇ `turn已启用` ⊇
  *      `activePhase != null`), while null → phase / phase → null commit
  *      immediately on both sides.
  *    - While AnimatePresence plays the bubble's EXIT, the old bubble was a

@@ -39,13 +39,13 @@ describe('UploadsManagerDialog', () => {
     render(<UploadsManagerDialog open onClose={() => {}} />)
     await waitFor(() => expect(screen.getByText('a.txt')).toBeTruthy())
     expect(screen.getByText(/2 files/)).toBeTruthy()
-    expect(screen.getByText(/missing/i, { selector: '.uploads-missing-badge' })).toBeTruthy()
+    expect(screen.getByText(/缺失/i, { selector: '.uploads-missing-badge' })).toBeTruthy()
   })
 
-  it('filter narrows rows by name / cwd / session title', async () => {
+  it('filter narrows rows by name / cwd / 会话标题', async () => {
     render(<UploadsManagerDialog open onClose={() => {}} />)
     await waitFor(() => expect(screen.getByText('a.txt')).toBeTruthy())
-    fireEvent.change(screen.getByPlaceholderText(/filter/i), { target: { value: 'Beta' } })
+    fireEvent.change(screen.getByPlaceholderText(/按名称/), { target: { value: 'Beta' } })
     expect(screen.queryByText('a.txt')).toBeNull()
     expect(screen.getByText('b.txt')).toBeTruthy()
   })
@@ -61,14 +61,14 @@ describe('UploadsManagerDialog', () => {
     render(<UploadsManagerDialog open onClose={() => {}} />)
     await waitFor(() => expect(screen.getByText(/boom/)).toBeTruthy())
     mockGet.mockResolvedValue({ uploads: ROWS })
-    fireEvent.click(screen.getByRole('button', { name: /retry/i }))
+    fireEvent.click(screen.getByRole('button', { name: /重试/i }))
     await waitFor(() => expect(screen.getByText('a.txt')).toBeTruthy())
   })
 
   it('copy path writes the absolute path to the clipboard', async () => {
     render(<UploadsManagerDialog open onClose={() => {}} />)
     await waitFor(() => expect(screen.getByText('a.txt')).toBeTruthy())
-    fireEvent.click(screen.getAllByRole('button', { name: /copy path/i })[0])
+    fireEvent.click(screen.getAllByRole('button', { name: /复制路径/ })[0])
     await waitFor(() =>
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith('/p/claude-web-uploads/1-a.txt'),
     )
@@ -79,23 +79,23 @@ describe('UploadsManagerDialog', () => {
     render(<UploadsManagerDialog open onClose={() => {}} />)
     await waitFor(() => expect(screen.getByText('a.txt')).toBeTruthy())
 
-    // Row buttons say "Delete file"; the ConfirmDialog's confirm button is the
-    // only accessible name exactly "Delete" once the dialog is open.
-    fireEvent.click(screen.getAllByRole('button', { name: /^delete file$/i })[0])
+    // Row buttons say "删除文件"; the ConfirmDialog's confirm button is the
+    // only accessible name exactly "删除" once the dialog is open.
+    fireEvent.click(screen.getAllByRole('button', { name: /^删除文件$/ })[0])
     // ConfirmDialog mounted with the file path in the message.
     expect(screen.getByText('/p/claude-web-uploads/1-a.txt')).toBeTruthy()
     expect(screen.queryByText('b.txt')).toBeTruthy() // list still behind the confirm
 
-    fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
+    fireEvent.click(screen.getByRole('button', { name: '删除' }))
     await waitFor(() => expect(mockDelete).toHaveBeenCalledWith('/uploads/a'))
     expect(mockGet).toHaveBeenCalledTimes(2) // initial + refresh
   })
 
   it('clean missing entries: button only when missing rows exist; batch deletes each', async () => {
     render(<UploadsManagerDialog open onClose={() => {}} />)
-    await waitFor(() => expect(screen.getByText(/clean missing entries/i)).toBeTruthy())
+    await waitFor(() => expect(screen.getByText(/清理缺失条目/)).toBeTruthy())
 
-    fireEvent.click(screen.getByRole('button', { name: /clean missing entries/i }))
+    fireEvent.click(screen.getByRole('button', { name: /清理缺失条目/ }))
     fireEvent.click(screen.getByRole('button', { name: /clean 1 entry/i }))
     await waitFor(() => expect(mockDelete).toHaveBeenCalledWith('/uploads/b'))
   })

@@ -80,7 +80,7 @@ describe('PerformancePanel', () => {
   it('shows the no-data row when a group has no series', () => {
     hookData = { ...sample, histograms: {}, counters: {} }
     const { container } = render(<PerformancePanel />)
-    expect(container.textContent).toContain('no data yet')
+    expect(container.textContent).toContain('暂无数据')
   })
 
   it('renders gauges and uptime', () => {
@@ -98,7 +98,7 @@ describe('PerformancePanel', () => {
 
   it('refresh button calls refresh', () => {
     const { container } = render(<PerformancePanel />)
-    const btn = [...container.querySelectorAll('button')].find((b) => b.textContent === 'Refresh')!
+    const btn = [...container.querySelectorAll('button')].find((b) => b.textContent === '刷新')!
     fireEvent.click(btn)
     expect(mockRefresh).toHaveBeenCalled()
   })

@@ -62,7 +62,7 @@ describe('ChatEmptyStateEnv display (static tier)', () => {
     expect(baseElement.querySelector('.chat-empty-env')).toBeNull()
     await waitFor(() => expect(baseElement.textContent).toContain('PlugA'))
     expect(baseElement.textContent).toContain('PlugB')
-    expect(baseElement.textContent).toContain('Plugins')
+    expect(baseElement.textContent).toContain('插件')
   })
 
   it('shows raw keys for an explicit plugin subset, then swaps in friendly names', async () => {
@@ -97,7 +97,7 @@ describe('ChatEmptyStateEnv display (static tier)', () => {
     const { baseElement } = render(<ChatEmptyStateEnv mcpServerNames={['github']} />)
     expect(baseElement.textContent).toContain('github') // MCP row unaffected
     await waitFor(() => expect(getMock).toHaveBeenCalled())
-    expect(baseElement.textContent).not.toContain('Plugins')
+    expect(baseElement.textContent).not.toContain('插件')
   })
 
   it('keeps raw keys when the lookup fails for an explicit subset', async () => {
@@ -117,7 +117,7 @@ describe('ChatEmptyStateEnv display (static tier)', () => {
     expect(rows).toHaveLength(2)
     expect(rows[0].textContent).toContain('MCP')
     expect(rows[0].textContent).toContain('github')
-    expect(rows[1].textContent).toContain('Plugins')
+    expect(rows[1].textContent).toContain('插件')
     expect(rows[1].textContent).toContain('PlugA')
   })
 })
@@ -179,14 +179,14 @@ describe('ChatEmptyStateEnv quick actions (live tier)', () => {
     fireEvent.click(baseElement.querySelector('.chat-empty-env-chip')!)
     await waitFor(() => {
       const labels = Array.from(document.querySelectorAll('.ctx-menu-item')).map((b) => b.textContent)
-      expect(labels).toContain('Disable')
-      expect(labels).toContain('Reconnect')
+      expect(labels).toContain('禁用')
+      expect(labels).toContain('重新连接')
     })
   })
 
   it('offers both Enable and Disable when the status is unknown (silent degrade)', async () => {
     // The mcp-status lookup reports a DIFFERENT server — for 'github' the
-    // status is unknown. Guessing 'Disable' would no-op precisely the
+    // status is unknown. Guessing '禁用' would no-op precisely the
     // server the user most likely came to fix, so both actions show.
     mockLookups([], [{ name: 'other', status: 'connected' }])
     const { baseElement } = render(
@@ -202,9 +202,9 @@ describe('ChatEmptyStateEnv quick actions (live tier)', () => {
     fireEvent.click(baseElement.querySelector('.chat-empty-env-chip')!)
     await waitFor(() => {
       const labels = Array.from(document.querySelectorAll('.ctx-menu-item')).map((b) => b.textContent)
-      expect(labels).toContain('Enable')
-      expect(labels).toContain('Disable')
-      expect(labels).toContain('Reconnect')
+      expect(labels).toContain('启用')
+      expect(labels).toContain('禁用')
+      expect(labels).toContain('重新连接')
     })
   })
 
@@ -216,7 +216,7 @@ describe('ChatEmptyStateEnv quick actions (live tier)', () => {
     const statusCallsBefore = getMock.mock.calls.filter((c) => String(c[0]).endsWith('/mcp-status')).length
     fireEvent.click(baseElement.querySelector('.chat-empty-env-chip')!)
     const disable = Array.from(document.querySelectorAll('.ctx-menu-item'))
-      .find((b) => b.textContent === 'Disable')! as HTMLElement
+      .find((b) => b.textContent === '禁用')! as HTMLElement
     fireEvent.click(disable)
     await waitFor(() => expect(postMock).toHaveBeenCalledWith('/sessions/s1/mcp/github/toggle', { enabled: false }))
     // Two re-reads land: one when the menu opened (stale-snapshot guard) and
@@ -236,7 +236,7 @@ describe('ChatEmptyStateEnv quick actions (live tier)', () => {
     )
     fireEvent.click(baseElement.querySelector('.chat-empty-env-chip')!)
     const enable = Array.from(document.querySelectorAll('.ctx-menu-item'))
-      .find((b) => b.textContent === 'Enable')! as HTMLElement
+      .find((b) => b.textContent === '启用')! as HTMLElement
     fireEvent.click(enable)
     await waitFor(() => expect(postMock).toHaveBeenCalledWith('/sessions/s1/mcp/github/toggle', { enabled: true }))
   })

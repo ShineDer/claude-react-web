@@ -27,8 +27,23 @@ function seedConfig(dir: string, extra: Record<string, unknown> = {}): void {
 
 describe('daemon ops', () => {
   let dir: string
-  beforeEach(() => { dir = tempDir('daemon-ops'); seedConfig(dir) })
-  afterEach(() => { vi.restoreAllMocks(); rmRf(dir) })
+  // The Linux adapter resolves its unit path from $HOME, NOT the state dir.
+  // Without this the test writes the developer's real
+  // ~/.config/systemd/user/claude-react-web.service — on a machine that
+  // self-hosts the app that replaces the live unit with this fixture.
+  let home: string
+  let originalHome: string | undefined
+  beforeEach(() => {
+    home = tempDir('daemon-ops-home')
+    originalHome = process.env.HOME
+    process.env.HOME = home
+    dir = tempDir('daemon-ops'); seedConfig(dir)
+  })
+  afterEach(() => {
+    process.env.HOME = originalHome
+    rmRf(home)
+    vi.restoreAllMocks(); rmRf(dir)
+  })
 
   it('enable registers first, then writes config.autoStart=true', async () => {
     const snap = await daemonEnable(dir, noopRunner)
@@ -106,8 +121,19 @@ describe('daemon ops', () => {
 
 describe('review fixes — ops', () => {
   let dir: string
-  beforeEach(() => { dir = tempDir('daemon-ops-fix') })
-  afterEach(() => rmRf(dir))
+  let home: string
+  let originalHome: string | undefined
+  beforeEach(() => {
+    home = tempDir('daemon-ops-fix-home')
+    originalHome = process.env.HOME
+    process.env.HOME = home
+    dir = tempDir('daemon-ops-fix')
+  })
+  afterEach(() => {
+    process.env.HOME = originalHome
+    rmRf(home)
+    rmRf(dir)
+  })
 
   function seedStatus(over: Record<string, unknown>): Promise<void> {
     return writeStatusFile(dir, {

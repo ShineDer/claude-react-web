@@ -26,7 +26,7 @@ export interface TranscriptItem {
   /** True for optimistic placeholders that haven't been replaced by the
    *  server-side broadcast yet — drives the "sending" spinner on the user
    *  bubble. Cleared automatically when the broadcast lands and the
-   *  reducer swaps in the real TranscriptItem (which has no `sending`). */
+   *  reducer swaps in the real TranscriptItem (which has no `发送中`). */
   sending?: boolean
   /** Delivery state of a top-level user turn relative to the SDK input
    *  queue. Undefined for non-user messages, optimistic placeholders, and
@@ -63,8 +63,8 @@ export type SubagentChildStatus = 'running' | 'success' | 'error'
  *
  *  Populated incrementally in the reducer (updateIndexesMirror): the tool_use
  *  block in a child frame (parent_tool_use_id === the subagent id) seeds a
- *  `running` row; the matching tool_result flips it to success/error and
- *  captures the result payload. The turn-end sweep flips any still-`running`
+ *  `运行中` row; the matching tool_result flips it to success/error and
+ *  captures the result payload. The turn-end sweep flips any still-`运行中`
  *  row to `error` (the parent turn ended without a result). */
 export interface SubagentChildCall {
   toolUseId: string
@@ -89,36 +89,36 @@ export interface ActiveSubagent {
   endedAt?: number
   /** Lifecycle status. Drives the popover-row color and the overlay header.
    *
-   *  `background` is exclusive to async/background subagents: their Agent
+   *  `后台` is exclusive to async/background subagents: their Agent
    *  tool_result is a launch ack (not completion), so instead of flipping to
-   *  `done` they enter `background` and stay there — still listed in the
+   *  `done` they enter `后台` and stay there — still listed in the
    *  WorkingBubble's subagent pill — until the real completion signal (a
    *  `<task-notification>` user injection or a `system`/`task_notification`
    *  frame carrying this record's tool_use_id) flips them to `done`.
    *
-   *  `pending` is the post-turn-end form of `background`: the parent turn's
-   *  `result` frame swept a still-`background` record to `pending` (NOT
+   *  `pending` is the post-turn-end form of `后台`: the parent turn's
+   *  `result` frame swept a still-`后台` record to `pending` (NOT
    *  `interrupted`) because the async subagent is still running and its
    *  completion signal is expected to arrive later — possibly well after the
-   *  parent turn ended. `pending` is INCLUDED in `getRunningSubagents` so the
+   *  parent turn ended. `pending` is INCLUDED in `getRunning子 agent` so the
    *  WorkingBubble stays mounted in its `Waiting` state; the completion branch
    *  STILL accepts it (unlike `interrupted`/`dismissed`) so a late
    *  task_notification can flip it to `done`.
    *
    *  `dismissed` is set ONLY by an explicit user action — the × in
-   *  SubagentOverlay (`Chat.tsx` → `useChatStream.dismissSubagent` →
+   *  SubagentOverlay (`Chat.tsx` → `useChatStream.dismiss子 agent` →
    *  `DISMISS_SUBAGENT`). It is distinct from `interrupted`
    *  (which means the subagent was aborted/errored) so the inline
    *  SubagentCard can render a neutral "tracking dismissed" state instead of
    *  a false error. The completion branch excludes `dismissed` (the user gave
-   *  up tracking), and `getRunningSubagents` excludes it (it leaves the
+   *  up tracking), and `getRunning子 agent` excludes it (it leaves the
    *  pill). */
   status: SubagentStatus
   /** Pre-computed count of tool_use blocks within this subagent's messages.
    *  Incremented during updateIndexes so SubagentCard doesn't need to scan
    *  the full message list on every render. */
   toolCount: number
-  /** The full `prompt` passed to the subagent (Agent/Task/Explore tool_use
+  /** The full `提示词` passed to the subagent (Agent/Task/Explore tool_use
    *  input.prompt). The SDK doesn't echo an async subagent's input prompt
    *  back as a child frame on the main stream, so SubagentOverlay — which
    *  filters by parent_tool_use_id — would otherwise have no trace of what
@@ -129,7 +129,7 @@ export interface ActiveSubagent {
   /** Whether this subagent runs async/background (true) or synchronous
    *  (false). Written ONLY by the `TASKS_SNAPSHOT` reducer action, from the
    *  server's `TaskRecordUi.isBackgrounded` (the single authority — the input
-   *  `run_in_background` flag and ack/frame-timing no longer seed it).
+   *  `run_in_后台` flag and ack/frame-timing no longer seed it).
    *  Undefined until the first snapshot for this task arrives, and lost after
    *  a reload once the terminal task record is evicted (server cap 50).
    *  SubagentCard surfaces it as an async/sync chip. */
@@ -184,7 +184,7 @@ export interface WorkflowPhaseMeta {
  *  (label / status / toolCount) so the phase tree can render each branch the
  *  same way SubagentCard renders a top-level subagent, plus the `phase`
  *  grouping tag (read from the child tool_use's `input.phase` or
- *  `input.opts.phase`) and `toolName` so a chip can distinguish Agent /
+ *  `input.opts.phase`) and `tool名称` so a chip can distinguish Agent /
  *  Task / Explore / Verify etc. */
 export interface WorkflowChildAgent {
   toolUseId: string
@@ -211,7 +211,7 @@ export interface WorkflowChildAgent {
  *   - `phases`      : the DECLARED phases from input.meta.phases (title +
  *                     detail only — known up front, before any child runs).
  *                     Drives the tree skeleton.
- *   - `childAgents` : the child Agent/Task/Explore tool_use frames the
+ *   - `childAgent` : the child Agent/Task/Explore tool_use frames the
  *                     Workflow spawned, each tagged with the phase it was
  *                     assigned. Grouped under their phase to show live
  *                     progress per branch.
@@ -222,10 +222,10 @@ export interface WorkflowChildAgent {
 export interface WorkflowRecord {
   toolUseId: string
   /** Human label — parsed from the script's `meta.name`, falling back to the
-   *  input `name` (named workflow), `description`/`prompt` snippet, the
-   *  `scriptPath` basename, then 'Workflow'. Shown in the card title and
+   *  input `name` (named workflow), `description`/`提示词` snippet, the
+   *  `script路径` basename, then 'Workflow'. Shown in the card title and
    *  overlay header. May be rescued from 'Workflow' to the authoritative
-   *  `WorkflowOutput.workflowName` once the result lands. */
+   *  `WorkflowOutput.workflow名称` once the result lands. */
   label: string
   startedAt?: number
   endedAt?: number
@@ -254,8 +254,8 @@ export interface WorkflowRecord {
   /** Local workflow run id — the `resumeFromRunId` handle for resuming a
    *  prior Workflow invocation. Captured from `WorkflowOutput.runId`. */
   runId?: string
-  /** Persisted workflow script path (from `WorkflowOutput.scriptPath`).
-   *  Editable via Write/Edit; pass back as `scriptPath` to re-run without
+  /** Persisted workflow script path (from `WorkflowOutput.script路径`).
+   *  Editable via Write/Edit; pass back as `script路径` to re-run without
    *  resending the script. UI affordance is a follow-up. */
   scriptPath?: string
   /** True when this workflow runs in a remote CCR session
@@ -455,7 +455,7 @@ export interface ServerMirror {
    * promptSuggestion it never enters the transcript; reset by
    * CLEAR_TRANSCRIPT. */
   tasks: TaskRecordUi[]
-  /** Transient `api_retry` system frame (rate-limit retry indicator). Lives
+  /** Transient `api_重试` system frame (rate-limit retry indicator). Lives
    *  OUTSIDE items/messages/IDB — it is purely transient (only meaningful
    *  while a retry is in flight, cleared by the next non-retry message), so
    *  routing it to a dedicated slot keeps the transcript append-only (no
@@ -463,7 +463,7 @@ export interface ServerMirror {
    *  in progress. */
   apiRetry: SdkMessage | null
   /** Transient thinking-token estimate for the CURRENT thinking block
-   *  (`system/thinking_tokens` frames — mirrored like `apiRetry`). Lives
+   *  (`system/thinking_tokens` frames — mirrored like `api重试`). Lives
    *  outside items/messages/IDB: purely a WorkingBubble progress hint.
    *  Updated per frame while the thinking block streams (the frame carries no
    *  origin — sets are origin-blind); cleared at any main-thread block
@@ -545,11 +545,11 @@ export interface ServerMirror {
   pendingResults: Map<string, SdkMessage>
   activeSubagents: Map<string, ActiveSubagent>
   /** Workflow tool_use index, keyed by the Workflow's tool_use_id. The
-   *  Workflow analogue of `activeSubagents`: records are kept after
+   *  Workflow analogue of `active子 agent`: records are kept after
    *  completion (so WorkflowCard + WorkflowOverlay stay reopenable) and
    *  each carries its declared phases + spawned child agents so the
    *  two-column overlay never re-scans the transcript. Like
-   *  `activeSubagents`, the Map reference is identity-compared in the store
+   *  `active子 agent`, the Map reference is identity-compared in the store
    *  so snapshots only reallocate when a Workflow record actually changes. */
   activeWorkflows: Map<string, WorkflowRecord>
   /** Skill tool_use index, keyed by the Skill's tool_use_id. Same role as
@@ -656,7 +656,7 @@ export type SessionAction =
    *  a dead session never delivers: without it a stranded SYNC (foreground)
    *  subagent record keeps `status: 'running'` forever, so its card spins on a
    *  dead session with nothing left that can settle it. TASKS_SNAPSHOT
-   *  deliberately leaves that record running (a `running` record is what the
+   *  deliberately leaves that record running (a `运行中` record is what the
    *  result-frame merge needs to attach the subagent's output to), so this is
    *  the terminal-state counterpart it assumes exists. */
   | { type: 'SESSION_TERMINATED' }
@@ -789,7 +789,7 @@ export interface SessionSnapshot {
    *  by Chat to adapt a forked skill into the record SubagentOverlay expects.
    *  No running-only sibling: skills feed no subagent pill. */
   skillIndex: ReadonlyMap<string, SkillRecord>
-  /** Transient `api_retry` frame mirrored from ServerMirror (see there). */
+  /** Transient `api_重试` frame mirrored from ServerMirror (see there). */
   apiRetry: SdkMessage | null
   /** Transient thinking-token estimate mirrored from ServerMirror
    *  (see there) — drives the WorkingBubble's token hint. */

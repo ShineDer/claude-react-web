@@ -1,5 +1,5 @@
 // Single source of truth for the git status letters shown in file rows.
-// The letters themselves come from `git status --porcelain` (the XY column)
+// The letters themselves come from `git status --porcela输入` (the XY column)
 // and are rendered as coloured chips in the Git panel; the labels here feed
 // their hover tooltips so a bare "M" is never cryptic.
 

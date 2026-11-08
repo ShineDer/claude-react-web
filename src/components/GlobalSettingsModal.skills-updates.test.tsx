@@ -120,7 +120,7 @@ describe('GlobalSettingsModal Skills update checks', () => {
     expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/check-updates', { scope: 'user', cwd: undefined })
     // The folder-imported row gets no update UI at all.
     expect(rowOf('local-one', 'project').textContent).not.toContain('Update available')
-    expect(rowOf('local-one', 'project').textContent).not.toContain('Update')
+    expect(rowOf('local-one', 'project').textContent).not.toContain('更新')
   })
 
   it('Update posts the update, clears the badge and refreshes', async () => {
@@ -140,7 +140,7 @@ describe('GlobalSettingsModal Skills update checks', () => {
     await waitFor(() => expect(screen.getByText('Update available')).toBeTruthy())
     const listsBefore = vi.mocked(api.get).mock.calls.filter(([u]) => String(u).startsWith('/skills?') || u === '/skills').length
 
-    fireEvent.click(screen.getByRole('button', { name: 'Update' }))
+    fireEvent.click(screen.getByRole('button', { name: '更新' }))
     await waitFor(() => expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/update', { scope: 'project', cwd: '/work/proj', name: 'pdf' }))
     await waitFor(() => expect(screen.queryByText('Update available')).toBeNull())
 
@@ -180,6 +180,6 @@ describe('GlobalSettingsModal Skills update checks', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Check for updates' }))
     await waitFor(() => expect(screen.getByText('boom')).toBeTruthy())
-    expect(screen.queryByRole('button', { name: 'Update' })).toBeNull()
+    expect(screen.queryByRole('button', { name: '更新' })).toBeNull()
   })
 })

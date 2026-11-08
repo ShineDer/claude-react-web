@@ -92,14 +92,14 @@ export const SessionCard = memo(function SessionCard({
   }, [isRenaming])
 
   // Slot-pill open/close animation. The pill is the title row's leading
-  // in-flow badge: when a session opens, `.slot-in` expands its width 0→18px
+  // in-flow badge: when a session opens, `.slot-输入` expands its width 0→18px
   // (plus margin) so the mode badge + title text glide right with the reveal;
   // when it closes, the standard `usePresenceValue` keeps the pill mounted for
   // one exit cycle (`.slot-out`, width 18→0) so the title glides back, then it
   // unmounts. The hook retains the slot number through the exit, cancels the
   // exit on a reopen, and probes prefers-reduced-motion fresh on each close.
   //
-  // The `.slot-in` entrance is gated on a genuine closed→open edge via
+  // The `.slot-输入` entrance is gated on a genuine closed→open edge via
   // `prevOpen`, adjusted during render so it's in place in the same commit. A
   // scroll remount that mounts already-open initialises prevOpen===isOpen and
   // renders the pill static (no entrance replay).
@@ -113,7 +113,7 @@ export const SessionCard = memo(function SessionCard({
   if (prevOpen !== isOpen) {
     setPrevOpen(isOpen)
     // Entrance on a genuine open edge; on close, drop any in-flight entrance
-    // so the exit clone never carries a stale `.slot-in`.
+    // so the exit clone never carries a stale `.slot-输入`.
     setSlotIn(isOpen)
   }
   useEffect(() => {
@@ -316,7 +316,7 @@ export const SessionCard = memo(function SessionCard({
                 e.stopPropagation()
                 onStartRename(s)
               }}
-              title="Double-click to rename"
+              title="双击重命名"
             >
               {s.title ?? <span className="session-item-id">{s.id.slice(0, 8)}</span>}
             </span>
@@ -386,7 +386,7 @@ export const SessionCard = memo(function SessionCard({
             >
               <button
                 className="session-item-sleep"
-                aria-label="Sleep session"
+                aria-label="休眠会话"
                 disabled={s.phase !== 'idle'}
                 onClick={(e) => {
                   e.stopPropagation()
@@ -397,16 +397,16 @@ export const SessionCard = memo(function SessionCard({
               </button>
             </Tooltip>
           ) : null}
-          <Tooltip label="Delete session" placement="left">
+          <Tooltip label="删除会话" placement="left">
             <button
               className="session-item-delete"
-              aria-label="Delete session"
+              aria-label="删除会话"
               onClick={async (e) => {
                 e.stopPropagation()
                 if (onAskConfirm) {
                   const title = sessionTitleOrFallback(s)
                   onAskConfirm({
-                    title: 'Delete session?',
+                    title: '删除会话？',
                     message: (
                       <>
                         <p>Delete &ldquo;{title}&rdquo;? This permanently removes the conversation.</p>
@@ -416,7 +416,7 @@ export const SessionCard = memo(function SessionCard({
                         {await worktreeDeleteWarning(s)}
                       </>
                     ),
-                    confirmLabel: 'Delete',
+                    confirmLabel: '删除',
                     destructive: true,
                     onConfirm: () => onDelete(s.id),
                   })

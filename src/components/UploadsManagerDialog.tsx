@@ -70,10 +70,10 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
     void (async () => {
       await refresh()
       if (allSucceeded) {
-        toast.success(paths.length === 1 ? 'Path copied' : `${paths.length} paths copied`)
+        toast.success(paths.length === 1 ? 'Path copied' : `${paths.length} paths 已复制`)
         if (autoClose) onClose()
       } else {
-        toast.error(`${failed} upload(s) failed`)
+        toast.error(`${failed} upload(s) 失败`)
       }
     })()
   }, [lastCompletion, refresh, toast, onClose, items])
@@ -182,7 +182,7 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
       variant="perm"
       open={open}
       onClose={onClose}
-      ariaLabel="Uploaded files"
+      ariaLabel="已上传文件"
       cardClassName={`uploads-manager-card${dragOver ? ' uploads-manager-drag' : ''}`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
@@ -207,7 +207,7 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
         >
           <IconPaperclip size={16} />
         </button>
-        <button type="button" className="btn btn-icon" onClick={onClose} aria-label="Close">
+        <button type="button" className="btn btn-icon" onClick={onClose} aria-label="关闭">
           <IconX size={16} />
         </button>
         {/* Hidden file input driven by the paperclip button above. Kept at
@@ -267,7 +267,7 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
         <div className="modal-section uploads-state">
           <span>{error}</span>
           <button type="button" className="btn" onClick={() => void refresh()}>
-            Retry
+            重试
           </button>
         </div>
       )}
@@ -278,14 +278,14 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
             <input
               className="input"
               type="text"
-              placeholder="Filter by name, cwd, or session…"
+              placeholder="按名称、cwd 或会话筛选…"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              aria-label="Filter uploads"
+              aria-label="筛选上传"
             />
             {stats.missing > 0 && (
               <button type="button" className="btn" onClick={() => setCleanMissingOpen(true)}>
-                Clean missing entries
+                清理缺失条目
               </button>
             )}
           </div>
@@ -299,13 +299,13 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
 
           {uploads.length > 0 && (
             <div className="uploads-list">
-              {rows.length === 0 && <div className="uploads-state">No uploads match the filter.</div>}
+              {rows.length === 0 && <div className="uploads-state">无符合筛选的上传。</div>}
               {rows.map((u) => (
               <div key={u.id} className={`uploads-row${u.exists ? '' : ' uploads-row-missing'}`}>
                 <div className="uploads-row-main">
                   <span className="uploads-name">
                     {u.name}
-                    {!u.exists && <span className="uploads-missing-badge">missing</span>}
+                    {!u.exists && <span className="uploads-missing-badge">缺失</span>}
                     {u.origin === 'common' && <span className="uploads-common-badge">common</span>}
                   </span>
                   <span className="uploads-meta truncate" title={u.path}>
@@ -323,8 +323,8 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
                   <button
                     type="button"
                     className="btn btn-icon"
-                    title="Copy absolute path"
-                    aria-label="Copy path"
+                    title="复制绝对路径"
+                    aria-label="复制路径"
                     onClick={() => void copyPath(u)}
                   >
                     <IconCopy size={14} />
@@ -332,8 +332,8 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
                   <button
                     type="button"
                     className="btn btn-icon"
-                    title="Delete file"
-                    aria-label="Delete file"
+                    title="删除文件"
+                    aria-label="删除文件"
                     onClick={() => setDeleteTarget(u)}
                   >
                     <IconTrash size={14} />
@@ -348,7 +348,7 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
 
       {deleteTarget && (
         <ConfirmDialog
-          title="Delete uploaded file?"
+          title="删除已上传的文件？"
           message={
             <>
               This permanently deletes the file from disk:
@@ -356,7 +356,7 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
               <code>{deleteTarget.path}</code>
             </>
           }
-          confirmLabel="Delete"
+          confirmLabel="删除"
           destructive
           busy={busy}
           onConfirm={() => void confirmDelete()}
@@ -366,7 +366,7 @@ export function UploadsManagerDialog({ open = true, onClose }: Props) {
 
       {cleanMissingOpen && (
         <ConfirmDialog
-          title="Clean missing entries?"
+          title="清理缺失条目？"
           message={
             <>
               {stats.missing} registry {stats.missing === 1 ? 'entry' : 'entries'} point to files

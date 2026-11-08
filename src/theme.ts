@@ -133,7 +133,7 @@ export function markPortaledSurface(el: HTMLElement, owner?: Element | null): vo
 //
 // A host appearance preference on the same footing as the accent colour:
 // stored client-side, applied by useBackground() as CSS variables on <html>.
-// Only the `default` and `glow` skins expose it (see isBackgroundLocked in
+// Only the `default` and `g低` skins expose it (see isBackgroundLocked in
 // utils/theme.ts); the branded/a11y skins suppress the effect but preserve
 // the stored choice.
 

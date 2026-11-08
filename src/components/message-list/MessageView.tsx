@@ -124,7 +124,7 @@ export const MessageView = memo(function MessageView({
    *  'consumed' renders a brief "processing" chip; 'injecting'/'injected'
    *  are the mid-run steering states (spec §10 — 'injected' fades once an
    *  assistant/result row follows, i.e. the injected turn has ended);
-   *  undefined renders nothing. Mutually exclusive with `sending` in practice
+   *  undefined renders nothing. Mutually exclusive with `发送中` in practice
    *  (sending is the pre-ack optimistic state, deliveryStatus is post-ack). */
   deliveryStatus?: 'queued' | 'consumed' | 'injecting' | 'injected'
   /** Whether the session is currently working. Gates the processing
@@ -352,7 +352,7 @@ export const MessageView = memo(function MessageView({
       return <BashMessage text={userContent} sending={sending} onAbort={onAbortBash} searchQuery={searchQuery} activeMatchInItem={activeMatchInItem} />
     }
     // Other synthetic user-role messages the SDK explicitly marks non-human
-    // via `origin`/`isSynthetic` (peer / channel / coordinator /
+    // via `orig输入`/`isSynthetic` (peer / channel / coordinator /
     // auto-continuation). Render as a neutral labelled card so they're
     // never misrendered as "you". For SDK versions that don't stamp those
     // fields (0.3.x), isHumanUserMessage falls back to true and this branch
@@ -410,21 +410,21 @@ export const MessageView = memo(function MessageView({
           {sending && (
             <span
               className="msg-sending-indicator"
-              title="Sending - waiting for the server to acknowledge"
-              aria-label="Sending"
+              title="发送中 - 等待服务器确认"
+              aria-label="发送中"
             >
               <span className="msg-sending-spinner" aria-hidden />
-              <span className="msg-sending-label">sending</span>
+              <span className="msg-sending-label">发送中</span>
             </span>
           )}
           {showQueued && (
             <span
               className="msg-queued-indicator"
               title="Queued - the assistant is finishing the current turn; this message will be picked up next"
-              aria-label="Queued, waiting for the current turn to finish"
+              aria-label="已排队，等待当前回合结束"
             >
               <span className="msg-queued-dot" aria-hidden />
-              <span className="msg-queued-label">queued</span>
+              <span className="msg-queued-label">已排队</span>
             </span>
           )}
           {showInjectingChip && (
@@ -450,11 +450,11 @@ export const MessageView = memo(function MessageView({
           {showProcessing && (
             <span
               className="msg-processing-indicator"
-              title="Processing - the model is working on this message"
-              aria-label="Processing"
+              title="处理中 - 模型正在处理这条消息"
+              aria-label="处理中"
             >
               <span className="msg-processing-dot" aria-hidden />
-              <span className="msg-processing-label">processing</span>
+              <span className="msg-processing-label">处理中</span>
             </span>
           )}
         </div>
@@ -510,7 +510,7 @@ export const MessageView = memo(function MessageView({
     if (msg.isApiErrorMessage === true || typeof msg.error === 'string') {
       const apiErrText = extractMessagePlainText(msg) ?? ''
       // Hard account-level 429 (not auto-retried by the SDK — that path
-      // surfaces as a transient `api_retry` system frame). The assistant
+      // surfaces as a transient `api_重试` system frame). The assistant
       // `rate_limit` error is fatal: the turn was rejected, so render the
       // same red `.msg.result.error` divider already used for the
       // `system/error` 429 case, with the raw SDK text kept in the title for
@@ -609,7 +609,7 @@ export const MessageView = memo(function MessageView({
           )}
           {modelNotFound && onSwitchModel && (
             <button type="button" className="btn btn-sm msg-switch-model-btn" onClick={onSwitchModel}>
-              Switch model
+              切换模型
             </button>
           )}
         </div>
@@ -624,7 +624,7 @@ export const MessageView = memo(function MessageView({
     // bare "1234ms" reads slower than "1.2s" at a glance.
     const dur = durMs == null ? '' : durMs >= 1000 ? `${(durMs / 1000).toFixed(1)}s` : `${durMs}ms`
     const turns =
-      typeof msg.num_turns === 'number' ? `${msg.num_turns} turn${msg.num_turns === 1 ? '' : 's'}` : ''
+      typeof msg.num_turns === 'number' ? `${msg.num_turns} 轮` : ''
     // Token usage from the SDK's result payload. `input_tokens` is the
     // turn-accumulated prompt total and —per the Anthropic API —does NOT
     // include cache tokens, so the true input volume sums all three input
@@ -643,7 +643,7 @@ export const MessageView = memo(function MessageView({
         (usage.cache_creation_input_tokens ?? 0)
       : 0
     const outTok = usage?.output_tokens ?? 0
-    const tokens = inTok > 0 || outTok > 0 ? `${formatTokens(inTok)} in \u00b7 ${formatTokens(outTok)} out` : ''
+    const tokens = inTok > 0 || outTok > 0 ? `入 ${formatTokens(inTok)} \u00b7 出 ${formatTokens(outTok)}` : ''
     // SDK 0.3.268/0.3.273/0.3.277 wrapper fields on the result frame.
     const wrapper = msg as unknown as {
       resume_reason?: unknown
@@ -654,7 +654,7 @@ export const MessageView = memo(function MessageView({
     const startupReason = typeof wrapper.startup_failure_reason === 'string' ? wrapper.startup_failure_reason : ''
     const meta = [
       localCommand ? `/${localCommand}` : '',
-      resumeReason ? 'resumed after restart' : '',
+      resumeReason ? '重启后恢复' : '',
       turns,
       dur,
       tokens,
@@ -683,7 +683,7 @@ export const MessageView = memo(function MessageView({
     }
     return (
       <div className="msg result error" title={raw} aria-label="system error">
-        <span className="result-mark" aria-hidden="true">✕ error</span>
+        <span className="result-mark" aria-hidden="true">✕ 错误</span>
         <span className="result-meta">{raw}</span>
       </div>
     )

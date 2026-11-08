@@ -29,12 +29,12 @@ export function WebSearchToolView({ input, toolUseId, searchQuery, activeMatchId
   const chips = (
     <>
       {allowed.length > 0 && (
-        <span className="tool-chip tool-chip-accent" title="Allowed domains">
+        <span className="tool-chip tool-chip-accent" title="允许的域名">
           only: {allowed.join(', ')}
         </span>
       )}
       {blocked.length > 0 && (
-        <span className="tool-chip" title="Blocked domains">
+        <span className="tool-chip" title="已阻止域名">
           block: {blocked.join(', ')}
         </span>
       )}

@@ -37,7 +37,7 @@ describe('BackgroundPicker', () => {
 
   it('renders None/Image/Video and defaults to None active', () => {
     render(<BackgroundPicker setting={setting({ kind: 'none' })} onChange={() => {}} />)
-    expect(screen.getByRole('radio', { name: 'None' })).toBeTruthy()
+    expect(screen.getByRole('radio', { name: '无' })).toBeTruthy()
     expect(screen.getByRole('radio', { name: 'Image' })).toBeTruthy()
     expect(screen.getByRole('radio', { name: 'Video' })).toBeTruthy()
   })
@@ -47,7 +47,7 @@ describe('BackgroundPicker', () => {
     render(<BackgroundPicker setting={setting({ kind: 'none' })} onChange={onChange} />)
     fireEvent.click(screen.getByRole('radio', { name: 'Image' }))
     fireEvent.change(screen.getByLabelText('Image URL'), { target: { value: 'https://ex.com/bg.png' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Use URL' }))
+    fireEvent.click(screen.getByRole('button', { name: '使用 URL' }))
     expect(onChange).toHaveBeenCalledWith({
       pref: { kind: 'custom', src: 'https://ex.com/bg.png', media: 'image' },
       opacity: 0.85,
@@ -61,7 +61,7 @@ describe('BackgroundPicker', () => {
     render(<BackgroundPicker setting={setting({ kind: 'none' })} onChange={onChange} />)
     fireEvent.click(screen.getByRole('radio', { name: 'Video' }))
     fireEvent.change(screen.getByLabelText('Video URL'), { target: { value: 'https://ex.com/loop.mp4' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Use URL' }))
+    fireEvent.click(screen.getByRole('button', { name: '使用 URL' }))
     expect(onChange).toHaveBeenCalledWith({
       pref: { kind: 'custom', src: 'https://ex.com/loop.mp4', media: 'video' },
       opacity: 0.85,
@@ -76,7 +76,7 @@ describe('BackgroundPicker', () => {
     fireEvent.click(screen.getByRole('radio', { name: 'Image' }))
     onChange.mockClear()
     fireEvent.change(screen.getByLabelText('Image URL'), { target: { value: 'file:///etc/passwd' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Use URL' }))
+    fireEvent.click(screen.getByRole('button', { name: '使用 URL' }))
     expect(onChange).not.toHaveBeenCalled()
   })
 
@@ -98,7 +98,7 @@ describe('BackgroundPicker', () => {
     fireEvent.click(screen.getByText('Upload image…'))
     const input = document.querySelector<HTMLInputElement>('input[type="file"]')!
     fireEvent.change(input, { target: { files: [new File(['x'], 'a.png', { type: 'image/png' })] } })
-    await screen.findByText('Applied')
+    await screen.findByText('已应用')
     expect(fetchMock).toHaveBeenCalledTimes(2)
     expect(onChange).toHaveBeenCalledWith({
       pref: { kind: 'custom', src: PNG_UPLOAD, media: 'image' },
@@ -117,7 +117,7 @@ describe('BackgroundPicker', () => {
     fireEvent.click(screen.getByText('Upload video…'))
     const input = document.querySelector<HTMLInputElement>('input[type="file"]')!
     fireEvent.change(input, { target: { files: [new File(['x'], 'a.mp4', { type: 'video/mp4' })] } })
-    await screen.findByText('Applied')
+    await screen.findByText('已应用')
     expect(onChange).toHaveBeenCalledWith({
       pref: { kind: 'custom', src: MP4_UPLOAD, media: 'video' },
       opacity: 0.85,
@@ -153,7 +153,7 @@ describe('BackgroundPicker', () => {
     fireEvent.click(screen.getByText('Upload image…'))
     const input = document.querySelector<HTMLInputElement>('input[type="file"]')!
     fireEvent.change(input, { target: { files: [new File(['x'], 'a.png', { type: 'image/png' })] } })
-    await screen.findByText('Applied')
+    await screen.findByText('已应用')
 
     expect(fetchMock).toHaveBeenCalledWith(MP4_UPLOAD, { method: 'DELETE' })
     expect(onChange).toHaveBeenCalledWith({
@@ -194,7 +194,7 @@ describe('BackgroundPicker against its real owner', () => {
   })
 
   const stored = () => JSON.parse(window.localStorage.getItem(BACKGROUND_KEY) ?? 'null') as unknown
-  const clickUseUrl = () => { fireEvent.click(screen.getByRole('button', { name: 'Use URL' })) }
+  const clickUseUrl = () => { fireEvent.click(screen.getByRole('button', { name: '使用 URL' })) }
   const seedImage = (src = 'https://example.com/a.png', opacity = 0.8) => window.localStorage.setItem(
     BACKGROUND_KEY,
     JSON.stringify({ pref: { kind: 'custom', src, media: 'image' }, opacity }),
@@ -238,7 +238,7 @@ describe('BackgroundPicker against its real owner', () => {
     const input = document.querySelector<HTMLInputElement>('input[type="file"]')!
     fireEvent.change(input, { target: { files: [new File(['x'], 'a.mp4', { type: 'video/mp4' })] } })
 
-    fireEvent.click(screen.getByRole('radio', { name: 'None' }))
+    fireEvent.click(screen.getByRole('radio', { name: '无' }))
 
     await act(async () => {
       settle!({ ok: true, json: async () => ({ url: MP4_UPLOAD }) })
@@ -290,11 +290,11 @@ describe('BackgroundPicker against its real owner', () => {
     fireEvent.click(screen.getByRole('radio', { name: 'Image' }))
     fireEvent.change(screen.getByLabelText('Image URL'), { target: { value: 'https://example.com/a.png' } })
     clickUseUrl()
-    expect(screen.getByText('Applied')).toBeTruthy()
+    expect(screen.getByText('已应用')).toBeTruthy()
 
     fireEvent.click(screen.getByRole('radio', { name: 'Image' }))
 
-    expect(screen.getByText('Applied')).toBeTruthy()
+    expect(screen.getByText('已应用')).toBeTruthy()
   })
 
   it('keeps a typed draft when the already-checked radio is re-clicked', () => {
@@ -362,7 +362,7 @@ describe('BackgroundPicker against its real owner', () => {
     await act(async () => {
       settle!({ ok: true, json: async () => ({ url: MP4_UPLOAD }) })
     })
-    await screen.findByText('Applied')
+    await screen.findByText('已应用')
 
     expect(stored()).toMatchObject({
       opacity: 0.3,
@@ -398,7 +398,7 @@ describe('BackgroundPicker against its real owner', () => {
     )
     render(<WithRealBackgroundOwner />)
 
-    fireEvent.click(screen.getByRole('radio', { name: 'None' }))
+    fireEvent.click(screen.getByRole('radio', { name: '无' }))
     expect(stored()).toEqual({
       pref: { kind: 'none' }, opacity: 0.8, lastSrc: 'https://example.com/a.png', lastMedia: 'image',
     })
@@ -420,7 +420,7 @@ describe('BackgroundPicker against its real owner', () => {
     )
     render(<WithRealBackgroundOwner />)
 
-    fireEvent.click(screen.getByRole('radio', { name: 'None' }))
+    fireEvent.click(screen.getByRole('radio', { name: '无' }))
     fireEvent.click(screen.getByRole('radio', { name: 'Video' }))
 
     expect(stored()).toEqual({
@@ -494,7 +494,7 @@ describe('BackgroundPicker against its real owner', () => {
     )
     render(<WithRealBackgroundOwner />)
 
-    fireEvent.click(screen.getByRole('radio', { name: 'None' }))
+    fireEvent.click(screen.getByRole('radio', { name: '无' }))
     fireEvent.click(screen.getByRole('radio', { name: 'Image' }))
 
     expect(stored()).toEqual({
@@ -539,7 +539,7 @@ describe('BackgroundPicker against its real owner', () => {
     fireEvent.change(blur, { target: { value: '4' } })
     expect(stored()).toMatchObject({ blur: 4 })
 
-    fireEvent.click(screen.getByRole('radio', { name: 'None' }))
+    fireEvent.click(screen.getByRole('radio', { name: '无' }))
     expect(screen.queryByLabelText(/Blur/)).toBeNull()
   })
 
@@ -558,7 +558,7 @@ describe('BackgroundPicker against its real owner', () => {
     fireEvent.change(content, { target: { value: '0.4' } })
     expect(stored()).toMatchObject({ opacity: 0.7, surface: 0.4 })
 
-    fireEvent.click(screen.getByRole('radio', { name: 'None' }))
+    fireEvent.click(screen.getByRole('radio', { name: '无' }))
     expect(screen.queryByLabelText(/Content/)).toBeNull()
   })
 

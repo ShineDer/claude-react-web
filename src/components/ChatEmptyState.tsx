@@ -12,7 +12,7 @@ import { useRef, type ReactNode } from 'react'
 //
 // The bounce is driven through the Web Animations API (`el.animate`), NOT a
 // toggled CSS class. The icon already runs a CSS `animation` (the
-// `chat-empty-item-in` entrance). An earlier version bounced by toggling a
+// `chat-empty-item-输入` entrance). An earlier version bounced by toggling a
 // `chat-empty-icon--bounce` class that reused the same `animation` shorthand;
 // clearing that class on `animationend` reverted the shorthand to the entrance
 // keyframes, which the browser then *restarted* (the entrance name had left
@@ -115,8 +115,8 @@ export function ChatEmptyState({ onUnlockEasterEgg, env }: ChatEmptyStateProps) 
           <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" />
         </svg>
       </div>
-      <div className="chat-empty-title">Start a conversation</div>
-      <div className="chat-empty-subtitle">Type a message below, or paste an image to begin</div>
+      <div className="chat-empty-title">开始对话</div>
+      <div className="chat-empty-subtitle">在下方输入消息，或粘贴图片开始</div>
       {env}
     </div>
   )

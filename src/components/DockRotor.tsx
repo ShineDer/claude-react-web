@@ -2,7 +2,7 @@
 // (TodoChecklist / MonitorBar): position chip + the current item's label, one
 // slot at a time. The cadence, wrap, reset-on-list-change and hover pause
 // live in the useRotor hook (src/hooks/useRotor.ts); this component is the
-// presentational half. The keyed slide replays the shared `rotor-in` rise-in
+// presentational half. The keyed slide replays the shared `rotor-输入` rise-in
 // on every slot change, and the label carries the CARD'S OWN shimmer class
 // (todo-text-shimmer / monitor-text-shimmer — the sweep's accent differs per
 // card, so the recipe stays with each card's list rows). Structural styles

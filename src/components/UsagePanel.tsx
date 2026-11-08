@@ -168,14 +168,14 @@ export const UsagePanel = memo(function UsagePanel({
   if (account?.apiProvider) {
     const authBits = [account.tokenSource, account.apiKeySource].filter(Boolean).join(' · ')
     accountRows.push({
-      label: 'auth',
+      label: '认证',
       value: ACCOUNT_PROVIDER_LABELS[account.apiProvider],
       title: authBits || undefined,
     })
   } else if (account?.tokenSource || account?.apiKeySource) {
     // No known provider enum, but a source is reported — still useful.
     accountRows.push({
-      label: 'auth',
+      label: '认证',
       value: [account.tokenSource, account.apiKeySource].filter(Boolean).join(' · '),
     })
   }
@@ -183,7 +183,7 @@ export const UsagePanel = memo(function UsagePanel({
   const content = (
     <>
       {!available && !data ? (
-        <p className="usage-muted">Usage data is only available for live sessions.</p>
+        <p className="usage-muted">用量数据仅对活跃会话可用。</p>
       ) : (
         <>
           {/* Only offer a retry when /usage can actually be served — a
@@ -193,7 +193,7 @@ export const UsagePanel = memo(function UsagePanel({
             <div className="usage-error">
               <p>{error}</p>
               <button className="usage-action" onClick={onRefresh}>
-                Try again
+                重试
               </button>
             </div>
           )}
@@ -206,7 +206,7 @@ export const UsagePanel = memo(function UsagePanel({
 
           {accountRows.length > 0 && (
             <section className="usage-section usage-account">
-              <h3 className="usage-section-title">Account</h3>
+              <h3 className="usage-section-title">账户</h3>
               <div className="usage-account-rows">
                 {accountRows.map((row) => (
                   <div className="usage-account-row" key={row.label} title={row.title ?? row.value}>
@@ -223,13 +223,13 @@ export const UsagePanel = memo(function UsagePanel({
               <section className="usage-section">
                 <div className="usage-cost-row">
                   <span className="usage-cost">{animatedCost}</span>
-                  <span className="usage-cost-caption">session total</span>
+                  <span className="usage-cost-caption">会话总计</span>
                 </div>
                 <div className="usage-totals">
-                  {wallDur && <span title="Wall-clock session duration">{wallDur} total</span>}
-                  {apiDur && <span title="Time spent on API calls">{apiDur} api</span>}
+                  {wallDur && <span title="会话实际耗时">{wallDur} total</span>}
+                  {apiDur && <span title="API 调用耗时">{apiDur} api</span>}
                   {added != null && removed != null && (
-                    <span title="Lines added / removed this session">
+                    <span title="本会话新增/删除的行数">
                       +{added} −{removed} lines
                     </span>
                   )}
@@ -238,16 +238,16 @@ export const UsagePanel = memo(function UsagePanel({
 
               {modelEntries.length > 0 && (
                 <section className="usage-section">
-                  <h3 className="usage-section-title">By model</h3>
+                  <h3 className="usage-section-title">按模型</h3>
                   <table className="usage-model-table">
                     <thead>
                       <tr>
-                        <th>model</th>
-                        <th>in</th>
-                        <th>out</th>
+                        <th>模型</th>
+                        <th>输入</th>
+                        <th>输出</th>
                         <th title="thinking tokens (subset of out)">think</th>
-                        <th>cache</th>
-                        <th>cost</th>
+                        <th>缓存</th>
+                        <th>费用</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -287,7 +287,7 @@ export const UsagePanel = memo(function UsagePanel({
               )}
 
               <section className="usage-section">
-                <h3 className="usage-section-title">Plan rate limits</h3>
+                <h3 className="usage-section-title">计划速率限制</h3>
                 {data.rate_limits_available ? (
                   <>
                     {USAGE_WINDOW_KEYS.map((key) => (
@@ -303,7 +303,7 @@ export const UsagePanel = memo(function UsagePanel({
                   </>
                 ) : (
                   <p className="usage-muted">
-                    Plan rate limits are not available for API-key / third-party sessions.
+                    API 密钥 / 第三方会话不提供计划速率限制。
                   </p>
                 )}
               </section>
@@ -318,7 +318,7 @@ export const UsagePanel = memo(function UsagePanel({
     <div className="settings-stack">
       <div className="settings-tab-head">
         <span className="settings-section-head-title">
-          <h4>Session usage</h4>
+          <h4>会话用量</h4>
           {subLabel && <span className="usage-sub-badge">{subLabel}</span>}
         </span>
         <span className="settings-section-head-actions">
@@ -326,9 +326,9 @@ export const UsagePanel = memo(function UsagePanel({
             className="btn btn-sm"
             onClick={onRefresh}
             disabled={loading || !available}
-            aria-label="Refresh usage"
+            aria-label="刷新用量"
           >
-            {loading ? <IconLoader size={12} className="settings-card-spin" /> : 'Refresh'}
+            {loading ? <IconLoader size={12} className="settings-card-spin" /> : '刷新'}
           </button>
         </span>
       </div>

@@ -8,8 +8,8 @@
  * pasted file as an unsandboxed shell command. Only the command PAYLOAD is
  * expanded, so `!` followed by a paste still runs what was pasted.
  *
- * A `prompt` result may still turn out to be a local command — that match
- * needs the command object, so the caller does it with `matchLocalCommand`.
+ * A `提示词` result may still turn out to be a local command — that match
+ * needs the command object, so the caller does it with `matchLocal命令`.
  */
 export type SubmissionPlan =
   | { mode: 'bash'; share: boolean; command: string }

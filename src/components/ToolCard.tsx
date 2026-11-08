@@ -184,7 +184,7 @@ export function BackgroundToolButton({
       aria-label={ariaLabel}
     >
       <IconArrowDown size={12} />
-      <span>background</span>
+      <span>后台</span>
     </button>
   )
 }
@@ -380,7 +380,7 @@ function toolResultPreview(content: unknown): string {
  *  When you don't have a tool_use id (e.g. for cards that own their
  *  status), pass `hideStatus` to drop the badge entirely.
  *
- *  `onBackground` (when provided AND the card is still running) renders a
+ *  `on后台` (when provided AND the card is still running) renders a
  *  "background this task" action in the header — the precise, per-card
  *  replacement for the removed Composer morph: the card knows its own
  *  tool_use id, so the click targets exactly this task instead of every
@@ -424,7 +424,7 @@ export const ToolCard = memo(function ToolCard({
   activeMatchIdx?: number
 }) {
   // The originating tool_result (when it has landed) is rendered inline at
-  // the bottom of this card. `useToolResult` returns undefined while the
+  // the bottom of this card. `useTool结果` returns undefined while the
   // result is still pending or for tools that own their result rendering
   // (Plan/Question/Subagent never reach ToolCard anyway).
   const result = useToolResult(toolUseId)
@@ -453,7 +453,7 @@ export const ToolCard = memo(function ToolCard({
             className="tool-card-perm-reopen"
             onClick={() => onReopenPermission(toolUseId)}
           >
-            Review permission
+            查看权限
           </button>
         )}
         <span className="tool-card-spacer" />

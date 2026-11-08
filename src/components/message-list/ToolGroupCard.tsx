@@ -50,7 +50,7 @@ import type { ActiveSubagent, WorkflowRecord } from '../../session-store/types'
 
 /** Grace period after the whole turn ends before a live group auto-folds,
  *  so results stay readable. Mid-turn tool gaps never collapse (see
- *  `wasLive && turnActive` below). */
+ *  `wasLive && turn已启用` below). */
 const SETTLE_HOLD_MS = 2200
 
 /** How often to re-ask whether the user is still on the card once the grace
@@ -294,7 +294,7 @@ function ToolGroupCardInner({
   // post-turn settle fold. The pref gates the running half: with the pref
   // off a running member no longer opens the group, so gating the latch
   // with the same signal is what keeps `autoOpen` from re-opening it
-  // mid-turn (`wasLive && turnActive`).
+  // mid-turn (`wasLive && turn已启用`).
   const live = autoExpandRunningGroups && summary.anyRunning
   const turnActive = working === true
 
@@ -417,9 +417,9 @@ function ToolGroupCardInner({
   }
 
   const badge = summary.anyRunning ? (
-    <span className="tool-status tool-status-running" title="A tool in this group is still running.">
+    <span className="tool-status tool-status-running" title="此组中有一个工具仍在运行。">
       <IconLoader size={12} />
-      <span className="tool-status-label">running</span>
+      <span className="tool-status-label">运行中</span>
     </span>
   ) : summary.anyError ? (
     // Clickable: knowing the group failed is only half an answer when the body
@@ -427,12 +427,12 @@ function ToolGroupCardInner({
     <button
       type="button"
       className="tool-status tool-status-error tool-group-failed-jump"
-      title="A tool in this group failed — show it."
-      aria-label="Show the tool call that failed"
+      title="此组中有一个工具执行失败——显示它。"
+      aria-label="显示失败的工具调用"
       onClick={revealFirstError}
     >
       <IconAlertCircle size={12} />
-      <span className="tool-status-label">failed</span>
+      <span className="tool-status-label">失败</span>
     </button>
   ) : null
 

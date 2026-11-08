@@ -111,7 +111,7 @@ function renameTo(container: HTMLElement, next: string) {
   // SessionContextMenu portals to document.body (ContextMenu.tsx:145), so the
   // menu items are not inside the render container.
   const item = [...document.body.querySelectorAll('[role="menuitem"], .menu-item, button')]
-    .find((el) => /rename/i.test(el.textContent ?? ''))
+    .find((el) => /重命名/i.test(el.textContent ?? ''))
   expect(item, 'Rename menu item').toBeTruthy()
   fireEvent.click(item!)
   const input = container.querySelector<HTMLInputElement>('.session-item-rename-input')
@@ -135,7 +135,7 @@ describe('SessionList inline rename', () => {
     await waitFor(() => {
       expect(container.querySelector('.toast-error')).not.toBeNull()
     })
-    expect(container.querySelector('.toast-error')!.textContent).toMatch(/rename/i)
+    expect(container.querySelector('.toast-error')!.textContent).toMatch(/重命名/i)
     warn.mockRestore()
   })
 
@@ -147,7 +147,7 @@ describe('SessionList inline rename', () => {
     const card = container.querySelector('.session-item')
     fireEvent.contextMenu(card!)
     const item = [...document.body.querySelectorAll('[role="menuitem"], .menu-item, button')]
-      .find((el) => /rename/i.test(el.textContent ?? ''))
+      .find((el) => /重命名/i.test(el.textContent ?? ''))
     fireEvent.click(item!)
     const input = container.querySelector<HTMLInputElement>('.session-item-rename-input')
     fireEvent.change(input!, { target: { value: 'Same Name' } })
@@ -254,7 +254,7 @@ describe('SessionList inline rename', () => {
 
     fireEvent.contextMenu(container.querySelector('.session-item')!)
     const item = [...document.body.querySelectorAll('[role="menuitem"], .menu-item, button')]
-      .find((el) => /rename/i.test(el.textContent ?? ''))
+      .find((el) => /重命名/i.test(el.textContent ?? ''))
     fireEvent.click(item!)
     const input = container.querySelector<HTMLInputElement>('.session-item-rename-input')!
     fireEvent.change(input, { target: { value: 'My New Name' } })
@@ -272,7 +272,7 @@ describe('SessionList inline rename', () => {
     const card = container.querySelector('.session-item')
     fireEvent.contextMenu(card!)
     const item = [...document.body.querySelectorAll('[role="menuitem"], .menu-item, button')]
-      .find((el) => /rename/i.test(el.textContent ?? ''))
+      .find((el) => /重命名/i.test(el.textContent ?? ''))
     fireEvent.click(item!)
     const input = container.querySelector<HTMLInputElement>('.session-item-rename-input')!
     expect(input.value).toBe('New Name')
@@ -297,7 +297,7 @@ describe('SessionList inline rename', () => {
     // editor is closed. The user immediately starts renaming again.
     fireEvent.contextMenu(container.querySelector('.session-item')!)
     const item = [...document.body.querySelectorAll('[role="menuitem"], .menu-item, button')]
-      .find((el) => /rename/i.test(el.textContent ?? ''))
+      .find((el) => /重命名/i.test(el.textContent ?? ''))
     fireEvent.click(item!)
     const input2 = container.querySelector<HTMLInputElement>('.session-item-rename-input')!
     fireEvent.change(input2, { target: { value: 'B Title' } })

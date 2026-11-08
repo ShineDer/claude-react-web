@@ -82,7 +82,7 @@ async function findApptoolsAction(container: HTMLElement) {
   const card = container.querySelector('.settings-first-party-card')
   expect(card, 'first-party card').toBeDefined()
   const action = [...card!.querySelectorAll('button')].find(
-    (b) => b.textContent === 'Enable' || b.textContent === 'Disable',
+    (b) => b.textContent === '启用' || b.textContent === '禁用',
   )
   expect(action, 'first-party Enable/Disable action').toBeDefined()
   return action!.textContent
@@ -106,7 +106,7 @@ describe('SettingsPanel first-party card display chain', () => {
       session: mkSession(),
       globalPrefs: { firstPartyTools: { 'git-tools': { enabled: false } } },
     })
-    await expect(findApptoolsAction(container)).resolves.toBe('Enable')
+    await expect(findApptoolsAction(container)).resolves.toBe('启用')
   })
 
   it('prefers a session override over the global map', async () => {
@@ -114,7 +114,7 @@ describe('SettingsPanel first-party card display chain', () => {
       session: mkSession({ 'git-tools': true }),
       globalPrefs: { firstPartyTools: { 'git-tools': { enabled: false } } },
     })
-    await expect(findApptoolsAction(container)).resolves.toBe('Disable')
+    await expect(findApptoolsAction(container)).resolves.toBe('禁用')
   })
 
   it('falls back to the live tool status when the global map lacks the name', async () => {
@@ -122,7 +122,7 @@ describe('SettingsPanel first-party card display chain', () => {
       session: mkSession(),
       globalPrefs: { firstPartyTools: {} },
     })
-    await expect(findApptoolsAction(container)).resolves.toBe('Disable')
+    await expect(findApptoolsAction(container)).resolves.toBe('禁用')
   })
 
   it('expands the embedded tool listing inline on chevron (read-only badge on git_status)', async () => {
@@ -181,7 +181,7 @@ describe('SettingsPanel first-party card display chain', () => {
     const { container } = render(<Harness />)
     await waitFor(() => expect(container.textContent).toContain('git-tools'))
     const card = container.querySelector('.settings-first-party-card')!
-    const disable = [...card.querySelectorAll('button')].find((b) => b.textContent === 'Disable')
+    const disable = [...card.querySelectorAll('button')].find((b) => b.textContent === '禁用')
     expect(disable, 'Disable action').toBeDefined()
     fireEvent.click(disable!)
 
@@ -194,8 +194,8 @@ describe('SettingsPanel first-party card display chain', () => {
       release({ session: mkSession({ 'git-tools': false }) })
     })
     expect(card.querySelector('.settings-card-pending')).toBeNull()
-    expect([...card.querySelectorAll('button')].some((b) => b.textContent === 'Enable')).toBe(true)
-    expect(card.textContent).toContain('Reset (inherit global)')
+    expect([...card.querySelectorAll('button')].some((b) => b.textContent === '启用')).toBe(true)
+    expect(card.textContent).toContain('重置（继承全局）')
   })
 })
 
@@ -253,7 +253,7 @@ describe('SettingsPanel MCP reconnect feedback', () => {
   }
 
   function reconnectButton(card: Element) {
-    return [...card.querySelectorAll('button')].find((b) => b.textContent === 'Reconnect')
+    return [...card.querySelectorAll('button')].find((b) => b.textContent === '重新连接')
   }
 
   beforeEach(() => {
@@ -317,7 +317,7 @@ describe('SettingsPanel MCP reconnect feedback', () => {
   })
 
   it('errors rather than claims success when the server still reports failed', async () => {
-    // A reconnect that lands back on 'failed' must not toast a green
+    // A reconnect that lands back on '失败' must not toast a green
     // success — report the failure and let the card's red state speak.
     stubMcpStatus({ ...filesystemServer, status: 'failed' })
 
@@ -385,12 +385,12 @@ describe('SettingsPanel Appearance tab', () => {
 
   /** Every per-session override row, paired with the pref key its switch must
    *  write. Labels here carry NO curly quotes (unlike the global modal's
-   *  "Show pinned “current question” header"). */
+   *  "显示固定的“当前问题”标题"). */
   const OVERRIDES = [
-    ['Show pinned current question header', 'showPinnedUserMessage'],
-    ['Auto-generate session recap', 'autoRecap'],
+    ['显示固定的当前问题标题', 'showPinnedUserMessage'],
+    ['自动生成会话摘要', 'autoRecap'],
     ['Use collapsible transcript cards', 'toolGroupCards'],
-    ['Show message card headers', 'showMessageHeaders'],
+    ['显示消息卡片标题', 'showMessageHeaders'],
   ] as const
 
   it('renders every override row and posts each one under its own key', async () => {
@@ -414,11 +414,11 @@ describe('SettingsPanel Appearance tab', () => {
 
   it('no longer renders the display overrides on the General tab', async () => {
     const { container } = renderPanel({ tab: 'general' })
-    await waitFor(() => expect(container.textContent).toContain('Live controls'))
+    await waitFor(() => expect(container.textContent).toContain('实时控制'))
 
     // Moved, not duplicated.
-    expect(switchEl(container, 'Auto-generate session recap')).toBeNull()
-    expect(switchEl(container, 'Show message card headers')).toBeNull()
+    expect(switchEl(container, '自动生成会话摘要')).toBeNull()
+    expect(switchEl(container, '显示消息卡片标题')).toBeNull()
   })
 
   describe('auto-expand-running-groups sub-setting', () => {
@@ -456,7 +456,7 @@ describe('SettingsPanel Appearance tab', () => {
       expect(container.textContent).toContain('Session override.')
 
       const reset = [...container.querySelectorAll('.settings-reset-link')].find(
-        (b) => b.textContent === 'Reset (inherit global)',
+        (b) => b.textContent === '重置（继承全局）',
       )!
       fireEvent.click(reset)
       await waitFor(() =>
@@ -614,15 +614,15 @@ describe('SettingsPanel MCP source grouping', () => {
 
     expect(findGroup(container, 'Global config')).toBeUndefined()
     expect(findGroup(container, 'CLI-discovered')).toBeUndefined()
-    // The one non-empty box still renders, and no "No MCP servers" empty state
+    // The one non-empty box still renders, and no "无 MCP 服务器" empty state
     // (the effective list is not empty).
     expect(findGroup(container, 'Session only')).toBeDefined()
-    expect(container.textContent).not.toContain('No MCP servers')
+    expect(container.textContent).not.toContain('无 MCP 服务器')
   })
 
   it('shows the empty state only when the whole external list is empty', async () => {
     const { container } = renderGroupedPanel([])
-    await waitFor(() => expect(container.textContent).toContain('No MCP servers'))
+    await waitFor(() => expect(container.textContent).toContain('无 MCP 服务器'))
 
     expect(findGroup(container, 'Global config')).toBeUndefined()
     expect(findGroup(container, 'CLI-discovered')).toBeUndefined()
@@ -661,7 +661,7 @@ describe('SettingsPanel MCP source grouping', () => {
   it('reaches the empty state on a dormant session instead of sticking on the skeleton', async () => {
     // Non-running sessions never fetch mcp-status (the server 410s it), so
     // loadingMeta must settle through the not-running branch — previously it
-    // held the skeleton forever and "No MCP servers" was unreachable. The
+    // held the skeleton forever and "无 MCP 服务器" was unreachable. The
     // store mock is deliberately NON-empty: the "Available from global
     // config" section must stay hidden by the session.running gate (without
     // it, the Add buttons would render on a dormant session and every click
@@ -672,11 +672,11 @@ describe('SettingsPanel MCP source grouping', () => {
       { '/mcp-config': { servers: [{ name: 'global-server' }] } },
       { id: 's1', running: false, terminated: false } as unknown as SessionInfo,
     )
-    await waitFor(() => expect(container.textContent).toContain('No MCP servers'))
+    await waitFor(() => expect(container.textContent).toContain('无 MCP 服务器'))
     expect(container.querySelector('.skeleton-group')).toBeNull()
     // The Add list stays dormant-session territory: no buttons that would
     // only ever POST into a 410.
-    expect(container.textContent).not.toContain('Available from global config')
+    expect(container.textContent).not.toContain('可从全局配置使用')
   })
 
   it('keeps a globally-defined-but-disabled server in the Global box', async () => {
@@ -695,7 +695,7 @@ describe('SettingsPanel MCP source grouping', () => {
     expect(globalGroup, 'Global config box').toBeDefined()
     expect(globalGroup.textContent).toContain('disabled-global')
     expect(findGroup(container, 'Session only')).toBeUndefined()
-    expect(container.textContent).not.toContain('Available from global config')
+    expect(container.textContent).not.toContain('可从全局配置使用')
   })
 
   it('falls back to one neutral ungrouped box when the global store read fails', async () => {
@@ -763,7 +763,7 @@ describe('SettingsPanel Context / Skills tab split', () => {
       tokenCount: 800,
       skillFrontmatter: [{ name: 'commit-helper', source: 'project', tokens: 800 }],
     },
-    agents: { tokenCount: 1200, agents: [{ agentType: 'Explore', source: 'built-in', tokens: 1200 }] },
+    agents: { tokenCount: 1200, agents: [{ agentType: 'Explore', source: '内置', tokens: 1200 }] },
     memoryFiles: { tokenCount: 900 },
     mcpTools: { tokenCount: 1500 },
     categories: [
@@ -802,7 +802,7 @@ describe('SettingsPanel Context / Skills tab split', () => {
     // 'Skill policy' now comes from the static group head; assert text only
     // the CARD renders (a mode-card title) so a card regression can't hide
     // behind the boilerplate.
-    await waitFor(() => expect(container.textContent).toContain('Inherit (use global)'))
+    await waitFor(() => expect(container.textContent).toContain('继承（使用全局）'))
     // The Skills tab wants the skills token detail too, so the detailed
     // fetch fires here as well (one-shot guard shared with Context). The
     // GET now carries an AbortSignal — assert the 2-arg shape, a 1-arg
@@ -901,7 +901,7 @@ describe('SettingsPanel Context / Skills tab split', () => {
       return Promise.resolve({})
     })
     const retry = [...container.querySelectorAll('.settings-reset-link')].find(
-      (b) => b.textContent === 'retry',
+      (b) => b.textContent === '重试',
     )!
     fireEvent.click(retry)
     await waitFor(() => expect(container.textContent).toContain('Skills:'))
@@ -921,7 +921,7 @@ describe('SettingsPanel Context / Skills tab split', () => {
     const { container } = renderPanel({ tab: 'context' })
     await waitFor(() =>
       expect(container.textContent).toContain("Couldn't load the breakdown"))
-    expect(compositionSection(container)!.textContent).toContain('retry')
+    expect(compositionSection(container)!.textContent).toContain('重试')
 
     // Recover + retry → rows land.
     ;(api.get as ReturnType<typeof vi.fn>).mockImplementation((url: string) => {
@@ -993,33 +993,33 @@ describe('SettingsPanel grouped tab nav', () => {
   it('renders four group pills and only the active group’s leaves', () => {
     const { container } = renderPanel({ tab: 'general' })
     expect(groupBtns(container).map((b) => b.textContent)).toEqual([
-      'General', 'Behavior', 'Integrations', 'Diagnostics',
+      '通用', 'Behavior', 'Integrations', '诊断',
     ])
-    expect(leafBtns(container).map((b) => b.textContent)).toEqual(['General', 'Appearance'])
-    expect(activeGroup(container)).toBe('General')
-    expect(activeLeaf(container)).toBe('General')
+    expect(leafBtns(container).map((b) => b.textContent)).toEqual(['通用', '外观'])
+    expect(activeGroup(container)).toBe('通用')
+    expect(activeLeaf(container)).toBe('通用')
   })
 
   it('deep-links into a leaf via tabRequest and activates the leaf’s group', () => {
     const { container } = renderPanel({ tab: 'mcp' })
     expect(activeGroup(container)).toBe('Integrations')
-    expect(activeLeaf(container)).toBe('MCP Servers')
+    expect(activeLeaf(container)).toBe('MCP 服务器')
   })
 
   it('clicking a group lands on its first leaf and remembers the last visited leaf', async () => {
     const { container } = renderPanel({ tab: 'general' })
 
     clickBtn(() => groupBtns(container), 'Integrations')
-    await waitFor(() => expect(activeLeaf(container)).toBe('MCP Servers'))
+    await waitFor(() => expect(activeLeaf(container)).toBe('MCP 服务器'))
 
-    clickBtn(() => leafBtns(container), 'Plugins')
-    await waitFor(() => expect(activeLeaf(container)).toBe('Plugins'))
+    clickBtn(() => leafBtns(container), '插件')
+    await waitFor(() => expect(activeLeaf(container)).toBe('插件'))
 
     // Away and back: the group reopens on the leaf last visited in it.
-    clickBtn(() => groupBtns(container), 'General')
-    await waitFor(() => expect(activeLeaf(container)).toBe('General'))
+    clickBtn(() => groupBtns(container), '通用')
+    await waitFor(() => expect(activeLeaf(container)).toBe('通用'))
     clickBtn(() => groupBtns(container), 'Integrations')
-    await waitFor(() => expect(activeLeaf(container)).toBe('Plugins'))
+    await waitFor(() => expect(activeLeaf(container)).toBe('插件'))
   })
 })
 
@@ -1203,7 +1203,7 @@ describe('SettingsPanel Loaded skills preview', () => {
         ),
       ).toBe(true),
     )
-    await waitFor(() => expect(screen.getByText('Frontmatter')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('前置元数据')).toBeTruthy())
     // Body renders through the shared markdown pipeline (parity with the
     // global settings preview): `**conventional commits**` → <strong>.
     const strong = document.querySelector('.settings-skill-preview-content strong')
@@ -1231,7 +1231,7 @@ describe('SettingsPanel Loaded skills preview', () => {
         ),
       ).toBe(true),
     )
-    await waitFor(() => expect(screen.getByText('Frontmatter')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('前置元数据')).toBeTruthy())
   })
 
   it('does not preview plugin rows even when a filesystem skill shares their name', async () => {
@@ -1290,7 +1290,7 @@ describe('SettingsPanel Loaded skills preview', () => {
       fireEvent.click(row)
     }
     await new Promise((res) => setTimeout(res, 0))
-    expect(document.body.textContent).not.toContain('Frontmatter')
+    expect(document.body.textContent).not.toContain('前置元数据')
   })
 
   it('keeps rows without a filesystem skill plain — plugin skills are not previewable', async () => {
@@ -1320,7 +1320,7 @@ describe('SettingsPanel Loaded skills preview', () => {
       /\/skills\/(user|project)\//.test(String(u)),
     )
     expect(contentFetches).toHaveLength(0)
-    expect(document.body.textContent).not.toContain('Frontmatter')
+    expect(document.body.textContent).not.toContain('前置元数据')
   })
 
   it('shows the last-clicked skill when two preview fetches resolve out of order', async () => {

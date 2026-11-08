@@ -39,9 +39,9 @@ export function ContextUsageReportCard({ usage }: { usage: StructuredContextUsag
   const over = usage.over_limit && num(usage.over_limit.tokens_over) !== undefined
 
   return (
-    <div className="report-card" aria-label="Context usage">
+    <div className="report-card" aria-label="上下文用量">
       <div className="report-card-head">
-        <span className="report-card-title">Context usage</span>
+        <span className="report-card-title">上下文用量</span>
         <span className="report-card-metric">
           {total !== undefined ? formatTokens(total) : '—'}
           {max !== undefined ? ` / ${formatTokens(max)}` : ''}
@@ -85,7 +85,7 @@ export function UsageReportCard({ report }: { report: StructuredUsageReport }) {
   return (
     <div className="report-card" aria-label="Usage report">
       <div className="report-card-head">
-        <span className="report-card-title">Usage</span>
+        <span className="report-card-title">用量</span>
         {session && (
           <span className="report-card-metric">
             {cost(num(session.total_cost_usd))}

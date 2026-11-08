@@ -9,9 +9,9 @@ afterEach(() => {
 
 function baseProps(overrides: Partial<React.ComponentProps<typeof ConfirmDialog>> = {}) {
   return {
-    title: 'Delete session?',
-    message: 'This cannot be undone.',
-    confirmLabel: 'Delete',
+    title: '删除会话？',
+    message: '此操作无法撤销。',
+    confirmLabel: '删除',
     onConfirm: vi.fn(),
     onCancel: vi.fn(),
     ...overrides,
@@ -21,9 +21,9 @@ function baseProps(overrides: Partial<React.ComponentProps<typeof ConfirmDialog>
 describe('ConfirmDialog', () => {
   it('renders the title, message, and confirm label', () => {
     const { getByRole, getByText } = render(<ConfirmDialog {...baseProps()} />)
-    expect(getByRole('dialog', { name: 'Delete session?' })).toBeTruthy()
-    expect(getByText('This cannot be undone.')).toBeTruthy()
-    expect(getByText('Delete')).toBeTruthy()
+    expect(getByRole('dialog', { name: '删除会话？' })).toBeTruthy()
+    expect(getByText('此操作无法撤销。')).toBeTruthy()
+    expect(getByText('删除')).toBeTruthy()
   })
 
   it('fires onCancel on Escape', () => {
@@ -61,13 +61,13 @@ describe('ConfirmDialog', () => {
   it('auto-focuses Cancel for destructive dialogs, Confirm otherwise', () => {
     // Non-destructive: the confirm button gets initial focus so Enter confirms.
     const first = render(<ConfirmDialog {...baseProps()} />)
-    expect(document.activeElement).toBe(first.getByText('Delete'))
+    expect(document.activeElement).toBe(first.getByText('删除'))
     first.unmount()
 
     // Destructive: the cancel button gets initial focus so a reflexive Enter
-    // can't fire the destructive action ("Discard", "Drop stash", "Abort", …).
+    // can't fire the destructive action ("丢弃", "丢弃贮藏", "Abort", …).
     const second = render(<ConfirmDialog {...baseProps({ destructive: true })} />)
-    expect(document.activeElement).toBe(second.getByText('Cancel'))
+    expect(document.activeElement).toBe(second.getByText('取消'))
   })
 
   it('keeps the dialog mounted through the exit animation, then unmounts (AnimatePresence)', async () => {

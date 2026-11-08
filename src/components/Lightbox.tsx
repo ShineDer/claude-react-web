@@ -242,7 +242,7 @@ function LightboxStage({
         <a className="lightbox-tool lightbox-download" aria-label="Download image" href={current.src} download="image" target="_blank" rel="noopener noreferrer">
           <IconDownload size={16} />
         </a>
-        <button type="button" className="lightbox-tool" aria-label="Close" onClick={onClose}>
+        <button type="button" className="lightbox-tool" aria-label="关闭" onClick={onClose}>
           <IconX size={16} />
         </button>
       </div>

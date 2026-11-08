@@ -34,10 +34,10 @@ describe('AgentDefinitionForm', () => {
       post: ReturnType<typeof vi.fn>
     }
     render(<AgentDefinitionForm onSaved={() => {}} onCancel={() => {}} />)
-    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'reviewer' } })
-    fireEvent.change(screen.getByLabelText(/description/i), { target: { value: 'Reviews' } })
-    fireEvent.change(screen.getByLabelText(/prompt/i), { target: { value: 'You are a reviewer.' } })
-    fireEvent.click(screen.getByRole('button', { name: /create/i }))
+    fireEvent.change(screen.getByLabelText(/名称/), { target: { value: 'reviewer' } })
+    fireEvent.change(screen.getByLabelText(/描述/), { target: { value: 'Reviews' } })
+    fireEvent.change(screen.getByLabelText(/提示词/i), { target: { value: 'You are a reviewer.' } })
+    fireEvent.click(screen.getByRole('button', { name: /创建/ }))
     expect(post).toHaveBeenCalledWith('/agent-definitions', expect.objectContaining({ data: expect.objectContaining({ name: 'reviewer' }) }))
   })
   it('round-trips a numeric-effort definition on edit as a NUMBER, not a string', async () => {
@@ -49,8 +49,8 @@ describe('AgentDefinitionForm', () => {
       />,
     )
     // The numeric effort renders as a number input (spinbutton), not a select.
-    expect(screen.getByLabelText(/effort/i)).toHaveProperty('type', 'number')
-    fireEvent.click(screen.getByRole('button', { name: /save/i }))
+    expect(screen.getByLabelText(/强度/)).toHaveProperty('type', 'number')
+    fireEvent.click(screen.getByRole('button', { name: /保存/ }))
     const { data } = mocks.put.mock.calls[0][1] as { data: Record<string, unknown> }
     expect(data.effort).toBe(0.5)
     expect(typeof data.effort).toBe('number')
@@ -66,12 +66,12 @@ describe('AgentDefinitionForm', () => {
 
   it('permission-mode select offers SDK modes only (no disabled)', () => {
     render(<AgentDefinitionForm onSaved={() => {}} onCancel={() => {}} />)
-    const select = screen.getByLabelText(/permission mode/i)
+    const select = screen.getByLabelText(/权限模式/)
     const values = Array.from(select.querySelectorAll('option')).map((o) => o.value)
     expect(values).toContain('dontAsk')
     expect(values).toContain('auto')
     expect(values).not.toContain('disabled')
-    // Empty option is the "Default" sentinel the form omits from the payload.
+    // Empty option is the "默认" sentinel the form omits from the payload.
     expect(values).toContain('')
   })
 })

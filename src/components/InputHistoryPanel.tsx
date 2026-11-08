@@ -131,20 +131,20 @@ export function InputHistoryPanel({ open, onClose, onSelect, currentSessionId }:
         ref={inputRef}
         className="palette-input"
         type="text"
-        placeholder="Search input history…"
+        placeholder="搜索输入历史…"
         value={query}
         onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0) }}
-        aria-label="Search input history"
+        aria-label="搜索输入历史"
         aria-autocomplete="list"
         aria-controls="history-list"
         aria-activedescendant={flat[safeIndex] != null ? `history-item-${safeIndex}` : undefined}
       />
       <div className="palette-list" ref={listRefMerged} id="history-list" role="listbox">
         {flat.length === 0 && (
-          <div className="palette-empty">{totalCount === 0 ? 'No history yet' : 'No matches'}</div>
+          <div className="palette-empty">{totalCount === 0 ? 'No history yet' : '无匹配项'}</div>
         )}
         {sessionItems.length > 0 && currentSessionId != null && (
-          <div className="palette-section-label">This session</div>
+          <div className="palette-section-label">本会话</div>
         )}
         {sessionItems.map((entry, i) => renderItem(entry, i))}
         {otherItems.length > 0 && (

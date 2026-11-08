@@ -46,8 +46,8 @@ export function TaskOutputToolView({ input, toolUseId, searchQuery, activeMatchI
 
   const chips = (
     <>
-      {block === true && <span className="tool-chip tool-chip-accent">blocking</span>}
-      {block === false && <span className="tool-chip">non-blocking</span>}
+      {block === true && <span className="tool-chip tool-chip-accent">阻塞</span>}
+      {block === false && <span className="tool-chip">非阻塞</span>}
       {timeoutChip}
     </>
   )

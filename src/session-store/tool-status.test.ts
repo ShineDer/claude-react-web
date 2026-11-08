@@ -259,7 +259,7 @@ describe('reducer: toolResults lifecycle', () => {
     expect(state.mirror.toolResults.get('tu_read')).toEqual({ content: 'ENOENT', isError: true })
   })
 
-  it('does NOT capture results for excluded tools (Plan/Subagent/Question)', () => {
+  it('does NOT capture results for excluded tools (Plan/子 agent/Question)', () => {
     let state = createInitialSessionState('s1')
     state = reduceSessionState(state, {
       type: 'MESSAGE',
@@ -364,7 +364,7 @@ describe('reducer: toolStatus lifecycle', () => {
     expect(state.mirror.toolStatus.get('tu_read')).toBe('error')
   })
 
-  it('does NOT seed status for excluded tool names (Plan/Subagent/Question)', () => {
+  it('does NOT seed status for excluded tool names (Plan/子 agent/Question)', () => {
     let state = createInitialSessionState('s1')
     state = reduceSessionState(state, {
       type: 'MESSAGE',
@@ -395,7 +395,7 @@ describe('reducer: toolStatus lifecycle', () => {
 
     // A duplicate tool_use (same id) lands — could happen during replay
     // or if upstream re-broadcasts. The terminal status must NOT regress
-    // back to 'running'.
+    // back to '运行中'.
     state = reduceSessionState(state, {
       type: 'MESSAGE',
       message: assistant([toolUse('Bash', 'tu_bash')], 'a-2'),
@@ -407,7 +407,7 @@ describe('reducer: toolStatus lifecycle', () => {
     // Regression: when the SessionStore restored items+messages from
     // localStorage, only those two fields were re-populated — toolStatus
     // (and the other index maps) started empty. useToolStatus then
-    // returned the default 'running' for every cached tool_use card,
+    // returned the default '运行中' for every cached tool_use card,
     // so older Read/Grep/Bash cards spun forever after a page reload
     // even though the conversation had moved on.
     //
@@ -432,7 +432,7 @@ describe('reducer: toolStatus lifecycle', () => {
     // The bug: a tool_use seeds 'running', but its tool_result never
     // arrives (user interrupted, or the SDK aborted the turn). The
     // `result` frame means the turn is over, so the result will never
-    // come — without a sweep the badge spins on 'running' forever.
+    // come — without a sweep the badge spins on '运行中' forever.
     let state = createInitialSessionState('s1')
     state = reduceSessionState(state, {
       type: 'MESSAGE',

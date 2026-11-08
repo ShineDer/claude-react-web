@@ -90,7 +90,7 @@ class MessageGen {
   otherBlock(): Record<string, unknown> {
     const r = this.rng
     if (r.chance(0.5)) return { type: 'text', text: `t${this.seq++}` }
-    return { type: 'tool_use', id: `tu-${this.seq++}`, name: r.pick(['Read', 'Bash', 'Edit', 'Agent']), input: { file_path: 'a.ts', command: 'ls' } }
+    return { type: 'tool_use', id: `tu-${this.seq++}`, name: r.pick(['Read', 'Bash', '编辑', 'Agent']), input: { file_path: 'a.ts', command: 'ls' } }
   }
 
   assistant(opts: { worktree?: boolean; sidechain?: boolean } = {}): SdkMessage {
@@ -239,11 +239,11 @@ function randomAction(state: SessionState, gen: MessageGen, rng: Rng): SessionAc
     return { type: 'REPLAY_REPLACE', messages: batch, permissions: [] }
   }
   if (roll < 84) {
-    return { type: 'MESSAGE_CONSUMED', uuid: uuids.length && rng.chance(0.8) ? rng.pick(uuids) : 'missing', consumedAt: Date.now() }
+    return { type: 'MESSAGE_CONSUMED', uuid: uuids.length && rng.chance(0.8) ? rng.pick(uuids) : '缺失', consumedAt: Date.now() }
   }
   if (roll < 85) return { type: 'CLEAR_TRANSCRIPT' }
   if (roll < 87) {
-    return { type: 'MESSAGE_STEERED', uuid: uuids.length && rng.chance(0.8) ? rng.pick(uuids) : 'missing', state: rng.pick(['injected', 'requeued'] as const) }
+    return { type: 'MESSAGE_STEERED', uuid: uuids.length && rng.chance(0.8) ? rng.pick(uuids) : '缺失', state: rng.pick(['injected', 'requeued'] as const) }
   }
   if (roll < 93) return randomWindowAction(state, gen, rng)
   // Actions that must not move the field at all.

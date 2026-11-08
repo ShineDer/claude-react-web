@@ -73,7 +73,7 @@ describe('NewSessionDialog custom agent', () => {
     )
 
     const buttons = Array.from(document.querySelectorAll('button'))
-    const createBtn = buttons.find((b) => b.textContent?.trim() === 'Create')!
+    const createBtn = buttons.find((b) => b.textContent?.trim() === '创建')!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
 
@@ -88,7 +88,7 @@ describe('NewSessionDialog custom agent', () => {
     await waitFor(() => expect(screen.getByLabelText('Agent')).toBeTruthy())
 
     const buttons = Array.from(document.querySelectorAll('button'))
-    const createBtn = buttons.find((b) => b.textContent?.trim() === 'Create')!
+    const createBtn = buttons.find((b) => b.textContent?.trim() === '创建')!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
 

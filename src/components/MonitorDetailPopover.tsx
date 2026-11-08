@@ -19,7 +19,7 @@ export interface MonitorDetail {
   /** Server background task id parsed from the start result. Absent when the
    *  result carried none (or none has landed yet). */
   taskId?: string
-  /** The Monitor tool's full `command` input. Absent when the input had none. */
+  /** The Monitor tool's full `命令` input. Absent when the input had none. */
   command?: string
   /** Persistent monitors have no timeout window — the row already badges
    *  this, repeated here so the popover is self-contained. */
@@ -49,7 +49,7 @@ export const MonitorDetailPopover = memo(function MonitorDetailPopover({ detail,
       <div className="monitor-detail-head">
         <span className="monitor-detail-status">Running</span>
         {detail.taskId !== undefined && <span className="monitor-detail-id">{detail.taskId}</span>}
-        {detail.persistent && <span className="tool-chip tool-chip-accent">persistent</span>}
+        {detail.persistent && <span className="tool-chip tool-chip-accent">持久</span>}
       </div>
       <div className="monitor-detail-subject">{detail.description}</div>
       {detail.command && <pre className="monitor-detail-cmd">{detail.command}</pre>}

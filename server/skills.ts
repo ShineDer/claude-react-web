@@ -201,10 +201,17 @@ async function listScope(scope: SkillScope, cwd?: string): Promise<SkillRecord[]
   }
   const skills: SkillRecord[] = []
   for (const entry of entries) {
-    if (!entry.isDirectory()) continue
+    // A Dirent reports the LINK's type for a symlinked entry, so a symlinked
+    // skill directory would fail this check. Follow the link with stat() and
+    // judge the target instead (`~/.claude/skills` is commonly a tree of
+    // symlinks into a shared agents dir). A dangling link makes stat() throw
+    // and the entry is skipped below.
+    if (!entry.isDirectory() && !entry.isSymbolicLink()) continue
     const name = basename(entry.name)
     if (!VALID_SKILL_NAME.test(name)) continue
     try {
+      const target = await fs.stat(resolve(root, name))
+      if (!target.isDirectory()) continue
       skills.push(await readSkill(scope, name, cwd, false))
     } catch (err) {
       if (err instanceof HttpError && err.status === 413) {
@@ -411,17 +418,21 @@ async function collectSourceFiles(sourceDir: string, currentDir = sourceDir, sta
   const entries = await fs.readdir(currentDir, { withFileTypes: true })
   const files: PreparedImportFile[] = []
   for (const entry of entries) {
-    if (entry.isSymbolicLink()) throw new HttpError(400, 'Skill import cannot include symbolic links')
     const absolutePath = resolve(currentDir, entry.name)
+    // Symlinks are followed rather than rejected: an imported skill tree may
+    // legitimately be a set of links into a shared agents dir. The link's
+    // target decides whether this is a dir (recurse) or a file (copy). A
+    // dangling link surfaces as the lstat/stat mismatch and is skipped.
+    const target = await fs.stat(absolutePath).catch(() => null)
+    if (!target) continue
     const relativePath = safeImportRelativePath(relative(sourceDir, absolutePath))
-    if (entry.isDirectory()) {
+    if (target.isDirectory()) {
       files.push(...await collectSourceFiles(sourceDir, absolutePath, state))
       continue
     }
-    if (!entry.isFile()) continue
-    const stat = await fs.stat(absolutePath)
+    if (!target.isFile()) continue
     state.count += 1
-    state.total += stat.size
+    state.total += target.size
     if (state.count > MAX_SKILL_IMPORT_FILES) throw new HttpError(413, 'Too many files in skill import')
     if (state.total > MAX_SKILL_IMPORT_TOTAL_BYTES) throw new HttpError(413, 'Skill import is too large')
     files.push({ relativePath, data: await fs.readFile(absolutePath) })

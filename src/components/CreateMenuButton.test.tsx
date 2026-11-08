@@ -9,8 +9,8 @@ function setup(overrides: Partial<React.ComponentProps<typeof CreateMenuButton>>
   const utils = render(
     <CreateMenuButton
       className="session-nav-new btn btn-icon"
-      aria-label="Create"
-      title="Create"
+      aria-label="创建"
+      title="创建"
       onNewSession={onNewSession}
       onCreateGroup={onCreateGroup}
       askPrompt={askPrompt}
@@ -25,21 +25,21 @@ function setup(overrides: Partial<React.ComponentProps<typeof CreateMenuButton>>
 describe('CreateMenuButton', () => {
   it('does not fire onNewSession on the + click itself — it opens the menu', () => {
     const { onNewSession } = setup()
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     expect(onNewSession).not.toHaveBeenCalled()
     expect(screen.getByRole('menu')).toBeTruthy()
   })
 
   it('menu lists New session… and New group…', () => {
     setup()
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     const labels = Array.from(document.querySelectorAll('.ctx-menu-label')).map((e) => e.textContent)
     expect(labels).toEqual(['New session…', 'New group…'])
   })
 
   it('New session… fires onNewSession and closes the menu', () => {
     const { onNewSession } = setup()
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     fireEvent.click(document.querySelectorAll('.ctx-menu-item')[0])
     expect(onNewSession).toHaveBeenCalledOnce()
     expect(screen.queryByRole('menu')).toBeNull()
@@ -47,7 +47,7 @@ describe('CreateMenuButton', () => {
 
   it('New group… opens the create prompt and closes the menu', () => {
     const { askPrompt } = setup()
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     fireEvent.click(document.querySelectorAll('.ctx-menu-item')[1])
     expect(askPrompt).toHaveBeenCalledOnce()
     expect(askPrompt.mock.calls[0][0].title).toBe('New group')
@@ -56,7 +56,7 @@ describe('CreateMenuButton', () => {
 
   it('clicking the + again dismisses the menu instead of reopening it', () => {
     setup()
-    const plus = screen.getByRole('button', { name: 'Create' })
+    const plus = screen.getByRole('button', { name: '创建' })
     fireEvent.click(plus)
     expect(screen.getByRole('menu')).toBeTruthy()
     // Second press on the trigger is a toggle: outside-mousedown must NOT
@@ -69,14 +69,14 @@ describe('CreateMenuButton', () => {
 
   it('moves focus to the first menu item when opened', () => {
     setup()
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     const items = document.querySelectorAll<HTMLButtonElement>('.ctx-menu-item')
     expect(document.activeElement).toBe(items[0])
   })
 
   it('returns focus to the + when the menu closes', () => {
     setup()
-    const plus = screen.getByRole('button', { name: 'Create' })
+    const plus = screen.getByRole('button', { name: '创建' })
     fireEvent.click(plus)
     expect(document.activeElement).not.toBe(plus)
     fireEvent.keyDown(document, { key: 'Escape' })
@@ -86,7 +86,7 @@ describe('CreateMenuButton', () => {
 
   it('a right-click outside dismisses the create menu (left-click-owned surface)', () => {
     setup()
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     expect(screen.getByRole('menu')).toBeTruthy()
     fireEvent.mouseDown(document.body, { button: 2 })
     expect(screen.queryByRole('menu')).toBeNull()

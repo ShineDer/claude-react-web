@@ -131,8 +131,8 @@ export function MessageSearch({ open, onClose, onNavigate, totalResults, onQuery
         ref={inputRef}
         className="message-search-input"
         type="text"
-        aria-label="Search messages"
-        placeholder="Search messages…"
+        aria-label="搜索消息"
+        placeholder="搜索消息…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => {
@@ -149,7 +149,7 @@ export function MessageSearch({ open, onClose, onNavigate, totalResults, onQuery
         className="btn message-search-nav"
         onClick={goPrev}
         disabled={totalResults === 0}
-        title="Previous result (Shift+Enter)"
+        title="上一个结果（Shift+Enter）"
       >
         ↑
       </button>
@@ -157,11 +157,11 @@ export function MessageSearch({ open, onClose, onNavigate, totalResults, onQuery
         className="btn message-search-nav"
         onClick={goNext}
         disabled={totalResults === 0}
-        title="Next result (Enter)"
+        title="下一个结果 (Enter)"
       >
         ↓
       </button>
-      <button className="btn message-search-close" onClick={onClose} title="Close (Esc)" aria-label="Close">
+      <button className="btn message-search-close" onClick={onClose} title="关闭 (Esc)" aria-label="关闭">
         <IconX size={12} />
       </button>
     </div>

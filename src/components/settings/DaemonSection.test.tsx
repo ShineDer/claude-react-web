@@ -110,7 +110,7 @@ describe('DaemonSection', () => {
     expect(await screen.findByText(/couldn't load the daemon status/i)).toBeTruthy()
     expect(screen.getByText(/connection refused/)).toBeTruthy()
     // a Retry affordance must exist
-    fireEvent.click(screen.getByRole('button', { name: /retry/i }))
+    fireEvent.click(screen.getByRole('button', { name: /重试/i }))
     await waitFor(() => expect(api.get).toHaveBeenCalledTimes(2))
   })
 

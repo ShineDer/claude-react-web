@@ -20,7 +20,7 @@ describe('ContextUsageReportCard', () => {
         }}
       />,
     )
-    expect(container.textContent).toContain('Context usage')
+    expect(container.textContent).toContain('上下文用量')
     expect(container.textContent).toContain('claude-opus-4-7')
     expect(container.textContent).toContain('Messages')
     expect(container.textContent).toContain('free')

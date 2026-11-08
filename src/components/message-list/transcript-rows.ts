@@ -487,7 +487,7 @@ export function subagentPromptItem(
  * when there is nothing to show (still running, async, empty, or an unexpected
  * content shape).
  *
- * Returning a STRING rather than the row itself is deliberate: `ActiveSubagent`
+ * Returning a STRING rather than the row itself is deliberate: `Active子 agent`
  * records are re-cloned on nearly every reducer pass, so callers memoise the
  * row on this primitive instead of on the record (see I2).
  */
@@ -552,7 +552,7 @@ export function subagentResultItem(
 //
 // Not one of the cases: the overlay's synthetic prompt row being superseded by
 // the SDK's echo. Both happen in the same build (the echo row is what flips
-// `sdkEchoedSubagentPrompt` true), so the head is REPLACED, not removed — row
+// `sdkEchoedSubagent提示词` true), so the head is REPLACED, not removed — row
 // count before the head is unchanged and `firstItemIndex` genuinely shouldn't
 // move. The surviving-tail scan answers that with frontShift 0 (nothing
 // shifted, no reset), which is the right answer.

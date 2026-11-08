@@ -61,7 +61,7 @@ export function isTransparencyLocked(skin: Skin | undefined | null): boolean {
   return skin === 'hc' || skin === 'soft-hc' || skin === 'brutalist'
 }
 
-/** Apply a skin by toggling the `data-skin` attribute on <html>. The
+/** Apply a skin by toggling the `data-sk输入` attribute on <html>. The
  *  'default' skin removes the attribute entirely so the base :root /
  *  [data-theme] rules apply untouched. */
 export function applySkin(skin: Skin): void {

@@ -84,7 +84,7 @@ interface Props {
  * The DOM is never the source of truth: every change is serialized back to a
  * string, so `value`/`onChange` match what the textarea took.
  *
- * Paste: `handlePaste` always calls `e.preventDefault()`, which is the
+ * Paste: `handle粘贴` always calls `e.preventDefault()`, which is the
  * load-bearing defence against arbitrary clipboard HTML (an `<img onerror>`,
  * say) entering the editor — without it the browser accepts `text/html` and
  * our serializer would flatten it into text we never intended.

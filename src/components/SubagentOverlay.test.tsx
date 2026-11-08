@@ -71,7 +71,7 @@ describe('SubagentOverlay escape stack', () => {
 
   it('Esc with focus inside the overlay closes it (containment wins)', () => {
     const { onClose, onPop } = renderSubagent()
-    const closeBtn = screen.getByRole('button', { name: 'Close' })
+    const closeBtn = screen.getByRole('button', { name: '关闭' })
     closeBtn.focus()
     fireEvent.keyDown(closeBtn, { key: 'Escape' })
     expect(onClose).toHaveBeenCalledTimes(1)

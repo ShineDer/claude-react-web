@@ -81,7 +81,7 @@ describe('MarketplaceTab Update all', () => {
       return Promise.resolve({})
     })
     const { container } = render(<MarketplaceTab />)
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
     expect(container.textContent).not.toContain('Update all (')
   })
 
@@ -145,7 +145,7 @@ describe('MarketplaceTab update-check states', () => {
     vi.clearAllMocks()
   })
 
-  it('shows a checking note (not "All marketplaces up to date") until the check resolves', async () => {
+  it('shows a checking note (not "所有市场均为最新") until the check resolves', async () => {
     ;(api.get as ReturnType<typeof vi.fn>).mockImplementation((url: string) => {
       if (url === '/mp/marketplaces') return Promise.resolve({ marketplaces: [mkItem('mp1', 'MP One')] })
       return Promise.resolve({})
@@ -162,17 +162,17 @@ describe('MarketplaceTab update-check states', () => {
     const { container } = render(<MarketplaceTab />)
     // List is loaded but the update check is still in flight — the status
     // line must not claim everything is current yet.
-    await waitFor(() => expect(container.textContent).toContain('Checking for updates…'))
-    expect(container.textContent).not.toContain('All marketplaces up to date')
+    await waitFor(() => expect(container.textContent).toContain('正在检查更新…'))
+    expect(container.textContent).not.toContain('所有市场均为最新')
     expect(container.textContent).not.toContain('Update all (')
 
     // Resolve with no updates → the up-to-date note finally appears.
     await act(async () => { resolveCheck({ ok: true, updates: [] }) })
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
-    expect(container.textContent).not.toContain('Checking for updates…')
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
+    expect(container.textContent).not.toContain('正在检查更新…')
   })
 
-  it('shows a failed-check note, not "All marketplaces up to date", when the whole check rejects', async () => {
+  it('shows a failed-check note, not "所有市场均为最新", when the whole check rejects', async () => {
     ;(api.get as ReturnType<typeof vi.fn>).mockImplementation((url: string) => {
       if (url === '/mp/marketplaces') return Promise.resolve({ marketplaces: [mkItem('mp1', 'MP One')] })
       return Promise.resolve({})
@@ -184,7 +184,7 @@ describe('MarketplaceTab update-check states', () => {
 
     const { container } = render(<MarketplaceTab />)
     await waitFor(() => expect(container.textContent).toContain("Couldn't check for updates"))
-    expect(container.textContent).not.toContain('All marketplaces up to date')
+    expect(container.textContent).not.toContain('所有市场均为最新')
   })
 
   it('offers a Retry after a whole-check failure and recovers on click', async () => {
@@ -205,7 +205,7 @@ describe('MarketplaceTab update-check states', () => {
     await waitFor(() => expect(container.textContent).toContain("Couldn't check for updates"))
 
     fail = false
-    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Retry')!
+    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '重试')!
     fireEvent.click(retry)
 
     await waitFor(() => expect(container.textContent).toContain('Update all (1)'))
@@ -254,7 +254,7 @@ describe('MarketplaceTab update-check states', () => {
     await waitFor(() => expect(container.textContent).toContain('Updated 1 marketplace.'))
     await waitFor(() => expect(container.textContent).toContain("Couldn't check for updates"))
 
-    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Retry')!
+    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '重试')!
     fireEvent.click(retry)
     await waitFor(() => expect(container.textContent).toContain('Update all (1)'))
     expect(container.textContent).not.toContain("Couldn't check for updates")
@@ -281,13 +281,13 @@ describe('MarketplaceTab update-check states', () => {
 
     const { container } = render(<MarketplaceTab />)
     await waitFor(() => expect(container.textContent).toContain("Some marketplaces couldn't be checked"))
-    expect(container.textContent).not.toContain('All marketplaces up to date')
+    expect(container.textContent).not.toContain('所有市场均为最新')
 
     // Once upstreams recover, Retry re-runs the check and reaches the clean state.
     upstreamsDown = false
-    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Retry')!
+    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '重试')!
     fireEvent.click(retry)
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
     expect(container.textContent).not.toContain("Some marketplaces couldn't be checked")
   })
 
@@ -313,10 +313,10 @@ describe('MarketplaceTab update-check states', () => {
 
     // The row's Update proves upstream is reachable and pulls mp1 to HEAD,
     // so the stale whole-check banner must clear rather than linger.
-    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Update')!
+    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '更新')!
     fireEvent.click(refresh)
     await waitFor(() => expect(container.textContent).not.toContain("Couldn't check for updates"))
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
   })
 
   it('a slow check resolving after a per-card refresh does not resurrect the cleared badge', async () => {
@@ -345,9 +345,9 @@ describe('MarketplaceTab update-check states', () => {
 
     const { container } = render(<MarketplaceTab />)
     // List loaded; the mount check is still in flight.
-    await waitFor(() => expect(container.textContent).toContain('Checking for updates…'))
+    await waitFor(() => expect(container.textContent).toContain('正在检查更新…'))
 
-    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Update')!
+    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '更新')!
     fireEvent.click(refresh)
     // Let the refresh land first — mp1 is now provably at HEAD.
     await act(async () => { resolveRefresh({ ok: true, entry: mkItem('mp1', 'MP One'), updated: true, warnings: [] }) })
@@ -356,7 +356,7 @@ describe('MarketplaceTab update-check states', () => {
     await act(async () => { resolveCheck({ ok: true, updates: [{ id: 'mp1', hasUpdate: true }] }) })
 
     // The badge must NOT resurrect: mp1 stays "not behind", no "Update all".
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
     expect(container.textContent).not.toContain('Update all (')
   })
 
@@ -382,11 +382,11 @@ describe('MarketplaceTab update-check states', () => {
 
     // Refreshing mp1 verifies only mp1 — mp2 was never re-checked after the
     // whole-request failure, so the error + Retry must stay (no over-claim).
-    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Update')!
+    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '更新')!
     fireEvent.click(refresh)
     await waitFor(() => expect(refreshCalls()).toEqual(['/mp/marketplaces/mp1/refresh']))
     expect(container.textContent).toContain("Couldn't check for updates")
-    expect(container.textContent).not.toContain('All marketplaces up to date')
+    expect(container.textContent).not.toContain('所有市场均为最新')
   })
 
   it('does not surface a whole-check error that fails after the only marketplace was refreshed', async () => {
@@ -409,9 +409,9 @@ describe('MarketplaceTab update-check states', () => {
     })
 
     const { container } = render(<MarketplaceTab />)
-    await waitFor(() => expect(container.textContent).toContain('Checking for updates…'))
+    await waitFor(() => expect(container.textContent).toContain('正在检查更新…'))
 
-    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Update')!
+    const refresh = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '更新')!
     fireEvent.click(refresh)
     await act(async () => { /* let the refresh land */ })
 
@@ -419,6 +419,6 @@ describe('MarketplaceTab update-check states', () => {
     // surface a "Couldn't check for updates" banner beside a verified mp.
     await act(async () => { rejectCheck(new Error('late network blip')) })
     await waitFor(() => expect(container.textContent).not.toContain("Couldn't check for updates"))
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
   })
 })

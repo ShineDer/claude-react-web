@@ -166,13 +166,13 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
     >
         <div className="modal-header">
           <h3 id={titleId}>{isEdit ? `Edit: ${server!.name}` : 'Add MCP Server'}</h3>
-          <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="Close"><IconX size={14} /></button>
+          <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="关闭"><IconX size={14} /></button>
         </div>
 
         <div ref={setBodyOs} style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 12, maxHeight: '65vh', overflowY: 'auto' }}>
           {/* Name */}
           <div className="settings-field">
-            <label htmlFor={nameId}>Name</label>
+            <label htmlFor={nameId}>名称</label>
             <input
               id={nameId}
               className="input"
@@ -185,7 +185,7 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
 
           {/* Type */}
           <div className="settings-field">
-            <label htmlFor={typeId}>Type</label>
+            <label htmlFor={typeId}>类型</label>
             <select
               id={typeId}
               className="input"
@@ -193,9 +193,9 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
               onChange={(e) => setType(e.target.value as 'stdio' | 'sse' | 'http')}
               disabled={isEdit}
             >
-              <option value="stdio">stdio (spawn a process)</option>
-              <option value="sse">SSE (Server-Sent Events)</option>
-              <option value="http">HTTP (Streamable HTTP)</option>
+              <option value="stdio">stdio（启动进程）</option>
+              <option value="sse">SSE（服务器发送事件）</option>
+              <option value="http">HTTP（Streamable HTTP）</option>
             </select>
           </div>
 
@@ -203,7 +203,7 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
           {type === 'stdio' && (
             <>
               <div className="settings-field">
-                <label htmlFor={commandId}>Command</label>
+                <label htmlFor={commandId}>命令</label>
                 <input
                   id={commandId}
                   className="input"
@@ -213,7 +213,7 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
                 />
               </div>
               <div className="settings-field">
-                <label htmlFor={argsId}>Arguments (one per line)</label>
+                <label htmlFor={argsId}>参数（每行一个）</label>
                 <textarea
                   id={argsId}
                   className="textarea"
@@ -243,7 +243,7 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
           {/* Env vars (stdio) */}
           {type === 'stdio' && (
             <KvEditor
-              label="Environment Variables"
+              label="环境变量"
               rows={envRows}
               onUpdate={(id, field, val) => updateRow(envRows, setEnvRows, id, field, val)}
               onAdd={() => addRow(envRows, setEnvRows)}
@@ -255,7 +255,7 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
           {/* Headers (sse/http) */}
           {type !== 'stdio' && (
             <KvEditor
-              label="Request Headers"
+              label="请求头"
               rows={headerRows}
               onUpdate={(id, field, val) => updateRow(headerRows, setHeaderRows, id, field, val)}
               onAdd={() => addRow(headerRows, setHeaderRows)}
@@ -283,11 +283,11 @@ function McpInstallerForm({ open = true, server, onSave, onClose }: Props) {
         </div>
 
         <div className="modal-footer">
-          <span className="hint">Press Esc to cancel.</span>
+          <span className="hint">按 Esc 取消。</span>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className="btn" onClick={onClose}>Cancel</button>
+            <button className="btn" onClick={onClose}>取消</button>
             <button className="btn btn-primary" onClick={submit} disabled={saving}>
-              {saving ? 'Saving…' : isEdit ? 'Save' : 'Add Server'}
+              {saving ? '保存中…' : isEdit ? '保存' : 'Add Server'}
             </button>
           </div>
         </div>
@@ -344,8 +344,8 @@ function KvEditor({
                 className="btn"
                 style={{ padding: '2px 6px', fontSize: 'var(--fs-xs)', flexShrink: 0 }}
                 onClick={() => onRemove(row.id)}
-                title="Remove"
-                aria-label="Remove"
+                title="移除"
+                aria-label="移除"
               >
                 <IconX size={12} />
               </button>

@@ -19,7 +19,7 @@ export function Skeleton({ rows = 3, className }: SkeletonProps) {
       className={`skeleton-group${className ? ` ${className}` : ''}`}
       aria-busy="true"
       aria-live="polite"
-      aria-label="Loading…"
+      aria-label="正在加载…"
     >
       {Array.from({ length: rows }, (_, i) => (
         <div key={i} className="skeleton-row" aria-hidden />

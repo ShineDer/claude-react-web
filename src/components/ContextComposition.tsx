@@ -44,7 +44,7 @@ interface McpServerRow {
 }
 
 /** Aggregate the detailed payload's per-server MCP data. Accepts BOTH
- *  generations of `mcpTools` — the old `{ tokenCount }` aggregate (feeds
+ *  generations of `mcp工具` — the old `{ tokenCount }` aggregate (feeds
  *  the no-categories fallback row, never this section) and the SDK
  *  0.3.304+ per-tool array (aggregated here by server). Returns [] when
  *  the payload carries neither form's per-server data.
@@ -204,7 +204,7 @@ export const ContextComposition = memo(function ContextComposition({
           than a rounding-to-zero '0%'. */}
       {mcpServers.length > 0 && (
         <div className="ctx-mcp-servers">
-          <div className="ctx-mcp-servers-title">MCP servers</div>
+          <div className="ctx-mcp-servers-title">MCP 服务器</div>
           {mcpServers.map((s) => {
             const inWindow = s.toolsTokens - s.deferredTokens + (s.instructionsTokens ?? 0)
             return (
@@ -248,7 +248,7 @@ export const ContextComposition = memo(function ContextComposition({
             ? "Couldn't refresh the breakdown — showing last known numbers. "
             : "Couldn't load the breakdown — "}
           {onRetry && (
-            <button type="button" className="settings-reset-link" onClick={onRetry}>retry</button>
+            <button type="button" className="settings-reset-link" onClick={onRetry}>重试</button>
           )}
         </span>
       )}

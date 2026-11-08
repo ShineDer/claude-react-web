@@ -14,7 +14,7 @@ import { resolveAbsolutePath } from '../../utils/paths'
 
 // Per-tool input view. Each view receives the raw tool_use input (loosely
 // type because SDK schemas drift) and falls back to formatJson internally
-// when the shape is unexpected. `toolName` is forwarded so a single view
+// when the shape is unexpected. `tool名称` is forwarded so a single view
 // can serve more than one tool (e.g. BashToolView covers both Bash and
 // PowerShell, branching on the name to swap the prompt glyph).
 // `toolUseId` is threaded so ToolCard can look up live status.
@@ -116,7 +116,7 @@ export function FilePathTitle({
       <span className="tool-card-filepath-base">{base || path}</span>
       {badge && <span className="tool-card-filepath-badge">{badge}</span>}
       {shortDir && <span className="tool-card-filepath-dir">{shortDir}</span>}
-      {copied && <span className="tool-card-filepath-copied copied-pop">copied</span>}
+      {copied && <span className="tool-card-filepath-copied copied-pop">已复制</span>}
     </button>
   )
 }

@@ -3,15 +3,15 @@ import type { SessionGroup } from '../types'
 /** Reassign a session's sidebar group membership from `oldId` to `newId`
  *  (REPLACE semantics: `oldId` leaves, `newId` takes its slot).
  *
- *  Used by `swapSession` — the POST-driven atomic X→Y swap for `/clear` and
+ *  Used by `swap会话` — the POST-driven atomic X→Y swap for `/clear` and
  *  restart. The `session-created` handler does NOT use this (it appends via
  *  `joinGroupId` so X stays grouped until swapSession evicts it, avoiding an
- *  "Ungrouped" flash). `swapSession` is idempotent over an already-appended
+ *  "Ungrouped" flash). `swap会话` is idempotent over an already-appended
  *  Y: if `newId` is already a member, `newId` is moved into `oldId`'s slot
  *  (and `oldId` dropped) rather than left at the end where it was appended.
  *
  *  The move matters for `/clear`: `session-created(Y)` lands before the POST
- *  resolves and appends Y to the END of X's group. If `swapSession` then only
+ *  resolves and appends Y to the END of X's group. If `swap会话` then only
  *  dropped X, Y would stay at the end — a non-last session would jump to the
  *  bottom of its group on every clear. Moving Y into X's slot preserves the
  *  original position.
@@ -55,7 +55,7 @@ export function inheritGroupId(
 /** Reassign a session's flat sidebar-order slot from `oldId` to `newId`,
  *  preserving position.
  *
- *  Mirrors the sidebarOrder-swap half of `swapSession` (same idempotency
+ *  Mirrors the sidebarOrder-swap half of `swap会话` (same idempotency
  *  contract as `inheritGroupId`).
  *
  *  - If `newId` is already ordered, `oldId` is dropped instead of dup'd.
@@ -78,14 +78,14 @@ export function inheritSidebarOrderId(
  *
  *  - Fork (`evicting` false/absent): `sourceId` stays, so the group genuinely
  *    grows by one. Respect `maxGroupSize`: if `sourceId`'s group is already
- *    full, return the input unchanged so the caller's `handleAddToGroup` can
+ *    full, return the input unchanged so the caller's `handleAddTo分组` can
  *    toast on overflow instead of silently exceeding the cap.
  *  - `/clear` + restart (`evicting` true): `sourceId` is being evicted
- *    (same-tab `swapSession` / cross-tab `session-removed`), so appending
+ *    (same-tab `swap会话` / cross-tab `session-removed`), so appending
  *    `newId` won't grow the group long-term. Bypass the cap — otherwise a
  *    FULL group (e.g. a 3-up workspace at the default `maxGroupSize=3`)
  *    skips the append and `newId` flashes under "Ungrouped" between the
- *    `session-created` frame and the POST-driven `swapSession`.
+ *    `session-created` frame and the POST-driven `swap会话`.
  *
  *  Delegates the actual append (and its idempotency / source-unguarded
  *  no-ops) to `joinGroupId`, so the caller's reference-equality short-circuit
@@ -169,7 +169,7 @@ export function placeInGroupId(
  *  `oldId` stays, `newId` joins its group). Used by the `session-created`
  *  (`joinGroupOf`) handler so a forked session lands in its source's group
  *  in the same render batch it appears — no "Ungrouped" flash before the
- *  fork POST response runs `handleAddToGroup`.
+ *  fork POST response runs `handleAddTo分组`.
  *
  *  Precondition: `newId` is a freshly-spawned id not yet in any group (fork
  *  always allocates a new UUID), so cross-group eviction isn't needed.
@@ -177,7 +177,7 @@ export function placeInGroupId(
  *  - If `oldId` is in no group, returns the input by reference (newId stays
  *    ungrouped — matches a fork of an ungrouped source).
  *  - If `newId` is already a member of `oldId`'s group, no-op (idempotent
- *    with the later `handleAddToGroup`, which also dedups).
+ *    with the later `handleAddTo分组`, which also dedups).
  *  - `oldId === newId` is a full no-op. */
 export function joinGroupId(
   groups: SessionGroup[],

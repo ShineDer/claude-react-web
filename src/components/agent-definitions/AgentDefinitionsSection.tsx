@@ -42,20 +42,20 @@ export function AgentDefinitionsSection({
       <section className="settings-group">
         <div className="settings-group-head">
           <div className="settings-group-head-row">
-            <h4>Agents</h4>
+            <h4>Agent</h4>
             <div className="settings-section-head-actions">
               <button className="btn btn-sm" disabled={disabled} onClick={() => setEditDef(undefined)}>
-                New
+                新建
               </button>
             </div>
           </div>
-          <span className="settings-group-desc">Custom subagent definitions available to sessions.</span>
+          <span className="settings-group-desc">会话可用的自定义子 agent 定义。</span>
         </div>
         <div className="settings-group-body settings-carded-group-body">
-          {error && <div className="settings-card-error">Failed to load agents: {error}</div>}
+          {error && <div className="settings-card-error">加载 agent 失败：{error}</div>}
 
           {agents.length === 0 && !error && (
-            <div className="settings-note">No agents defined</div>
+            <div className="settings-note">未定义 Agent</div>
           )}
 
           {agents.map((def) => (
@@ -76,14 +76,14 @@ export function AgentDefinitionsSection({
               />
             </label>
             <button className="btn btn-sm" disabled={disabled} onClick={() => setEditDef(def)}>
-              Edit
+              编辑
             </button>
             <button
               className="btn btn-sm btn-danger"
               disabled={disabled}
               onClick={() => remove(def.name)}
             >
-              Delete
+              删除
             </button>
           </div>
         </div>

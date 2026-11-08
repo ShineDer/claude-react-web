@@ -84,7 +84,7 @@ describe('ToolCard background action', () => {
 
   it('BashToolView wires the button to its own tool_use id; run_in_background cards never offer it', () => {
     const backgroundTool = vi.fn()
-    // Empty status map → both cards default to 'running'.
+    // Empty status map → both cards default to '运行中'.
     const { container } = render(
       <BackgroundToolProvider value={backgroundTool}>
         <ToolStatusProvider value={new Map()}>

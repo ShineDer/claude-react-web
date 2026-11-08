@@ -175,7 +175,7 @@ export function DirectoryPicker({
     >
         <div className="modal-header">
           <h3>{title}</h3>
-          <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="Close">
+          <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="关闭">
             <IconX size={14} />
           </button>
         </div>
@@ -185,17 +185,17 @@ export function DirectoryPicker({
             className="btn"
             onClick={() => home && void loadList(home.home, showHidden)}
             disabled={!home || creating}
-            title="Home directory"
+            title="主目录"
           >
-            Home
+            主页
           </button>
           <button
             className="btn"
             onClick={() => home && void loadList(home.cwd, showHidden)}
             disabled={!home || creating}
-            title="Server working directory"
+            title="服务器工作目录"
           >
-            Server CWD
+            服务器 CWD
           </button>
           <button
             className="btn"
@@ -215,7 +215,7 @@ export function DirectoryPicker({
             className="btn"
             onClick={() => { setShowCreateRow(true); setCreateName('') }}
             disabled={loading || !list || creating}
-            title="Create a new folder here"
+            title="在此新建文件夹"
           >
             + New folder
           </button>
@@ -233,7 +233,7 @@ export function DirectoryPicker({
                 gotoDraft()
               }
             }}
-            aria-label="Path"
+            aria-label="路径"
             placeholder="/absolute/path"
             spellCheck={false}
           />
@@ -264,8 +264,8 @@ export function DirectoryPicker({
               <input
                 className="input modal-create-input"
                 autoFocus
-                aria-label="New folder name"
-                placeholder="Folder name"
+                aria-label="新文件夹名称"
+                placeholder="文件夹名称"
                 value={createName}
                 disabled={creating}
                 onChange={(e) => setCreateName(e.target.value)}
@@ -282,13 +282,13 @@ export function DirectoryPicker({
                 onClick={() => void createFolder()}
                 disabled={creating || !createName.trim()}
               >
-                {creating ? 'Creating…' : 'Create'}
+                {creating ? 'Creating…' : '创建'}
               </button>
               <button
                 className="btn btn-icon-sm"
                 onClick={() => { setShowCreateRow(false); setCreateName('') }}
                 disabled={creating}
-                aria-label="Cancel create folder"
+                aria-label="取消创建文件夹"
               >
                 <IconX size={12} />
               </button>
@@ -296,7 +296,7 @@ export function DirectoryPicker({
           )}
           <div className="modal-list-content" ref={listContentRef}>
             {loading ? (
-              <div className="modal-empty">Loading...</div>
+              <div className="modal-empty">正在加载...</div>
             ) : list && list.entries.length > 0 ? (
               list.entries.map((e) => (
                 <button
@@ -311,7 +311,7 @@ export function DirectoryPicker({
                 </button>
               ))
             ) : (
-              <div className="modal-empty">{list ? '(empty directory)' : 'Loading...'}</div>
+              <div className="modal-empty">{list ? '(empty directory)' : '加载中...'}</div>
             )}
           </div>
         </div>
@@ -320,7 +320,7 @@ export function DirectoryPicker({
           <span className="hint">{footerHint}</span>
           <div style={{ display: 'flex', gap: 8 }}>
             <button className="btn" onClick={onClose}>
-              Cancel
+              取消
             </button>
             <button
               className="btn btn-primary"

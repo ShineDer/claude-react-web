@@ -6,8 +6,8 @@
 //   - deprecation branch: info.deprecated && !isUpdateAppliedToDisk(info)
 //
 // Persistence: localStorage NAG_DISMISS_STORAGE_KEY holds the dismissed
-// value — the offered `latest` for the update branch, `deprecated:<current>`
-// for the deprecation branch. A newer `latest` (or a new deprecation target)
+// value — the offered `最新` for the update branch, `deprecated:<current>`
+// for the deprecation branch. A newer `最新` (or a new deprecation target)
 // differs from the stored value → re-notify. The toast's onDismiss callback
 // writes the key on ANY dismissal (✕, action-click auto-dismiss); the App
 // host also writes it when the dialog closes — one nag per version, any
@@ -26,7 +26,7 @@ export const NAG_DISMISS_STORAGE_KEY = 'claude-react-web:update-nag-dismissed-ve
 export type UpdateNagMode = 'update' | 'deprecation'
 
 /** True for the modes that actually NAG — i.e. the dialog modes that own a
- *  dismissal key. `UpdateDialogMode` has a third, read-only member (`current`,
+ *  dismissal key. `UpdateDialog模式` has a third, read-only member (`current`,
  *  the About tab's own-version notes); see `nagDismissValueFor`. Written as a
  *  positive list so a future non-nag mode can't inherit the write by default. */
 function isNagMode(mode: string): mode is UpdateNagMode {
@@ -101,9 +101,9 @@ export function useUpdateNag(
       if (readNagDismiss() === value) return
       toastedRef.current = value
       toast.show('info', `${info.current} → ${info.latest} — see what changed`, {
-        title: 'New version available',
+        title: '有新版本可用',
         durationMs: 0, // sticky — the only proactive surface now that the banner is gone
-        actionLabel: 'Update',
+        actionLabel: '更新',
         onClick: () => {
           writeNagDismiss(value)
           onOpenRef.current('update')
@@ -123,9 +123,9 @@ export function useUpdateNag(
           ? info.deprecated
           : 'This version has been deprecated by the maintainer.'
       toast.show('info', message, {
-        title: `Version ${info.current} is deprecated`,
+        title: `版本 ${info.current} 已弃用`,
         durationMs: 0,
-        actionLabel: 'Update',
+        actionLabel: '更新',
         onClick: () => {
           writeNagDismiss(value)
           onOpenRef.current('deprecation')

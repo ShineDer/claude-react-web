@@ -33,7 +33,7 @@ describe('error-capture', () => {
         <Boom />
       </RootErrorBoundary>,
     )
-    expect(screen.getByText('Something went wrong')).toBeTruthy()
+    expect(screen.getByText('出错了')).toBeTruthy()
     expect(screen.getByText(/boom/)).toBeTruthy()
     const crash = getLastCrash()
     expect(crash?.kind).toBe('render')

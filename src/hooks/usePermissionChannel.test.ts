@@ -301,7 +301,7 @@ describe('usePermissionChannel', () => {
   })
 
   it('shows error and re-fetches on answerQuestion failure', async () => {
-    mockPost.mockRejectedValueOnce(new Error('timeout'))
+    mockPost.mockRejectedValueOnce(new Error('超时'))
     mockGet.mockResolvedValueOnce({ pending: [] })
 
     const { result } = renderHook(() => usePermissionChannel('s1'))
@@ -315,7 +315,7 @@ describe('usePermissionChannel', () => {
     })
 
     expect(result.current.error).toContain('Answer submission failed')
-    expect(result.current.error).toContain('timeout')
+    expect(result.current.error).toContain('超时')
   })
 
   // ── reset / clearError ────────────────────────────────────────

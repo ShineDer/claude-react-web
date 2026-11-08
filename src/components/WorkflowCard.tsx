@@ -75,21 +75,21 @@ export const WorkflowCard = memo(function WorkflowCard({ toolUseId, fallbackLabe
       >
         <span className="workflow-card-marker" aria-hidden><IconChevronRight size={12} /></span>
         <span className="workflow-card-icon" aria-hidden><IconWorkflow size={14} /></span>
-        <span className="workflow-card-title">Workflow</span>
+        <span className="workflow-card-title">工作流</span>
         <span className="workflow-card-label">{label}</span>
         <span className="workflow-card-meta">
           {remote && (
-            <span className="workflow-card-remote" title="Running in a remote cloud session">
+            <span className="workflow-card-remote" title="正在远程云会话中运行">
               remote
             </span>
           )}
           {phaseCount > 0 && (
-            <span className="workflow-card-phase" title="Declared phases">
+            <span className="workflow-card-phase" title="已声明的阶段">
               {phaseCount} phase{phaseCount === 1 ? '' : 's'}
             </span>
           )}
           {childCount > 0 && (
-            <span className="workflow-card-agents" title="Spawned agents">
+            <span className="workflow-card-agents" title="派生的 Agent">
               {childCount} agent{childCount === 1 ? '' : 's'}
             </span>
           )}
@@ -115,7 +115,7 @@ export const WorkflowCard = memo(function WorkflowCard({ toolUseId, fallbackLabe
           title={`Open remote session — ${sessionUrl}`}
         >
           <IconExternalLink size={12} />
-          <span>Open remote session</span>
+          <span>打开远程会话</span>
         </a>
       )}
       {result && <ToolResultSection result={result} entering={resultEntering} />}

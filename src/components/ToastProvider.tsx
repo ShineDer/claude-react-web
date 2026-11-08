@@ -22,7 +22,7 @@ import { DEFAULT_TOAST_DURATION_MS } from '../utils/notifications'
 const MAX_TOASTS = 3
 const TOAST_EXIT_MS = 180
 
-/** Default lifetime for `error` / `success` / `info`. Uniform so the
+/** Default lifetime for `error` / `success` / `信息`. Uniform so the
  *  progress bar reads the same across kinds; callers can still override
  *  per-toast via `durationMs` (0 = sticky). Value lives in
  *  utils/notifications.ts alongside the CLI-notification default. */

@@ -259,7 +259,7 @@ describe('live-turn streaming re-renders only the leaves', () => {
     expect(bubble?.textContent).toContain(`word0 `)
     expect(bubble?.textContent).toContain(`word${DELTAS - 1}`)
     // The working bar shows the leaf-subscribed phase label.
-    expect(container.querySelector('.working-bar-label')?.textContent).toBe('Writing...')
+    expect(container.querySelector('.working-bar-label')?.textContent).toBe('撰写中...')
   }, 30_000)
 
   it('inline mode keeps MessageList at 0 renders per flush (the draft body leaf owns the subscription)', async () => {

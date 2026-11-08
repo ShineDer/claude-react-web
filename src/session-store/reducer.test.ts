@@ -471,7 +471,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
   })
 
   it('launch-ack tool_result is skipped entirely (D2-B): record stays running, TASKS_SNAPSHOT flips to background', () => {
-    // D2-B: the launch-ack tool_result is skipped (record stays 'running');
+    // D2-B: the launch-ack tool_result is skipped (record stays '运行中');
     // TASKS_SNAPSHOT (isBackgrounded:true) is the sole authority for
     // flipping running→background. Child frames then advance endedAt.
     const ackAt = 1_000
@@ -524,7 +524,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
     state = reduceSessionState(state, { type: 'MESSAGE', message: childFrame })
     const record = state.mirror.activeSubagents.get('tu_agent')
     expect(record?.endedAt).toBe(childAt)
-    // Still 'background' — child frames don't complete an async subagent.
+    // Still '后台' — child frames don't complete an async subagent.
     expect(record?.status).toBe('background')
     // The child text frame is captured as the card's result — the ack is
     // internal metadata, the real output is the subagent's text.
@@ -623,7 +623,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
   it('flips a background subagent to done when the harness <task-notification> arrives', () => {
     // The real completion signal for an async subagent is a <task-notification>
     // user-role XML injection carrying the originating Agent tool_use_id.
-    // It must flip 'background' → 'done', stamp endedAt to the notification's
+    // It must flip '后台' → 'done', stamp endedAt to the notification's
     // receivedAt, and leave the already-captured child-text result in place
     // (don't clobber the streamed output with the repackaged notification).
     const toolUse: SdkMessage = {
@@ -686,7 +686,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
 
   it('flips a background subagent to done via the SDK system/task_notification frame', () => {
     // The SDK's own completion path: a `system`/`task_notification` frame
-    // with an optional tool_use_id. When present it must flip 'background'
+    // with an optional tool_use_id. When present it must flip '后台'
     // → 'done'. Without child text, the result falls back to the summary.
     const toolUse: SdkMessage = {
       type: 'assistant',
@@ -741,8 +741,8 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
 
   it('recovers a lost ack: completion flips a still-running record to done', () => {
     // If the launch-ack tool_result frame is lost (WS gap / replay hole), the
-    // record never flips to 'background' and stays 'running'. The completion
-    // signal must still flip it to 'done' (the guard accepts 'running') and
+    // record never flips to '后台' and stays '运行中'. The completion
+    // signal must still flip it to 'done' (the guard accepts '运行中') and
     // stamp isAsync/result so the card doesn't degrade.
     const toolUse: SdkMessage = {
       type: 'assistant',
@@ -788,7 +788,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
     // The ack regex is anchored to the START of the content and the exact ack
     // phrase, so a synchronous subagent whose real tool_result text contains
     // "async agent launched" mid-sentence must NOT be mistaken for a launch
-    // ack (which would strand it on 'background' forever with no result).
+    // ack (which would strand it on '后台' forever with no result).
     const toolUse: SdkMessage = {
       type: 'assistant',
       uuid: 'a-1',
@@ -822,7 +822,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
     // The SDK's background-task completion signal (task_notification) is not
     // reliably emitted for Agent-launched background subagents in all
     // environments, and even when emitted it often arrives AFTER the parent
-    // turn ended. A 'background' record that is still mid-flight at the
+    // turn ended. A '后台' record that is still mid-flight at the
     // parent's result frame must NOT be marked 'interrupted' — that would
     // conflate "turn ended, completion pending" with "user interrupted", and
     // the completion branch (which excludes 'interrupted') would silently drop
@@ -1301,9 +1301,9 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
 
   it('REPLAY re-applies the turn-end sweep (running -> interrupted) on hydration (D2-B)', () => {
     // D2-B: the launch-ack tool_result is skipped, so the record stays
-    // 'running' during replay. The result frame's sweep flips running→
+    // '运行中' during replay. The result frame's sweep flips running→
     // interrupted. A post-replay TASKS_SNAPSHOT with isBackgrounded:true
-    // flips it back to 'background' (rescue: interrupted is accepted).
+    // flips it back to '后台' (rescue: interrupted is accepted).
     // The old test expected 'pending' (ack→background→sweep→pending); now
     // the ack no longer flips, so the sweep produces 'interrupted'.
     const toolUse: SdkMessage = {
@@ -1338,7 +1338,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
       messages: [toolUse, ack, result],
       permissions: [],
     })
-    // D2-B: ack skipped → 'running'; sweep flips to 'interrupted'.
+    // D2-B: ack skipped → '运行中'; sweep flips to 'interrupted'.
     expect(state0.mirror.activeSubagents.get('tu_replay')?.status).toBe('interrupted')
     // TASKS_SNAPSHOT (isBackgrounded) rescues interrupted → background.
     const state = reduceSessionState(state0, {
@@ -1350,9 +1350,9 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
 
   it('post-replay sweep flips running→interrupted; TASKS_SNAPSHOT rescues to background', () => {
     // D2-B: the launch-ack tool_result is skipped, so the record stays
-    // 'running'. The post-replay sweep flips running→interrupted.
+    // '运行中'. The post-replay sweep flips running→interrupted.
     // A post-replay TASKS_SNAPSHOT (isBackgrounded) rescues 'interrupted'
-    // → 'background' via the rescueSettled path.
+    // → '后台' via the rescueSettled path.
     const toolUse: SdkMessage = {
       type: 'assistant',
       uuid: 'a-1',
@@ -1378,7 +1378,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
       messages: [toolUse, ack],
       permissions: [],
     })
-    // D2-B: ack skipped, record stays 'running'; post-replay sweep flips
+    // D2-B: ack skipped, record stays '运行中'; post-replay sweep flips
     // running → interrupted (no TASKS_SNAPSHOT in the bare replay).
     expect(state0.mirror.activeSubagents.get('tu_nores')?.status).toBe('interrupted')
 
@@ -1773,7 +1773,7 @@ describe('reducer: subagent records survive turn end (result frame)', () => {
     } as unknown as SdkMessage
 
     let state = createInitialSessionState('s1')
-    // Seed the tail: live tool_use at seq 1 (seeds toolStatus['tu_live'] = 'running').
+    // Seed the tail: live tool_use at seq 1 (seeds toolStatus['tu_live'] = '运行中').
     state = reduceSessionState(state, {
       type: 'WINDOW_PAGE',
       at: 'tail',
@@ -2297,7 +2297,7 @@ describe('reducer: Workflow indexing', () => {
     let state = createInitialSessionState('s1')
     state = reduceSessionState(state, { type: 'MESSAGE', message: workflowToolUse })
     // The Workflow tool_use id must be excluded from the generic toolStatus
-    // map — same exclusion as Plan/Subagent/Question (they own their status).
+    // map — same exclusion as Plan/子\ agent/Question (they own their status).
     expect(state.mirror.toolStatus.has('tu_workflow')).toBe(false)
   })
 
@@ -2342,7 +2342,7 @@ describe('reducer: Workflow indexing', () => {
   })
 
   it('rescues a still-generic label with WorkflowOutput.workflowName at completion', () => {
-    // A Workflow invoked by `name` (no inline script) seeds label as 'Workflow'
+    // A Workflow invoked by `name` (no inline script) seeds label as '工作流'
     // because there's no script to parse. At completion the WorkflowOutput
     // carries workflowName — the record should adopt it.
     const namedWorkflowUse: SdkMessage = {
@@ -2393,8 +2393,8 @@ describe('reducer: Workflow indexing', () => {
     expect(wf?.label).toBe('spec')
   })
 
-  it('rescues a generic "Workflow" label to workflowName when no script/name was provided', () => {
-    // No input.script, no input.name, no input.description → label is 'Workflow'.
+  it('rescues a generic "工作流" label to workflowName when no script/name was provided', () => {
+    // No input.script, no input.name, no input.description → label is '工作流'.
     // The result's workflowName should rescue it.
     const bareUse: SdkMessage = {
       type: 'assistant',
@@ -4310,7 +4310,7 @@ describe('reducer: refusal-fallback eviction on message arrival', () => {
         subtype: 'model_refusal_fallback',
         uuid: 'mrf1',
         trigger: 'refusal',
-        direction: 'retry',
+        direction: '重试',
         original_model: 'claude-opus-5',
         fallback_model: 'claude-sonnet-5',
         retracted_message_uuids: ['a1', 'a2'],
@@ -4427,7 +4427,7 @@ describe('reducer: a task_notification for ONE async agent leaves the OTHER back
 // snapshots (server-side session.tasks). The reducer stores the list AND
 // enriches matching activeSubagent records: taskId / progressSummary /
 // lastToolName join by toolUseId, and an isBackgrounded flag flips a
-// 'running' record to 'background' (the SDK's backgrounding signal) —
+// '运行中' record to '后台' (the SDK's backgrounding signal) —
 // including RESCUING a record the backgrounding ack tool_result just
 // mis-settled to done/interrupted (the tool_result-before-snapshot race).
 // ---------------------------------------------------------------------------
@@ -4500,7 +4500,7 @@ describe('reducer: TASKS_SNAPSHOT', () => {
       tasks: [task({ toolUseId: 'tu_a', isBackgrounded: true })],
     })
 
-    // A record the snapshot flips to 'background' IS async work — the mode
+    // A record the snapshot flips to '后台' IS async work — the mode
     // badge must say 'async', not the defaulted 'sync'.
     expect(state.mirror.activeSubagents.get('tu_a')?.status).toBe('background')
     expect(state.mirror.activeSubagents.get('tu_a')?.isAsync).toBe(true)
@@ -4568,7 +4568,7 @@ describe('reducer: TASKS_SNAPSHOT', () => {
   it('rescues an interrupted record when the task was actually backgrounded (turn-end sweep was wrong)', () => {
     let state = createInitialSessionState('s1')
     state = reduceSessionState(state, { type: 'MESSAGE', message: agentToolUse('tu_a', 'a1') })
-    // Parent turn ends while the subagent is still 'running' → the sweep
+    // Parent turn ends while the subagent is still '运行中' → the sweep
     // guesses 'interrupted'…
     state = reduceSessionState(state, {
       type: 'MESSAGE',
@@ -4600,7 +4600,7 @@ describe('reducer: TASKS_SNAPSHOT', () => {
     expect(state.mirror.activeSubagents.get('tu_a')?.status).toBe('done')
 
     // A completed task record — even one that WAS backgrounded before it
-    // finished — must not flip a done record back to 'background'.
+    // finished — must not flip a done record back to '后台'.
     state = reduceSessionState(state, {
       type: 'TASKS_SNAPSHOT',
       tasks: [task({ toolUseId: 'tu_a', status: 'completed', isBackgrounded: true })],
@@ -4616,7 +4616,7 @@ describe('reducer: TASKS_SNAPSHOT', () => {
       type: 'MESSAGE',
       message: { type: 'result', subtype: 'success', uuid: 'r1', receivedAt: 1_000 } as unknown as SdkMessage,
     })
-    // Result sweep: a still-'running' (no async ack) subagent when the parent
+    // Result sweep: a still-'运行中' (no async ack) subagent when the parent
     // turn ends → 'interrupted' by the sweep. The task record is live but
     // NOT backgrounded, so the sweep's verdict stands.
     expect(state.mirror.activeSubagents.get('tu_a')?.status).toBe('interrupted')
@@ -4738,7 +4738,7 @@ describe('reducer: TASKS_SNAPSHOT', () => {
 
   it('does NOT settle a sync running record (its tool_result still has to merge)', () => {
     // A sync subagent's real output arrives as the Agent tool_result, and that
-    // merge branch requires status 'running' — settling here first would
+    // merge branch requires status '运行中' — settling here first would
     // swallow the output. Stranded sync records are the turn-end sweep's job.
     let state = createInitialSessionState('s1')
     state = reduceSessionState(state, { type: 'MESSAGE', message: agentToolUse('tu_s', 'a-s') })

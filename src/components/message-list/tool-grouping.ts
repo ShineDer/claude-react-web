@@ -30,7 +30,7 @@ export interface ToolGroupSummary {
   fullSummary: string
   anyRunning: boolean
   anyError: boolean
-  /** tool_use id of the FIRST failed call, so the header's `failed` badge can
+  /** tool_use id of the FIRST failed call, so the header's `失败` badge can
    *  take the user straight to it instead of leaving them to scan the body. */
   firstErrorToolUseId?: string
 }

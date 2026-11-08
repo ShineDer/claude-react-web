@@ -84,10 +84,10 @@ function verdictClass(v: Verdict | null): string {
  *  - No outcome: row + chip carry the verdict. */
 function resolveFinding(f: ParsedFinding): { rowClass: string; chips: ReactNode[] } {
   if (f.outcome === 'fixed') {
-    return { rowClass: 'findings-outcome-fixed', chips: [<span key="o" className="tool-chip findings-chip findings-outcome-fixed">fixed</span>] }
+    return { rowClass: 'findings-outcome-fixed', chips: [<span key="o" className="tool-chip findings-chip findings-outcome-fixed">已修复</span>] }
   }
   if (f.outcome === 'no_change_needed') {
-    return { rowClass: 'findings-verdict-none', chips: [<span key="o" className="tool-chip findings-chip findings-outcome-none">no change needed</span>] }
+    return { rowClass: 'findings-verdict-none', chips: [<span key="o" className="tool-chip findings-chip findings-outcome-none">无需更改</span>] }
   }
   const vChip = (
     <span key="v" className={`tool-chip findings-chip ${verdictClass(f.verdict)}`}>
@@ -97,7 +97,7 @@ function resolveFinding(f: ParsedFinding): { rowClass: string; chips: ReactNode[
   if (f.outcome === 'skipped') {
     return {
       rowClass: verdictClass(f.verdict),
-      chips: [vChip, <span key="s" className="tool-chip findings-chip findings-outcome-skipped">skipped</span>],
+      chips: [vChip, <span key="s" className="tool-chip findings-chip findings-outcome-skipped">已跳过</span>],
     }
   }
   return { rowClass: verdictClass(f.verdict), chips: [vChip] }
@@ -114,13 +114,13 @@ export const FindingsCard = memo(function FindingsCard({ input }: Props) {
     <div className="findings-card">
       <div className="findings-card-header">
         <IconClipboardList size={14} />
-        <span className="findings-card-title">Code review findings</span>
+        <span className="findings-card-title">代码审查发现</span>
         {levelLabel && <span className="findings-level-badge">{levelLabel}</span>}
         <span className="findings-count">{findings.length} finding{findings.length === 1 ? '' : 's'}</span>
       </div>
 
       {findings.length === 0 ? (
-        <div className="findings-empty">No structured findings in this report.</div>
+        <div className="findings-empty">此报告中无结构化发现。</div>
       ) : (
         <ol className="findings-list">
           {findings.map((f, i) => {
@@ -137,7 +137,7 @@ export const FindingsCard = memo(function FindingsCard({ input }: Props) {
                 {f.failureScenario && (
                   <AnimatedDetails
                     className="finding-scenario-details"
-                    summary={<span className="finding-scenario-label">failure scenario</span>}
+                    summary={<span className="finding-scenario-label">失败场景</span>}
                   >
                     <div className="finding-scenario-body">{f.failureScenario}</div>
                   </AnimatedDetails>

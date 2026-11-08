@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <!-- viewport-fit=cover opts into the full screen on notch / Dynamic Island
          devices so env(safe-area-inset-*) resolves to real values; without it
          iOS reports 0 and all the safe-area padding below would be inert. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- Installable web app. `start_url: "."` keeps the manifest relative, so
+         the app still installs correctly under a `--base-path` prefix. -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#16181d" />
+    <!-- iOS ignores the manifest's display/icons: these are its equivalents. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Claude Web" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
     <!-- Generated from desktop/build/icon.svg by `npm run build:icons` (pinned by
          desktop/icons.test.ts). SVG wins in Firefox; Chromium/WebKit take the PNG. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

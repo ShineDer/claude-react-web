@@ -87,7 +87,7 @@ export function ProfileActivateDialog({ profileName, sessions, busy = false, onC
       </div>
       <div className="modal-footer">
         <button type="button" className="btn" onClick={onCancel} disabled={busy}>
-          Cancel
+          取消
         </button>
         <button
           type="button"

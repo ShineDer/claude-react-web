@@ -36,7 +36,7 @@ interface Props {
   /** Hint text shown when confirmDisabled is true, explaining why. */
   confirmDisabledHint?: string
   /** Optional checkbox rendered below the message (e.g. "permanently
-   *  delete"). When `checkboxLabel` is set, the checkbox is controlled:
+   *  delete"). When `checkbox标签` is set, the checkbox is controlled:
    *  `checkboxChecked` is its state and `onCheckboxChange` flips it.
    *  Undefined = no checkbox (the default; existing callers unaffected). */
   checkboxLabel?: string
@@ -53,7 +53,7 @@ export function ConfirmDialog({
   title,
   message,
   confirmLabel,
-  cancelLabel = 'Cancel',
+  cancelLabel = '取消',
   destructive = false,
   busy = false,
   confirmDisabled = false,
@@ -67,7 +67,7 @@ export function ConfirmDialog({
   // Open/close motion is driven by motion.div + AnimatePresence (the caller
   // gates mount on the confirm state). Mirrors the old overlay-backdrop/panel
   // keyframes via useOverlayMotion (Overlay's motion mode); reduced motion
-  // snaps both. The busy guards (`canCloseOnEscape` / `canCloseOnBackdrop`)
+  // snaps both. The busy guards (`canCloseOnEscape` / `canCloseOnBack丢弃`)
   // swallow Esc / backdrop clicks while `busy` without falling through to a
   // parent overlay or App's interrupt chain.
   //

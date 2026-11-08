@@ -28,7 +28,7 @@ describe('GlobalSettingsModal Profiles tab', () => {
         onSaved={() => {}}
       />,
     )
-    await waitFor(() => expect(screen.getByText('Profiles')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('配置档')).toBeTruthy())
   })
 })
 
@@ -37,24 +37,24 @@ describe('GlobalSettingsModal host-capability gating', () => {
     delete (window as { __CRW_DESKTOP__?: unknown }).__CRW_DESKTOP__
   })
 
-  it('shows the "Open on phone" tab on the web host', async () => {
+  it('shows the "在手机上打开" tab on the web host', async () => {
     mockGet({})
     render(<GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />)
-    // "Open on phone" lives in the System group now — open the group first.
-    await waitFor(() => expect(screen.getByText('System')).toBeTruthy())
-    fireEvent.click(screen.getByText('System'))
-    await waitFor(() => expect(screen.getByText('Open on phone')).toBeTruthy())
+    // "在手机上打开" lives in the System group now — open the group first.
+    await waitFor(() => expect(screen.getByText('系统')).toBeTruthy())
+    fireEvent.click(screen.getByText('系统'))
+    await waitFor(() => expect(screen.getByText('在手机上打开')).toBeTruthy())
   })
 
-  it('hides the "Open on phone" tab inside the desktop host', async () => {
+  it('hides the "在手机上打开" tab inside the desktop host', async () => {
     ;(window as { __CRW_DESKTOP__?: unknown }).__CRW_DESKTOP__ = { connect: () => {} }
     mockGet({})
     render(<GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />)
     // Wait for the tab bar to render (Profiles is always present)…
-    await waitFor(() => expect(screen.getByText('Profiles')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('配置档')).toBeTruthy())
     // …open the System group, then assert the LAN-sharing entry is absent.
-    fireEvent.click(screen.getByText('System'))
-    expect(screen.queryByText('Open on phone')).toBeNull()
+    fireEvent.click(screen.getByText('系统'))
+    expect(screen.queryByText('在手机上打开')).toBeNull()
   })
 
   // AboutTab calls useToast, so it must render inside a ToastProvider.
@@ -65,25 +65,25 @@ describe('GlobalSettingsModal host-capability gating', () => {
         <GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />
       </ToastProvider>,
     )
-    await waitFor(() => expect(screen.getByText('System')).toBeTruthy())
-    fireEvent.click(screen.getByText('System'))
-    await waitFor(() => expect(screen.getByText('About')).toBeTruthy())
-    fireEvent.click(screen.getByText('About'))
+    await waitFor(() => expect(screen.getByText('系统')).toBeTruthy())
+    fireEvent.click(screen.getByText('系统'))
+    await waitFor(() => expect(screen.getByText('关于')).toBeTruthy())
+    fireEvent.click(screen.getByText('关于'))
   }
 
   it('keeps the self-update block on the web host About tab', async () => {
     await renderAbout()
-    await waitFor(() => expect(screen.getByText('Update registry')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('更新注册表')).toBeTruthy())
   })
 
   it('hides the self-update block on the desktop host About tab', async () => {
     ;(window as { __CRW_DESKTOP__?: unknown }).__CRW_DESKTOP__ = { connect: () => {} }
     await renderAbout()
     // The version-info rows still render (Project is static)…
-    await waitFor(() => expect(screen.getByText('Project')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('项目')).toBeTruthy())
     // …but the npm self-update controls are gone.
-    expect(screen.queryByText('Update registry')).toBeNull()
-    expect(screen.queryByText('Switch version')).toBeNull()
+    expect(screen.queryByText('更新注册表')).toBeNull()
+    expect(screen.queryByText('切换版本')).toBeNull()
   })
 })
 
@@ -101,15 +101,15 @@ describe('GlobalSettingsModal first-party tools section', () => {
     )
     await waitFor(() => expect(screen.getByText('Extensions')).toBeTruthy())
     fireEvent.click(screen.getByText('Extensions'))
-    await waitFor(() => expect(screen.getByText('MCP Servers')).toBeTruthy())
-    fireEvent.click(screen.getByText('MCP Servers'))
+    await waitFor(() => expect(screen.getByText('MCP 服务器')).toBeTruthy())
+    fireEvent.click(screen.getByText('MCP 服务器'))
   }
 
   /** The git-tools card + its staged ON/OFF toggle, once the section renders.
    *  Queried through `screen` / document because the modal portals to body
    *  (Overlay's fixed-backdrop variants always portal — see Overlay.tsx). */
   const gitToolsCard = async () => {
-    await waitFor(() => expect(screen.getByText('First-party tools')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('第一方工具')).toBeTruthy())
     const card = document.querySelector('.settings-first-party-card')
     expect(card, 'first-party card').toBeDefined()
     const toggle = card!.querySelector('.settings-first-party-toggle') as HTMLButtonElement
@@ -133,7 +133,7 @@ describe('GlobalSettingsModal first-party tools section', () => {
     expect(api.put).not.toHaveBeenCalled()
     expect(toggle.textContent).toBe('OFF')
 
-    fireEvent.click(screen.getByText('Save'))
+    fireEvent.click(screen.getByText('保存'))
     await waitFor(() => expect(api.put).toHaveBeenCalled())
     expect(vi.mocked(api.put)).toHaveBeenCalledWith(
       '/config',
@@ -141,12 +141,12 @@ describe('GlobalSettingsModal first-party tools section', () => {
     )
   })
 
-  it('expands the static tool listing on "List tools" (read-only badge on git_status)', async () => {
+  it('expands the static tool listing on "列出工具" (read-only badge on git_status)', async () => {
     await openMcpTab({ firstPartyTools: { 'git-tools': { enabled: true } } })
     const { card } = await gitToolsCard()
     expect(screen.queryByText('git_status')).toBeNull()
 
-    const listBtn = [...card.querySelectorAll('button')].find((b) => b.textContent === 'List tools')
+    const listBtn = [...card.querySelectorAll('button')].find((b) => b.textContent === '列出工具')
     expect(listBtn, 'List tools button').toBeDefined()
     fireEvent.click(listBtn!)
 
@@ -157,8 +157,8 @@ describe('GlobalSettingsModal first-party tools section', () => {
 
   it('hides the section when the global map is empty', async () => {
     await openMcpTab({ firstPartyTools: {} })
-    await waitFor(() => expect(screen.getByText('MCP Servers')).toBeTruthy())
-    expect(screen.queryByText('First-party tools')).toBeNull()
+    await waitFor(() => expect(screen.getByText('MCP 服务器')).toBeTruthy())
+    expect(screen.queryByText('第一方工具')).toBeNull()
   })
 })
 
@@ -174,13 +174,13 @@ describe('GlobalSettingsModal Server tab', () => {
         <GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />
       </ToastProvider>,
     )
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Server' })).toBeTruthy())
-    fireEvent.click(screen.getByRole('button', { name: 'Server' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: '服务器' })).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: '服务器' }))
     // Content is gated on the /config/full fetch — wait for a Server-only control.
-    await waitFor(() => expect(screen.getByRole('radiogroup', { name: 'Max group panels' })).toBeTruthy())
+    await waitFor(() => expect(screen.getByRole('radiogroup', { name: '分组面板上限' })).toBeTruthy())
   }
 
-  const save = () => fireEvent.click(screen.getByText('Save'))
+  const save = () => fireEvent.click(screen.getByText('保存'))
 
   it('renders human units, the segmented panel picker, and switch states from config', async () => {
     await openServerTab({
@@ -196,7 +196,7 @@ describe('GlobalSettingsModal Server tab', () => {
     // Bytes → MB and ms → minutes, with unit suffixes (not raw 31457280 / 3600000).
     expect((screen.getByLabelText('Max upload size, in megabytes') as HTMLInputElement).value).toBe('30')
     expect(screen.getByText('MB')).toBeTruthy()
-    expect((screen.getByLabelText('History cap') as HTMLInputElement).value).toBe('1000')
+    expect((screen.getByLabelText('历史记录上限') as HTMLInputElement).value).toBe('1000')
     expect((screen.getByLabelText('Working-stuck timeout, in minutes') as HTMLInputElement).value).toBe('60')
     expect(screen.getByText('min')).toBeTruthy()
 
@@ -206,14 +206,14 @@ describe('GlobalSettingsModal Server tab', () => {
     // The one switch that stays on this tab reflects its loaded value. The
     // display-defaults switches now live on the Appearance tab (covered by
     // the 'Appearance tab' suite below).
-    expect(screen.getByRole('switch', { name: 'Allow editing sensitive paths in auto-approve modes' }).getAttribute('aria-checked')).toBe('true')
+    expect(screen.getByRole('switch', { name: '在自动批准模式下允许编辑敏感路径' }).getAttribute('aria-checked')).toBe('true')
   })
 
   it('steps History cap by the field step and persists the raw value on Save', async () => {
     await openServerTab({ historyCap: 500 })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Increase History cap' }))
-    expect((screen.getByLabelText('History cap') as HTMLInputElement).value).toBe('600')
+    fireEvent.click(screen.getByRole('button', { name: 'Increase 历史记录上限' }))
+    expect((screen.getByLabelText('历史记录上限') as HTMLInputElement).value).toBe('600')
 
     save()
     await waitFor(() => expect(api.put).toHaveBeenCalled())
@@ -243,7 +243,7 @@ describe('GlobalSettingsModal Server tab', () => {
   it('does not alter a value when the field is focused and blurred without editing', async () => {
     await openServerTab({ historyCap: 500 })
 
-    const input = screen.getByLabelText('History cap') as HTMLInputElement
+    const input = screen.getByLabelText('历史记录上限') as HTMLInputElement
     fireEvent.focus(input)
     fireEvent.blur(input)
     expect(input.value).toBe('500')
@@ -256,7 +256,7 @@ describe('GlobalSettingsModal Server tab', () => {
   it('restores the previous value when a typed value is cleared', async () => {
     await openServerTab({ historyCap: 500 })
 
-    const input = screen.getByLabelText('History cap') as HTMLInputElement
+    const input = screen.getByLabelText('历史记录上限') as HTMLInputElement
     fireEvent.focus(input)
     fireEvent.change(input, { target: { value: '' } })
     fireEvent.blur(input)
@@ -272,7 +272,7 @@ describe('GlobalSettingsModal Server tab', () => {
     })
 
     fireEvent.click(screen.getByRole('radio', { name: '5' }))
-    fireEvent.click(screen.getByRole('switch', { name: 'Allow editing sensitive paths in auto-approve modes' }))
+    fireEvent.click(screen.getByRole('switch', { name: '在自动批准模式下允许编辑敏感路径' }))
 
     save()
     await waitFor(() => expect(api.put).toHaveBeenCalled())
@@ -304,10 +304,10 @@ describe('GlobalSettingsModal About tab', () => {
         <GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} {...props} />
       </ToastProvider>,
     )
-    await waitFor(() => expect(screen.getByText('System')).toBeTruthy())
-    fireEvent.click(screen.getByText('System'))
-    await waitFor(() => expect(screen.getByRole('button', { name: 'About' })).toBeTruthy())
-    fireEvent.click(screen.getByRole('button', { name: 'About' }))
+    await waitFor(() => expect(screen.getByText('系统')).toBeTruthy())
+    fireEvent.click(screen.getByText('系统'))
+    await waitFor(() => expect(screen.getByRole('button', { name: '关于' })).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: '关于' }))
   }
 
   it("offers the running version's release notes and hands the click to App", async () => {
@@ -330,7 +330,7 @@ describe('GlobalSettingsModal About tab', () => {
     // major.minor.patch because compareSemver ignores the suffix.
     const cases: Array<[string, UpdateInfo | null]> = [
       ['no snapshot yet', null],
-      ['update checks disabled', { ...INFO, disabled: true }],
+      ['更新检查已禁用', { ...INFO, disabled: true }],
       ['no GitHub repository in this build', { ...INFO, repoUrl: undefined }],
       ['prerelease build', { ...INFO, current: '0.8.0-rc.1' }],
     ]
@@ -338,7 +338,7 @@ describe('GlobalSettingsModal About tab', () => {
       cleanup()
       await openAboutTab({ updateInfo: info, onOpenCurrentReleaseNotes: vi.fn() })
       // Prove the tab actually mounted before asserting absence.
-      await waitFor(() => expect(screen.getByText('Project')).toBeTruthy())
+      await waitFor(() => expect(screen.getByText('项目')).toBeTruthy())
       expect(screen.queryByText('Release notes'), label).toBeNull()
     }
   })
@@ -364,12 +364,12 @@ describe('GlobalSettingsModal Appearance tab', () => {
   /** Every control the move relocates from the Server tab. Used by both the
    *  presence and the absence assertion so the two lists can't drift. */
   const MOVED_SWITCHES = [
-    'Show pinned “current question” header',
-    'Auto-generate session recap',
+    '显示固定的“当前问题”标题',
+    '自动生成会话摘要',
     'Use collapsible transcript cards',
-    'Show message card headers',
+    '显示消息卡片标题',
   ] as const
-  const MOVED_GROUPS = ['Transcript spacing', 'Message text density', 'Font size', 'Animation speed'] as const
+  const MOVED_GROUPS = ['记录间距', '消息文字密度', '字号', 'Animation speed'] as const
 
   const openAppearanceTab = async (config: Record<string, unknown>) => {
     mockGet(config)
@@ -378,13 +378,13 @@ describe('GlobalSettingsModal Appearance tab', () => {
         <GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />
       </ToastProvider>,
     )
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Appearance' })).toBeTruthy())
-    fireEvent.click(screen.getByRole('button', { name: 'Appearance' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: '外观' })).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: '外观' }))
     // Content is gated on the /config/full fetch — wait for an Appearance-only control.
-    await waitFor(() => expect(screen.getByRole('radiogroup', { name: 'Font size' })).toBeTruthy())
+    await waitFor(() => expect(screen.getByRole('radiogroup', { name: '字号' })).toBeTruthy())
   }
 
-  const save = () => fireEvent.click(screen.getByText('Save'))
+  const save = () => fireEvent.click(screen.getByText('保存'))
 
   /** aria-checked of one option inside a named segmented group. Scoped by the
    *  radiogroup because the two spacing groups reuse the same option labels. */
@@ -413,9 +413,9 @@ describe('GlobalSettingsModal Appearance tab', () => {
     }
 
     // Each segmented group reflects its configured preset.
-    expect(segmentedActive('Transcript spacing', 'Comfortable')).toBe('true')
-    expect(segmentedActive('Message text density', 'Compact')).toBe('true')
-    expect(segmentedActive('Font size', 'Large')).toBe('true')
+    expect(segmentedActive('记录间距', 'Comfortable')).toBe('true')
+    expect(segmentedActive('消息文字密度', 'Compact')).toBe('true')
+    expect(segmentedActive('字号', 'Large')).toBe('true')
     expect(segmentedActive('Animation speed', 'Fast')).toBe('true')
   })
 
@@ -426,8 +426,8 @@ describe('GlobalSettingsModal Appearance tab', () => {
       animationSpeed: 'slow',
     })
 
-    fireEvent.click(screen.getByRole('switch', { name: 'Show pinned “current question” header' }))
-    fireEvent.click(within(screen.getByRole('radiogroup', { name: 'Font size' }))
+    fireEvent.click(screen.getByRole('switch', { name: '显示固定的“当前问题”标题' }))
+    fireEvent.click(within(screen.getByRole('radiogroup', { name: '字号' }))
       .getByRole('radio', { name: 'X-Large' }))
     fireEvent.click(within(screen.getByRole('radiogroup', { name: 'Animation speed' }))
       .getByRole('radio', { name: 'Fast' }))
@@ -475,10 +475,10 @@ describe('GlobalSettingsModal Appearance tab', () => {
         <GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />
       </ToastProvider>,
     )
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Server' })).toBeTruthy())
-    fireEvent.click(screen.getByRole('button', { name: 'Server' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: '服务器' })).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: '服务器' }))
     // Prove the tab actually mounted before asserting absence.
-    await waitFor(() => expect(screen.getByRole('radiogroup', { name: 'Max group panels' })).toBeTruthy())
+    await waitFor(() => expect(screen.getByRole('radiogroup', { name: '分组面板上限' })).toBeTruthy())
 
     // Moved, not duplicated — every relocated control, not a sample.
     for (const name of MOVED_SWITCHES) {
@@ -535,9 +535,9 @@ describe('GlobalSettingsModal grouped tab nav', () => {
   it('renders three group pills and only the active group’s leaves', async () => {
     mockGet({})
     render(<GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />)
-    await waitFor(() => expect(screen.getByText('Profiles')).toBeTruthy())
-    expect(groupBtns().map((b) => b.textContent)).toEqual(['General', 'Extensions', 'System'])
-    expect(leafBtns().map((b) => b.textContent)).toEqual(['Profiles', 'Server', 'Appearance'])
+    await waitFor(() => expect(screen.getByText('配置档')).toBeTruthy())
+    expect(groupBtns().map((b) => b.textContent)).toEqual(['通用', 'Extensions', '系统'])
+    expect(leafBtns().map((b) => b.textContent)).toEqual(['配置档', '服务器', '外观'])
   })
 
   it('opens a group on click and lands on its first leaf', async () => {
@@ -547,15 +547,15 @@ describe('GlobalSettingsModal grouped tab nav', () => {
         <GlobalSettingsModal open onClose={() => {}} onSaved={() => {}} />
       </ToastProvider>,
     )
-    await waitFor(() => expect(screen.getByText('Profiles')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('配置档')).toBeTruthy())
     fireEvent.click(groupBtns().find((b) => b.textContent === 'Extensions')!)
-    await waitFor(() => expect(screen.getByText('MCP Servers')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('MCP 服务器')).toBeTruthy())
     expect(leafBtns().map((b) => b.textContent)).toEqual([
-      'Skills', 'MCP Servers', 'Marketplace', 'App Plugins',
+      '技能', 'MCP 服务器', '市场', '应用插件',
     ])
     // The group click must land on the group's FIRST leaf (Skills), not
     // merely render the row.
-    expect(document.querySelector('.settings-tab-leaves .active')?.textContent).toBe('Skills')
+    expect(document.querySelector('.settings-tab-leaves .active')?.textContent).toBe('技能')
   })
 })
 
@@ -612,7 +612,7 @@ describe('GlobalSettingsModal Skills preview modal', () => {
     fireEvent.click(screen.getByText('Extensions'))
     await waitFor(() => expect(screen.getAllByText('find-skills').length).toBeGreaterThan(0))
     fireEvent.click(screen.getAllByText('find-skills')[0]!)
-    await waitFor(() => expect(screen.getByText('Frontmatter')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('前置元数据')).toBeTruthy())
   }
 
   it('renders the body through the shared markdown pipeline, not raw text', async () => {

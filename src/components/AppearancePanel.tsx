@@ -40,11 +40,11 @@ interface Props {
 }
 
 const SKIN_OPTIONS: { value: Skin; label: string; desc: string }[] = [
-  { value: 'default', label: 'Default', desc: 'Flat, high-contrast' },
-  { value: 'glow', label: 'Glow', desc: 'Soft depth & glow' },
+  { value: 'default', label: '默认', desc: 'Flat, high-contrast' },
+  { value: 'glow', label: '发光', desc: 'Soft depth & glow' },
   { value: 'anthropic', label: 'Anthropic', desc: 'Warm paper & terracotta' },
-  { value: 'hc', label: 'High Contrast', desc: 'Pure B/W · square corners · a11y' },
-  { value: 'soft-hc', label: 'Soft High Contrast', desc: 'Near-B/W · rounded · contrast' },
+  { value: 'hc', label: '高对比度', desc: 'Pure B/W · square corners · a11y' },
+  { value: 'soft-hc', label: '柔和高对比度', desc: 'Near-B/W · rounded · contrast' },
   { value: 'brutalist', label: 'Brutalist', desc: 'Neo-brutalist stickers · hard edges' },
 ]
 
@@ -72,9 +72,9 @@ const SOFT_HC_ACCENT = '#7b8cde'
 const BRUTALIST_ACCENTS = ['#ffe600', '#ff4d00', '#3b5bff']
 
 const MODE_OPTIONS: { value: Theme; label: string; icon: ReactNode }[] = [
-  { value: 'light', label: 'Light', icon: <IconSun size={15} /> },
-  { value: 'dark', label: 'Dark', icon: <IconMoon size={15} /> },
-  { value: 'system', label: 'System', icon: <IconMonitor size={15} /> },
+  { value: 'light', label: '浅色', icon: <IconSun size={15} /> },
+  { value: 'dark', label: '深色', icon: <IconMoon size={15} /> },
+  { value: 'system', label: '系统', icon: <IconMonitor size={15} /> },
 ]
 
 function AppearancePopover({
@@ -155,12 +155,12 @@ function AppearancePopover({
       className="appearance-panel"
       style={{ left: pos.x, top: pos.y }}
       role="dialog"
-      aria-label="Theme"
+      aria-label="主题"
       onMouseDown={(e) => e.stopPropagation()}
     >
       {/* Skin */}
       <div className="appearance-section">
-        <div className="appearance-heading">Theme</div>
+        <div className="appearance-heading">主题</div>
         <div className="appearance-skin-row">
           {SKIN_OPTIONS.map((o) => (
             <button
@@ -184,8 +184,8 @@ function AppearancePopover({
 
       {/* Mode */}
       <div className="appearance-section">
-        <div className="appearance-heading">Mode</div>
-        <div className="appearance-mode-row" role="radiogroup" aria-label="Colour mode">
+        <div className="appearance-heading">模式</div>
+        <div className="appearance-mode-row" role="radiogroup" aria-label="颜色模式">
           {MODE_OPTIONS.map((o) => (
             <button
               key={o.value}
@@ -223,7 +223,7 @@ function AppearancePopover({
 
       {/* Accent */}
       <div className="appearance-section">
-        <div className="appearance-heading">Accent</div>
+        <div className="appearance-heading">强调色</div>
         {skin === 'brutalist' ? (
           <div className="appearance-accent-locked">
             {BRUTALIST_ACCENTS.map((c) => (
@@ -246,7 +246,7 @@ function AppearancePopover({
               aria-hidden
             />
             <span className="appearance-accent-locked-label">
-              Locked to Anthropic terracotta
+              锁定为 Anthropic 赤陶色
             </span>
           </div>
         ) : skin === 'hc' ? (
@@ -257,7 +257,7 @@ function AppearancePopover({
               aria-hidden
             />
             <span className="appearance-accent-locked-label">
-              Locked to high-contrast blue
+              锁定为高对比蓝色
             </span>
           </div>
         ) : skin === 'soft-hc' ? (
@@ -268,14 +268,14 @@ function AppearancePopover({
               aria-hidden
             />
             <span className="appearance-accent-locked-label">
-              Locked to soft high-contrast accent
+              锁定为柔和高对比强调色
             </span>
           </div>
         ) : (
           <AccentSwatchGrid
             value={accentColor}
             onChange={(v) => onAccent(v ?? ACCENT_COLORS[0].accent)}
-            ariaLabel="Accent colour"
+            ariaLabel="强调色"
           />
         )}
       </div>
@@ -283,7 +283,7 @@ function AppearancePopover({
       {/* Background */}
       {!isBackgroundLocked(skin) && (
         <div className="appearance-section">
-          <div className="appearance-heading">Background</div>
+          <div className="appearance-heading">背景</div>
           <BackgroundPicker setting={background} onChange={onBackgroundChange} />
         </div>
       )}
@@ -327,8 +327,8 @@ export function AppearancePanel({
         onClick={toggle}
         aria-haspopup="dialog"
         aria-expanded={open}
-        aria-label="Theme"
-        title="Theme — skin, mode & accent"
+        aria-label="主题"
+        title="主题 — 皮肤、模式与强调色"
       >
         <IconSparkles size={16} />
       </button>

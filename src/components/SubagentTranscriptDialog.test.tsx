@@ -65,14 +65,14 @@ describe('SubagentTranscriptDialog', () => {
   it('shows the empty state for a transcript-less agent (only after the REST bootstrap lands)', async () => {
     render(<SubagentTranscriptDialog sessionId="s1" agentId="empty" label="idle" onClose={() => {}} />)
     // expectHistory gate: nothing (no empty state, no error) before replayReady.
-    expect(screen.queryByText(/No transcript on disk/)).toBeNull()
-    await waitFor(() => expect(screen.getByText(/No transcript on disk/)).toBeTruthy())
+    expect(screen.queryByText(/磁盘上无对话记录/)).toBeNull()
+    await waitFor(() => expect(screen.getByText(/磁盘上无对话记录/)).toBeTruthy())
   })
 
   it('does not flash the empty state while the REST bootstrap is still pending', () => {
     vi.mocked(api.get).mockImplementationOnce(() => new Promise(() => {}))
     render(<SubagentTranscriptDialog sessionId="s1" agentId="pending" label="loading" onClose={() => {}} />)
-    expect(screen.queryByText(/No transcript on disk/)).toBeNull()
+    expect(screen.queryByText(/磁盘上无对话记录/)).toBeNull()
     expect(screen.queryByText(/Failed to load transcript/)).toBeNull()
   })
 

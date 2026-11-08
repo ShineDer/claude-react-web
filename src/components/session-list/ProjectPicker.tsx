@@ -53,7 +53,7 @@ export interface ProjectPickerProps {
 // derivation.
 
 /** Design maximum for the list, mirrored by the CSS default of
- *  `--project-picker-list-max`. The flip/height math below never grows the
+ *  `--project-picker-list-最大`. The flip/height math below never grows the
  *  list past it. */
 const MAX_LIST_H = 240
 
@@ -452,7 +452,7 @@ export function ProjectPicker({ id, ariaLabel, disabled, value, recents, onSelec
                     <button
                       type="button"
                       className="project-picker-forget"
-                      title="Forget this path"
+                      title="忘记此路径"
                       aria-label={`Forget ${row.path}`}
                       onClick={() => onForget(row.path)}
                     >

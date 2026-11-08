@@ -3,7 +3,7 @@
 //
 // The WS-pushed lite snapshot that feeds the bar carries no categories — the
 // breakdown only exists on the blocking `GET /sessions/:id/context-usage`
-// control read. So the fetch fires ONLY while the popover is open (`enabled`):
+// control read. So the fetch fires ONLY while the popover is open (`已启用`):
 // opening it is an explicit request, same principle as SettingsPanel's
 // "opening the Context tab IS the request for the breakdown". A per-session
 // TTL cache keeps repeated open/close cycles from hammering the

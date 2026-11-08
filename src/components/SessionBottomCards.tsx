@@ -15,8 +15,8 @@
 // streaming flush; only a real transcript mutation (a new message landing,
 // a /clear wiping the array) re-renders them.
 //
-// The caller still owns the non-data props (`working`, `skin`,
-// `clearing`, `serverTasks`) — those come from session-info / config
+// The caller still owns the non-data props (`working`, `sk输入`,
+// `clearing`, `server任务`) — those come from session-info / config
 // sources the parent already tracks, and forwarding them keeps the
 // wrapper's surface narrow (no `stream` aggregate).
 //
@@ -25,7 +25,7 @@
 //     Chat's portal targets (setWorkingSlot / setDockSlot) and remain in
 //     Chat's `bottomOverlay` memo; this wrapper is only the two cards.
 //   - subscribe to `tasks` (the TasksPanel / header count chip reads it
-//     elsewhere via `useSessionTaskCounts`); `serverTasks` is the
+//     elsewhere via `useSessionTaskCounts`); `server任务` is the
 //     server-derived full-transcript fold, passed through from the
 //     parent that already owns the useTaskList subscription.
 

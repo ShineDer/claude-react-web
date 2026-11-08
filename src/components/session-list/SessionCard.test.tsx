@@ -93,7 +93,7 @@ describe('SessionCard', () => {
     const session = makeSession({ running: true, working: false, backgroundSubagentCount: 1, phase: 'working' })
     const { container } = render(<SessionCard {...baseProps} session={session} />)
     expect(container.textContent).toContain('waiting')
-    // Dot carries the amber 'waiting' class, not the green 'live'.
+    // Dot carries the amber '等待中' class, not the green 'live'.
     const dot = container.querySelector('.session-status-dot')
     expect(dot?.classList.contains('status-waiting')).toBe(true)
     expect(dot?.classList.contains('status-live')).toBe(false)

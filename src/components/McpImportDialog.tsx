@@ -98,25 +98,25 @@ export function McpImportDialog({ open = true, file, onClose, onImported }: Prop
       ariaLabel="Import MCP servers"
     >
       <div className="modal-header">
-        <h3>Import MCP Servers</h3>
-        <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="Close"><IconX size={14} /></button>
+        <h3>导入 MCP 服务器</h3>
+        <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="关闭"><IconX size={14} /></button>
       </div>
 
       <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 12, maxHeight: '62vh', overflowY: 'auto' }}>
-        {phase === 'loading' && <div className="hint">Reading file…</div>}
-        {phase === 'importing' && <div className="hint">Importing…</div>}
+        {phase === 'loading' && <div className="hint">正在读取文件…</div>}
+        {phase === 'importing' && <div className="hint">导入中…</div>}
 
         {phase === 'preview' && error && <div style={{ color: 'var(--danger-text)', fontSize: 'var(--fs-base)' }}>{error}</div>}
 
         {phase === 'preview' && !error && preview.length === 0 && (
-          <div className="hint">No servers found in this file.</div>
+          <div className="hint">此文件中未找到服务器。</div>
         )}
 
         {phase === 'preview' && !error && (
           <>
             {newServers.length > 0 && (
               <>
-                <div className="settings-note">New servers</div>
+                <div className="settings-note">新服务器</div>
                 {newServers.map((s) => (
                   <ImportRow key={s.name} srv={s} checked={!!checked[s.name]} onToggle={(v) => setChecked((prev) => ({ ...prev, [s.name]: v }))} />
                 ))}
@@ -126,7 +126,7 @@ export function McpImportDialog({ open = true, file, onClose, onImported }: Prop
             {conflicts.length > 0 && (
               <div className="settings-card" style={{ borderColor: 'var(--warn)' }}>
                 <div className="settings-note" style={{ color: 'var(--warn-text)' }}>
-                  Already exist — checking a row will overwrite it
+                  已存在——勾选某行将覆盖它
                 </div>
                 {conflicts.map((s) => (
                   <ImportRow key={s.name} srv={s} checked={!!checked[s.name]} onToggle={(v) => setChecked((prev) => ({ ...prev, [s.name]: v }))} />
@@ -140,7 +140,7 @@ export function McpImportDialog({ open = true, file, onClose, onImported }: Prop
 
             {invalid.length > 0 && (
               <>
-                <div className="settings-note" style={{ color: 'var(--danger-text)' }}>Invalid (skipped)</div>
+                <div className="settings-note" style={{ color: 'var(--danger-text)' }}>无效（已跳过）</div>
                 {invalid.map((s) => (
                   <div key={s.name} className="settings-card" style={{ borderColor: 'var(--danger)', opacity: 0.7 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--fs-base)' }}>
@@ -169,14 +169,14 @@ export function McpImportDialog({ open = true, file, onClose, onImported }: Prop
       </div>
 
       <div className="modal-footer">
-        <span className="hint">Press Esc to cancel.</span>
+        <span className="hint">按 Esc 取消。</span>
         <div style={{ display: 'flex', gap: 8 }}>
           <button className="btn" onClick={onClose} disabled={phase === 'importing'}>
-            {phase === 'summary' ? 'Done' : 'Cancel'}
+            {phase === 'summary' ? 'Done' : '取消'}
           </button>
           {phase === 'preview' && !error && (
             <button className="btn btn-primary" onClick={() => void doImport()} disabled={!validSelected}>
-              {validSelected ? `Import ${checkedNames.length}` : 'Import'}
+              {validSelected ? `Import ${checkedNames.length}` : '导入'}
             </button>
           )}
         </div>

@@ -70,7 +70,7 @@ type ToolInputView = ComponentType<ToolViewProps>
 // Bash and PowerShell share BashToolView — both have the same input shape
 // (command, description, run_in_background, timeout) and the same visual
 // "shell command + chips + description" layout. The view branches on
-// `toolName` to swap the prompt glyph ($ vs >).
+// `tool名称` to swap the prompt glyph ($ vs >).
 const TOOL_VIEWS: Record<string, ToolInputView> = {
   Edit: EditToolView,
   MultiEdit: EditToolView,

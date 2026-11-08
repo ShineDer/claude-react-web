@@ -52,7 +52,7 @@ describe('LiveWorkingBubble', () => {
     const { container } = render(<LiveWorkingBubble sessionId={sid} active />)
     expect(label(container)).toBe('Working')
     act(() => { send(sid, blockStart({ type: 'text', text: '' })) })
-    expect(label(container)).toBe('Writing...')
+    expect(label(container)).toBe('撰写中...')
     expect(container.querySelector('.working-rate')).toBeNull()
     act(() => { seedRate(sid) })
     expect(getSessionStore(sid).getSnapshot().tokenRate).toBe(117)
@@ -71,14 +71,14 @@ describe('LiveWorkingBubble', () => {
     const raw = container.querySelector('[data-testid="raw"]') as HTMLElement
     act(() => { send(sid, blockStart({ type: 'thinking' })) })
     // null → phase commits immediately on both.
-    expect(label(dwell)).toBe('Thinking...')
-    expect(label(raw)).toBe('Thinking...')
+    expect(label(dwell)).toBe('思考中...')
+    expect(label(raw)).toBe('思考中...')
     act(() => { send(sid, blockStart({ type: 'text', text: '' })) })
     // phase → phase: the dwelled label holds, the raw one switches.
-    expect(label(dwell)).toBe('Thinking...')
-    expect(label(raw)).toBe('Writing...')
+    expect(label(dwell)).toBe('思考中...')
+    expect(label(raw)).toBe('撰写中...')
     await act(() => sleep(380))
-    expect(label(dwell)).toBe('Writing...')
+    expect(label(dwell)).toBe('撰写中...')
   })
 
   it('freezes phase / rate / thinking tokens while its exit animation plays', () => {
@@ -93,7 +93,7 @@ describe('LiveWorkingBubble', () => {
       send(sid, blockStart({ type: 'text', text: '' }))
       seedRate(sid)
     })
-    expect(label(container)).toBe('Writing...')
+    expect(label(container)).toBe('撰写中...')
     expect(container.querySelector('.working-rate')).not.toBeNull()
 
     // The exit starts, then the turn-end sweep nulls the live turn. The
@@ -103,7 +103,7 @@ describe('LiveWorkingBubble', () => {
     act(() => { send(sid, { type: 'result', uuid: 'r-exit', subtype: 'success' } as unknown as SdkMessage) })
     expect(getSessionStore(sid).getSnapshot().tokenRate).toBeNull()
     expect(getSessionStore(sid).getSnapshot().activePhase).toBeNull()
-    expect(label(container)).toBe('Writing...')
+    expect(label(container)).toBe('撰写中...')
     expect(container.querySelector('.working-rate')).not.toBeNull()
 
     // Re-entering (AnimatePresence brings the same child back) resumes live values.
@@ -134,7 +134,7 @@ describe('LiveWorkingBubble', () => {
       send(sid, blockStart({ type: 'text', text: '' }))
       seedRate(sid)
     })
-    expect(label(container)).toBe('Writing...')
+    expect(label(container)).toBe('撰写中...')
     // Let the count-up settle so the readout is a fixed string to compare.
     await waitFor(() => expect(rate(container)).toBe('117 tok/s'))
     expect(exiting(container)).toBe(false)
@@ -147,7 +147,7 @@ describe('LiveWorkingBubble', () => {
     expect(getSessionStore(sid).getSnapshot().tokenRate).toBeNull()
     expect(getSessionStore(sid).getSnapshot().activePhase).toBeNull()
     expect(exiting(container)).toBe(true)
-    expect(label(container)).toBe('Writing...')
+    expect(label(container)).toBe('撰写中...')
     expect(rate(container)).toBe('117 tok/s')
 
     // The exit runs to completion and AnimatePresence removes the bubble.

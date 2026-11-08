@@ -11,8 +11,8 @@ function setup(overrides: Partial<ComponentProps<typeof FieldPicker>> = {}) {
     id: 'field',
     label: 'claude-sonnet',
     placeholder: 'Choose one',
-    menuLabel: 'Models',
-    searchLabel: 'Search models',
+    menuLabel: '模型',
+    searchLabel: '搜索模型',
     searchable: true,
     options: [
       { key: 'a', label: 'claude-sonnet', sub: 'sonnet', selected: true, onSelect: onSelectA },
@@ -27,7 +27,7 @@ function setup(overrides: Partial<ComponentProps<typeof FieldPicker>> = {}) {
 const trigger = () => document.querySelector('.field-picker-trigger') as HTMLButtonElement
 const menu = () => document.querySelector('.field-picker-menu')
 const items = () => Array.from(document.querySelectorAll('.field-picker-item')) as HTMLButtonElement[]
-const searchBox = () => screen.getByRole('textbox', { name: 'Search models' })
+const searchBox = () => screen.getByRole('textbox', { name: '搜索模型' })
 
 describe('FieldPicker', () => {
   it('renders the label on the trigger and a placeholder when empty', () => {
@@ -136,13 +136,13 @@ describe('FieldPicker', () => {
   it('renders a section heading on the first row of a group', () => {
     setup({
       options: [
-        { key: 'g1', label: 'Balanced', heading: 'Model Groups', onSelect: vi.fn() },
+        { key: 'g1', label: 'Balanced', heading: '模型分组', onSelect: vi.fn() },
         { key: 'g2', label: 'Fast', onSelect: vi.fn() },
       ],
     })
     fireEvent.click(trigger())
     const headings = Array.from(document.querySelectorAll('.field-picker-heading'))
     expect(headings).toHaveLength(1)
-    expect(headings[0].textContent).toBe('Model Groups')
+    expect(headings[0].textContent).toBe('模型分组')
   })
 })

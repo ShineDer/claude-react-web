@@ -13,7 +13,7 @@ import { useCopy } from '../hooks/useCopy'
 
 /** Sanitize an href for the `a` component.
  *
- * `compileMarkdown` renders through `toJsxRuntime`, which has no
+ * `compileMarkdown` renders through `toJsx运行时`, which has no
  * `urlTransform` hook of its own — so this function is the ONLY href gate on
  * the render path, and it has to be as strict as the one react-markdown
  * applied before the migration. Delegating to react-markdown's
@@ -133,7 +133,7 @@ export const CodeBlock = memo(function CodeBlock({
         <span className="code-block-lang">{lang ?? 'code'}</span>
         {showCopy && (
           <button type="button" className="code-block-copy" onClick={handleCopy}>
-            {copied ? 'Copied!' : 'Copy'}
+            {copied ? 'Copied!' : '复制'}
           </button>
         )}
       </div>

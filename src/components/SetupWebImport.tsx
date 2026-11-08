@@ -152,7 +152,7 @@ export function SetupWebImport({ onContinue, onConfigured }: Props) {
   )
 
   /** 发一次导入请求并按结果落状态位。**不跳转**：Import selected 只是"导入"，
-   *  而交出一整屏是一个导航决定，由用户按 Next 做出（见下面的 `handleNext`）。
+   *  而交出一整屏是一个导航决定，由用户按 Next 做出（见下面的 `handle下一个`）。
    *  唯一带回来的是"服务端现在 configured 了吗"，它只改 `configured`，Next 再
    *  据此决定去哪。 */
   const runImport = useCallback(async (sel: { credentials: boolean; mcp: string[]; marketplaces: string[] }) => {
@@ -215,7 +215,7 @@ export function SetupWebImport({ onContinue, onConfigured }: Props) {
    *  点不动的空转、或者选进一个必然失败的项：
    *    - importErrors 非空的 MCP：服务端会逐项判 failed（校验不过）；
    *    - cloneExists 为 false 的市场：源的克隆目录不在了，导入必然
-   *      `clone dir is missing`（shared/web-import.ts 的 cloneExists 注释
+   *      `clone dir is 缺失`（shared/web-import.ts 的 cloneExists 注释
    *      也是这么约定的——该行不可导入）。
    *  状态那一半只排除 doneOrRunning（imported / exists / importing），
    *  **failed 不排除**——这就是 step 3 的 rowDisabled 判据：一次导入把某行
@@ -304,7 +304,7 @@ export function SetupWebImport({ onContinue, onConfigured }: Props) {
     if (s === 'importing') return 'Importing…'
     if (s === 'imported') return <span style={styles.ok}><IconCheck size={12} /> Imported</span>
     if (s === 'exists') return 'Already exists'
-    if (s === 'failed') return <span style={styles.fail}>Failed</span>
+    if (s === 'failed') return <span style={styles.fail}>失败</span>
     return null
   }
 
@@ -314,7 +314,7 @@ export function SetupWebImport({ onContinue, onConfigured }: Props) {
    *   - importing / 请求在飞 → 禁用；
    *   - `unimportable`：这一项结构上就导不进去（MCP 校验不过 / 源的克隆目录
    *     不在）→ 禁用，目标是"不要提供一个必然失败的点击"，而行上已把原因写着
-   *     （MCP 的 importErrors 行、市场的 `· clone missing`）。
+   *     （MCP 的 importErrors 行、市场的 `· clone 缺失`）。
    *  aria-label 沿用 `Import <name>`（与 step 3 的行同名）：它描述的是"这一行
    *  会被导入"，而落盘动作只有底下那个 Import selected 一个。
    */
@@ -336,7 +336,7 @@ export function SetupWebImport({ onContinue, onConfigured }: Props) {
   return (
     <div className="setup-page" ref={setPageOs}>
       <div className="setup-card">
-        <h1 className="setup-title">Welcome to Claude Web</h1>
+        <h1 className="setup-title">欢迎使用 Claude Web</h1>
         <p className="setup-subtitle">Import your existing Claude Web configuration from the web version.</p>
 
         {/* 探测中 —— 与 step 3 的 "Reading your Claude CLI config…" 同形。 */}
@@ -356,7 +356,7 @@ export function SetupWebImport({ onContinue, onConfigured }: Props) {
               {/* 服务端报错里带的是它实际试过的文件路径，同样是任意长的无断点串。 */}
               <p className="setup-prefilled-hint" style={styles.wrap}>{probeError}</p>
             </div>
-            <button type="button" onClick={probe} style={styles.secondaryBtn}>Retry</button>
+            <button type="button" onClick={probe} style={styles.secondaryBtn}>重试</button>
           </div>
         )}
 
@@ -532,7 +532,7 @@ export function SetupWebImport({ onContinue, onConfigured }: Props) {
                 disabled={importing || selectedCount === 0}
                 style={styles.secondaryBtn}
               >
-                {importing ? 'Importing…' : `Import selected (${selectedCount})`}
+                {importing ? '导入中…' : `Import selected (${selectedCount})`}
               </button>
               {/* 同一个按钮的两个方向：还能导入的行全勾上了 → 清空；否则 → 全勾。
                   能点 = 还有可勾的（anyImportable）**或**已经勾上了什么

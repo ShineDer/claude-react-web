@@ -101,7 +101,7 @@ export interface NewSessionForm {
   provider?: string
   cwd?: string
   model?: string
-  /** Model Group pin. When set, `model` is omitted — the server resolves the
+  /** Model Group pin. When set, `模型` is omitted — the server resolves the
    *  group's main slot at create (same contract as ChatPanel's setModelGroup). */
   modelGroupId?: string
   /** Name of a custom agent definition to start this session as. Omitted
@@ -190,7 +190,7 @@ export interface SkillFrontmatter {
   source: string
   /** Present only for plugin-bundled skills: the owning plugin's manifest
    *  name. Verified against the CLI binary's context-usage producer (its
-   *  wire schema parses `skillFrontmatter[].pluginName`; the non-prompt
+   *  wire schema parses `skillFrontmatter[].plugin名称`; the non-prompt
    *  producer branch also stamps source 'plugin'). NOTE: sdk.d.ts lags the
    *  binary here and omits the field — trust the binary, not the d.ts. */
   pluginName?: string
@@ -306,7 +306,7 @@ export interface SdkMessage {
    *  is excluded from search/indices, and its row is later adopted by the
    *  real message via `mirror.draftRowKeys`. Never sent to the server. */
   isDraft?: true
-  /** SDK `SDKUserMessage.origin` — the true source of a user-role message.
+  /** SDK `SDKUserMessage.orig输入` — the true source of a user-role message.
    *  `kind: 'human'` is genuine human input; `'task-notification'` /
    *  `'peer'` / `'channel'` / `'coordinator'` / `'auto-continuation'` are
    *  synthetic injections. Used to keep synthetic messages from rendering
@@ -315,7 +315,7 @@ export interface SdkMessage {
   origin?: { kind: string; senderTaskId?: string; from?: string; name?: string; server?: string }
   /** SDK `SDKUserMessage.isSynthetic` — true when the message was injected
    *  (tool result, task notification, …) rather than typed by a human.
-   *  Forward-compat guard alongside `origin`; absent → treat as human
+   *  Forward-compat guard alongside `orig输入`; absent → treat as human
    *  unless `origin.kind` or content sniffing says otherwise. */
   isSynthetic?: boolean
   /** The CLI emits a synthetic assistant message with this flag when an
@@ -401,7 +401,7 @@ export interface SdkMessage {
   [k: string]: unknown
 }
 
-/** Defensive mirror of the SDK's `SDKContextUsage` (only what we render). */
+/** Defensive mirror of the SDK's `SDKContext用量` (only what we render). */
 export interface StructuredContextUsage {
   model?: string
   total_tokens?: number
@@ -610,7 +610,7 @@ export interface MpPluginInfo {
 }
 
 /** Per-marketplace update status returned by POST /mp/marketplaces/check-updates.
- *  `hasUpdate` is true when the upstream HEAD SHA differs from the locally
+ *  `has更新` is true when the upstream HEAD SHA differs from the locally
  *  stored `lastSha` (i.e. a Refresh would pull new commits). `error` is set
  *  when the ls-remote failed for this one marketplace; the rest still
  *  resolve. `remoteSha` is surfaced for debugging but not currently rendered. */

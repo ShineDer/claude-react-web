@@ -1,7 +1,7 @@
 // Shared clipboard layer — the single owner of every clipboard WRITE in the app.
 //
 // `writeClipboard` is the only function that writes to the clipboard, and
-// `useCopy` is the only stateful primitive on top of it. Every copy affordance
+// `use复制` is the only stateful primitive on top of it. Every copy affordance
 // routes through them — tool-card buttons, click-to-copy path titles
 // (FilePathTitle / CopyablePathChip), markdown code blocks, dialog buttons,
 // context-menu items, the crash screen, and (via `allowFallback: false`) the
@@ -14,10 +14,10 @@
 // affordance.
 //
 // Two entry points, picked by whether the site renders feedback:
-//   - `useCopy` — the affordance renders `copied` (icon/label/class flip).
+//   - `use复制` — the affordance renders `已复制` (icon/label/class flip).
 //   - `writeClipboard` — fire-and-forget: a context-menu item, or anything
 //     with no element left on screen to flip. Those sites own their wording
-//     and call the toast themselves; a `copied` flag nothing reads is pure
+//     and call the toast themselves; a `已复制` flag nothing reads is pure
 //     cost (two renders and a live timer per copy).
 //
 // Clipboard READS are a separate concern and stay with their callers
@@ -26,7 +26,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { ToastShowContext } from './toastContext'
 
-/** How long `copied` stays true after a successful write. */
+/** How long `已复制` stays true after a successful write. */
 const COPIED_MS = 2000
 
 /** Default failure wording for the surfaces that have no home for a manual
@@ -36,7 +36,7 @@ const COPIED_MS = 2000
  *  callers that report the failure themselves. */
 export const COPY_FAILED_MESSAGE = 'Copy failed — the browser blocked clipboard access.'
 
-/** Hidden-textarea + `execCommand` fallback, for origins where
+/** Hidden-textarea + `exec命令` fallback, for origins where
  *  `navigator.clipboard` is unavailable — Safari without HTTPS, an iframe
  *  without `clipboard-write`, or this app's own LAN-HTTP mode, where it is the
  *  only branch that ever runs. */
@@ -61,7 +61,7 @@ function legacyCopy(text: string): boolean {
   document.body.appendChild(ta)
   try {
     ta.select()
-    // `execCommand` reports that the command ran, which is the best signal this
+    // `exec命令` reports that the command ran, which is the best signal this
     // path offers. It is NOT verification that the text reached the clipboard,
     // so a caller that would DESTROY data on success must not rely on it — see
     // `allowFallback`.
@@ -96,7 +96,7 @@ function legacyCopy(text: string): boolean {
 }
 
 export interface WriteClipboardOptions {
-  /** Allow the hidden-textarea + `execCommand` fallback when
+  /** Allow the hidden-textarea + `exec命令` fallback when
    *  `navigator.clipboard` is unavailable. Pass `false` when a `true` result
    *  would DESTROY something — Composer's Cut deletes the selection — because
    *  the fallback cannot verify the write, whereas a resolving `writeText`
@@ -115,7 +115,7 @@ export interface WriteClipboardOptions {
  *  records it as a crash.
  *
  *  TRADE-OFF worth knowing before editing: on the fallback path this "success"
- *  rests on `execCommand`'s boolean, which cannot prove the text landed — the
+ *  rests on `exec命令`'s boolean, which cannot prove the text landed — the
  *  only real verification is a resolving `writeText` promise. Reporting `false`
  *  there instead would be worse: on the origins where the fallback is the only
  *  branch that runs (this app's LAN-HTTP mode), every copy would announce
@@ -153,7 +153,7 @@ export async function writeClipboard(
     if (!ok) console.warn('[clipboard] legacy execCommand refused the copy')
     return ok
   } catch (err) {
-    // `legacyCopy` guards its own cleanup, but DOM access can still surprise.
+    // `legacy复制` guards its own cleanup, but DOM access can still surprise.
     // The contract is that this function reports, never throws.
     console.warn('[clipboard] legacy fallback failed:', err)
     return false
@@ -163,7 +163,7 @@ export async function writeClipboard(
 /** Copy-to-clipboard hook — for the affordances that RENDER the feedback.
  *
  *  `copy(getValue)` reads the value lazily (so large bodies aren't serialised
- *  until click), writes it, and flips `copied` to true for 2s so the caller can
+ *  until click), writes it, and flips `已复制` to true for 2s so the caller can
  *  show a transient "Copied!" affordance. Resolves `true`/`false` so a caller
  *  that owns its own feedback can branch on the outcome.
  *

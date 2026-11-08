@@ -40,7 +40,7 @@ export interface ResumeSessionDialogProps {
   onResume: (sessionId: string) => void
   onCancel: () => void
   /** Visual form.
-   *  - 'modal' (default): full-app centered modal (`.modal-backdrop`). Used
+   *  - 'modal' (default): full-app centered modal (`.modal-back丢弃`). Used
    *    for the global / empty-state resume flow where no panel is targeted.
    *  - 'panel': column-scoped overlay (`.resume-overlay`) rendered inside a
    *    single chat panel, mirroring `.settings-overlay` / `.git-overlay`.
@@ -148,8 +148,8 @@ export function ResumeSessionDialog({ open = true, defaultCwd, onResume, onCance
   const content = (
     <>
       <div className="modal-header">
-        <h3>Resume session</h3>
-        <button className="btn btn-icon-sm" onClick={onCancel} aria-label="Close dialog">
+        <h3>恢复会话</h3>
+        <button className="btn btn-icon-sm" onClick={onCancel} aria-label="关闭对话框">
           <IconX size={14} />
         </button>
       </div>
@@ -159,13 +159,13 @@ export function ResumeSessionDialog({ open = true, defaultCwd, onResume, onCance
           ref={inputRef}
           className="input"
           type="text"
-          placeholder="Search sessions by title, prompt, or path..."
+          placeholder="按标题、提示词或路径搜索会话..."
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
             setSelectedIndex(0)
           }}
-          aria-label="Search resumable sessions"
+          aria-label="搜索可恢复的会话"
         />
 
         {defaultCwd && (
@@ -193,15 +193,15 @@ export function ResumeSessionDialog({ open = true, defaultCwd, onResume, onCance
           className="palette-list"
           ref={listRefMerged}
           role="listbox"
-          aria-label="Resumable sessions"
+          aria-label="可恢复会话"
           style={{ marginTop: 10, maxHeight: '50vh', overflowY: 'auto' }}
         >
-          {loading && <div className="palette-empty">Loading...</div>}
+          {loading && <div className="palette-empty">正在加载...</div>}
           {!loading && error && (
             <div className="palette-empty">Couldn't load sessions: {error}</div>
           )}
           {!loading && !error && filtered.length === 0 && (
-            <div className="palette-empty">No resumable sessions found</div>
+            <div className="palette-empty">未找到可恢复的会话</div>
           )}
           {!loading &&
             !error &&
@@ -237,9 +237,9 @@ export function ResumeSessionDialog({ open = true, defaultCwd, onResume, onCance
                     >
                       {label}
                     </span>
-                    {s.running && <span className="resume-badge resume-badge-running">running</span>}
-                    {s.terminated && !s.canRetryResume && <span className="resume-badge">ended</span>}
-                    {s.terminated && s.canRetryResume && <span className="resume-badge">retry</span>}
+                    {s.running && <span className="resume-badge resume-badge-running">运行中</span>}
+                    {s.terminated && !s.canRetryResume && <span className="resume-badge">已结束</span>}
+                    {s.terminated && s.canRetryResume && <span className="resume-badge">重试</span>}
                     {!s.known && !s.terminated && <span className="resume-badge">CLI</span>}
                   </span>
                   {/* First / last user prompt previews (display-only). The
@@ -293,7 +293,7 @@ export function ResumeSessionDialog({ open = true, defaultCwd, onResume, onCance
       <PanelOverlay
         open={open}
         onClose={onCancel}
-        ariaLabel="Resume session"
+        ariaLabel="恢复会话"
         panelClassName="resume-overlay-panel"
         onKeyDown={handleKeyDown}
       >
@@ -306,7 +306,7 @@ export function ResumeSessionDialog({ open = true, defaultCwd, onResume, onCance
     <Overlay
       variant="modal"
       cardClassName="modal-resume-session"
-      ariaLabel="Resume session"
+      ariaLabel="恢复会话"
       open={open}
       onClose={onCancel}
       onKeyDown={handleKeyDown}

@@ -145,7 +145,7 @@ export function reduceSessionState(state: SessionState, action: SessionAction): 
     case 'SESSION_TERMINATED': {
       // Same sweep the `result` frame runs, for the session state in which no
       // result frame can ever arrive. Without it a stranded SYNC subagent
-      // record stays `running` forever and its card spins on a dead session —
+      // record stays `运行中` forever and its card spins on a dead session —
       // the case TASKS_SNAPSHOT deliberately skips below on the assumption
       // that the result-frame sweep covers it. `liveTurn: null` and the
       // placeholder clear match that branch's reasoning: the SDK is finished,
@@ -158,7 +158,7 @@ export function reduceSessionState(state: SessionState, action: SessionAction): 
       // reference when nothing needed sweeping.
       const swept = sweepAtTurnEnd(state.mirror)
       const intent = clearSendingPlaceholders(state.intent)
-      // `apiRetry` is transient in exactly the same way as the slots above: it
+      // `api重试` is transient in exactly the same way as the slots above: it
       // lives outside the transcript because it is "only meaningful while a
       // retry is in flight", and its ONLY clearer is the next non-retry
       // message — which a terminated session never delivers. Without this a
@@ -224,7 +224,7 @@ export function reduceSessionState(state: SessionState, action: SessionAction): 
         // subscribed after it finished, or the only snapshot that ever matched
         // its toolUseId is the terminal one). In that case `record.isAsync` is
         // still undefined — reading it here skipped the settle and left the row
-        // `running` forever with its historical `startedAt`, which is exactly
+        // `运行中` forever with its historical `startedAt`, which is exactly
         // the WorkingBubble "Subagent running for 14h/38h" bug. The snapshot
         // field is authoritative for THIS frame; the stored flag only fills in
         // when the task omits `isBackgrounded`.
@@ -233,7 +233,7 @@ export function reduceSessionState(state: SessionState, action: SessionAction): 
         // are already covered by the turn-end result-frame sweep" — holds only
         // while a result frame is still coming. A session that TERMINATES never
         // delivers one, so SESSION_TERMINATED runs that same sweep for exactly
-        // this case; without it a sync record stays `running` forever and its
+        // this case; without it a sync record stays `运行中` forever and its
         // card spins on a dead session.
         //
         // 'stopped' maps to 'done' when a result was captured (the work landed,
@@ -1411,7 +1411,7 @@ function applyOptimisticUserMessage(state: SessionState, message: SdkMessage): S
   // Mark the placeholder as 'sending' so the user bubble renders a spinner.
   // The flag is implicitly cleared by the echo-merge in applyMessage, which
   // drops the placeholder from intent and appends the server's clean item to
-  // mirror.items (which has no `sending` field). Stamp receivedAt locally so
+  // mirror.items (which has no `发送中` field). Stamp receivedAt locally so
   // the timestamp shows immediately.
   const placeholder: TranscriptItem = {
     ...item,
@@ -1435,7 +1435,7 @@ function ackUserMessage(
   //
   //   1. The WS echo has NOT landed yet. The placeholder still lives in
   //      intent.pendingPlaceholders. Re-key it to the server uuid, strip
-  //      `sending`, and stamp receivedAt/consumedAt from what we know.
+  //      `发送中`, and stamp receivedAt/consumedAt from what we know.
   //      The next echo for this uuid is a no-op (placeholder gone).
   //   2. The WS echo HAS landed. The placeholder was removed from intent
   //      by applyMessage. There's nothing to ack — return unchanged.
@@ -1685,7 +1685,7 @@ function pruneMapToLive<V>(map: Map<string, V>, live: Set<string>): Map<string, 
 }
 
 /** Like pruneMapToLive, but NEVER drops a record whose lifecycle status is
- *  still in-flight (`running`/`background`/`pending`) — even when its owner
+ *  still in-flight (`运行中`/`后台`/`pending`) — even when its owner
  *  tool_use frame has been front-trimmed out of `items`. Dropping those would
  *  hide live work from the WorkingBubble pill / Waiting gate mid-flight
  *  (a busy tab can trim past an Agent's tool_use while the subagent is still
@@ -1730,10 +1730,10 @@ function pruneSettledToLive<V extends { status: string }>(
  *  The toolUseId-keyed lifecycle maps (toolStatus, toolResults, planStatus,
  *  planContent, questionAnswers, activeSubagents, activeWorkflows,
  *  activeSkills) are pruned to ids still referenced by the retained items so
- *  they don't leak. `activeSubagents` used to be skipped here on the belief
+ *  they don't leak. `active子 agent` used to be skipped here on the belief
  *  that "it clears each result frame" — false: sweepAtTurnEnd only flips
  *  status, never deletes, so a long-lived tab accumulated every Agent launch
- *  it had ever seen and one stranded `running`/`pending` record made
+ *  it had ever seen and one stranded `运行中`/`pending` record made
  *  SubagentSwarm.oldestStart paint a multi-dozen-hour timer. */
 function trimFront(state: SessionState): SessionState {
   const mirror = state.mirror
@@ -1869,7 +1869,7 @@ function evictMessages(state: SessionState, uuids: string[]): SessionState {
  *  sweeping (clone-on-write per Map). */
 /** Client-side safety-net timeout for stranded live subagent records.
  *
- *  Covers `running` / `background` / `pending` — every status that keeps a row
+ *  Covers `运行中` / `后台` / `pending` — every status that keeps a row
  *  in the WorkingBubble's subagent pill. A live record is normally cleared by
  *  its completion signal (the Agent tool_result for sync agents; launch-ack is
  *  skipped and task_notification / terminal TASKS_SNAPSHOT settle async ones).
@@ -1916,19 +1916,19 @@ function isStaleLiveSubagent(
 
 /** Flip stale live subagent records to `interrupted`.
  *
- *  Defaults to `background`/`pending` only. `running` is excluded because a
+ *  Defaults to `后台`/`pending` only. `运行中` is excluded because a
  *  SYNC subagent's real output arrives as the Agent tool_result and that merge
  *  branch requires `status === 'running'` — settling first would swallow the
  *  report (the same guard TASKS_SNAPSHOT's settleStranded carries via
- *  `nextIsAsync === true`). Async `running` rows are settled by TASKS_SNAPSHOT
+ *  `nextIsAsync === true`). Async `运行中` rows are settled by TASKS_SNAPSHOT
  *  (now that it reads `nextIsAsync`) and by the turn-end sweep's
  *  running→interrupted transition.
  *
  *  Used by the LS/IDB hydrate path (`SessionStore.hydrateFromCache` /
  *  `initIdb`) and by `sweepAtTurnEnd` — rebuild re-seeds every cached async
- *  `tool_use` as `running` with its historical `startedAt` and the launch-ack
+ *  `tool_use` as `运行中` with its historical `startedAt` and the launch-ack
  *  is skipped, so without a follow-up settle a refresh mid-turn resurrects a
- *  stranded `background`/`pending` row with a 38h-old `startedAt`.
+ *  stranded `后台`/`pending` row with a 38h-old `startedAt`.
  *
  *  `liveBgToolUseIds` suppresses the flip for ids a live backgrounded task
  *  still tracks. Identity-stable: same Map reference when nothing was stale. */
@@ -1956,7 +1956,7 @@ export function settleStaleLiveSubagents(
   return { ...mirror, activeSubagents }
 }
 
-/** Flip every still-`running` row of a SubagentChildCall list to `error`,
+/** Flip every still-`运行中` row of a SubagentChildCall list to `error`,
  *  returning the SAME array reference when nothing needed sweeping (so the
  *  caller's identity checks stay meaningful). Shared by the subagent sweep and
  *  the skill sweep — both hold the same row type with the same lifecycle. */
@@ -2003,11 +2003,11 @@ function sweepAtTurnEnd(mirror: ServerMirror): ServerMirror {
   // → interrupted; background (async, still working) → pending. Completed
   // records survive.
   //
-  // Stale-settle runs FIRST so a `background` record that went quiet 38h ago
+  // Stale-settle runs FIRST so a `后台` record that went quiet 38h ago
   // (launch-ack skipped, task evicted from the 50-cap terminal list, watcher
   // gone) is interrupted immediately instead of being parked at `pending` and
   // relying on a later sweep. `liveBgToolUseIds` still suppresses it for ids a
-  // live backgrounded task tracks — see the helper. `running` is left to the
+  // live backgrounded task tracks — see the helper. `运行中` is left to the
   // transitions below (and TASKS_SNAPSHOT's nextIsAsync settle) so a sync
   // subagent's tool_result can still merge.
   const staleSettled = settleStaleLiveSubagents(
@@ -2017,10 +2017,10 @@ function sweepAtTurnEnd(mirror: ServerMirror): ServerMirror {
   activeSubagents = staleSettled.activeSubagents
 
   // Child-call sweep: a subagent record that SETTLES this turn (running →
-  // interrupted, the sync-orphan case) may still carry `running` child tool
+  // interrupted, the sync-orphan case) may still carry `运行中` child tool
   // calls whose tool_result never landed — flip those to `error` so the
   // card doesn't show a perpetual spinner on a dead subagent. A record that
-  // moves to `pending`/`background` is still live (its async work continues),
+  // moves to `pending`/`后台` is still live (its async work continues),
   // so its running children are left alone — a later child tool_result still
   // flips them. Mirrors the Workflow sweep flipping still-running children.
   const sweepChildCalls = (sub: ActiveSubagent): ActiveSubagent['childToolCalls'] =>
@@ -2136,7 +2136,7 @@ function applyMessage(state: SessionState, message: SdkMessage): SessionState {
     ? { ...message, consumedAt: effectiveConsumedAt }
     : message
 
-  // `api_retry` is a TRANSIENT rate-limit-retry indicator: it never enters
+  // `api_重试` is a TRANSIENT rate-limit-retry indicator: it never enters
   // items/messages/IDB (keeping the transcript append-only). It is routed to
   // a dedicated slot here, and cleared by the next non-retry message.
   // updateTranscriptMirror is a no-op for api_retry (toTranscriptItem
@@ -2150,7 +2150,7 @@ function applyMessage(state: SessionState, message: SdkMessage): SessionState {
   // the child's api_retry frames — a subagent's retry instead rides a
   // `tool_progress` frame (data.type 'agent_api_retry', subagent_retry
   // payload), which our pump drops with every other tool_progress. So every
-  // `system/api_retry` that reaches this reducer is a MAIN-thread retry.
+  // `system/api_重试` that reaches this reducer is a MAIN-thread retry.
   const isApiRetry = message.type === 'system' && message.subtype === 'api_retry'
   // `thinking_tokens` is a transient live estimate of the current thinking
   // block's token count (see toTranscriptItem — never a TranscriptItem). It
@@ -2312,7 +2312,7 @@ function updateTranscriptMirror(mirror: ServerMirror, message: SdkMessage): Serv
 
 /** Replay a list of cached messages through `updateIndexes()` to
  *  reconstruct the lifecycle index maps (`toolStatus`, `planStatus`,
- *  `planContent`, `questionAnswers`, `activeSubagents`).
+ *  `planContent`, `questionAnswers`, `active子 agent`).
  *
  *  Used by `SessionStore` on hydration: only `messages`/`items` are
  *  persisted to localStorage (the indexes are derived state). Without
@@ -2346,8 +2346,8 @@ export function rebuildIndexesFromMessages(
 }
 
 /** Re-apply client-side dismissals to a freshly-rebuilt mirror. After a
- *  hydrate / replay rebuilds `activeSubagents` from the message stream, the
- *  records the user dismissed come back as `running`/`background`/`pending`
+ *  hydrate / replay rebuilds `active子 agent` from the message stream, the
+ *  records the user dismissed come back as `运行中`/`后台`/`pending`
  *  (the stream has no record of the dismiss). This flips them back to
  *  `dismissed` (stamping `endedAt` the same way DISMISS_SUBAGENT does) and
  *  prunes ids that no longer have a dismissable record (absent post-/clear,
@@ -2422,8 +2422,8 @@ function completionOwnerIds(message: SdkMessage): string[] {
  *  for it is paired (or its completion branch will handle it) and must NOT be
  *  parked. Covers every map a tool_result can settle: generic tools
  *  (`toolStatus`), plans (`planStatus`), questions (`questionAnswers`), and the
- *  three sidechain owners (`activeSubagents` / `activeWorkflows` /
- *  `activeSkills`). */
+ *  three sidechain owners (`active子 agent` / `activeWorkflows` /
+ *  `active技能`). */
 function resultOwnerKnown(mirror: ServerMirror, id: string): boolean {
   return (
     mirror.toolStatus.has(id) ||
@@ -2803,7 +2803,7 @@ function updateIndexesMirror(mirror: ServerMirror, message: SdkMessage): ServerM
           // re-scanning the transcript. Dedup by toolUseId (a replay may
           // re-deliver the same frame) preserving each row's existing
           // status/result — only new rows are appended, mirroring the
-          // Workflow child-index byId merge. `newTools` (the raw count above)
+          // Workflow child-index byId merge. `new工具` (the raw count above)
           // stays the authority for toolCount so the header number is
           // unaffected even if childToolCalls dedup drops a re-delivery.
           const childStarts = getSubagentChildStarts(message)
@@ -2851,7 +2851,7 @@ function updateIndexesMirror(mirror: ServerMirror, message: SdkMessage): ServerM
   // — only the row's own status/result — and it routinely lands AFTER the
   // parent settled (an async subagent completing, or a record the
   // pending-timeout / dismiss path already terminated). Accepting it there is
-  // what lets a stranded `running` row still resolve to its real outcome.
+  // what lets a stranded `运行中` row still resolve to its real outcome.
   if (message.type === 'user' && activeSubagents.size > 0) {
     const parentId = typeof message.parent_tool_use_id === 'string' ? message.parent_tool_use_id : ''
     if (parentId) {

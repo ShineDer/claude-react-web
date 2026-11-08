@@ -62,7 +62,7 @@ describe('SessionBody', () => {
       </SessionBody>,
     )
     expect(screen.getByTestId('msgs')).toBeTruthy()
-    expect(screen.queryByText('Session is dormant')).toBeNull()
+    expect(screen.queryByText('会话处于休眠状态')).toBeNull()
   })
 
   it('renders children for a running session carrying a stale error', () => {
@@ -83,10 +83,10 @@ describe('SessionBody', () => {
     )
     // 消息列表让位
     expect(screen.queryByTestId('msgs')).toBeNull()
-    expect(screen.getByText('Session is dormant')).toBeTruthy()
+    expect(screen.getByText('会话处于休眠状态')).toBeTruthy()
     expect(screen.getByText(/cwd gone/)).toBeTruthy()
     expect(screen.getByText(/below to try again/)).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'Resume session' }))
+    fireEvent.click(screen.getByRole('button', { name: '恢复会话' }))
     expect(onResume).toHaveBeenCalledTimes(1)
   })
 
@@ -117,10 +117,10 @@ describe('SessionBody', () => {
     expect(screen.getByText('Session terminated')).toBeTruthy()
     expect(screen.getByText(/boom/)).toBeTruthy()
     expect(screen.getByText(/Resume to continue in place, or fork from your last completed turn/)).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'Resume' }))
+    fireEvent.click(screen.getByRole('button', { name: '恢复' }))
     expect(onResume).toHaveBeenCalledTimes(1)
     await act(async () => {}) // 动作 settle 后按钮复位，可再点另一颗
-    fireEvent.click(screen.getByRole('button', { name: 'Fork from last completed turn' }))
+    fireEvent.click(screen.getByRole('button', { name: '从上一个已完成回合分叉' }))
     expect(onFork).toHaveBeenCalledTimes(1)
   })
 
@@ -148,7 +148,7 @@ describe('SessionBody', () => {
         <div data-testid="msgs">messages</div>
       </SessionBody>,
     )
-    expect(screen.getByRole('button', { name: 'Resume' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: '恢复' })).toBeTruthy()
     expect(screen.queryByText(/fork from your last completed turn/)).toBeNull()
     expect(screen.getByText(/Resume to continue in place/)).toBeTruthy()
   })
@@ -162,8 +162,8 @@ describe('SessionBody', () => {
         <div data-testid="msgs">messages</div>
       </SessionBody>,
     )
-    expect(screen.queryByRole('button', { name: 'Resume' })).toBeNull()
-    expect(screen.getByRole('button', { name: 'Fork from last completed turn' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: '恢复' })).toBeNull()
+    expect(screen.getByRole('button', { name: '从上一个已完成回合分叉' })).toBeTruthy()
     expect(screen.getByText(/Use .Fork from last completed turn. below to continue/)).toBeTruthy()
   })
 
@@ -188,8 +188,8 @@ describe('SessionBody', () => {
       </SessionBody>,
     )
     expect(screen.queryByTestId('msgs')).toBeNull()
-    expect(screen.getByText('Resuming session...')).toBeTruthy()
-    expect(screen.queryByText('Session is dormant')).toBeNull()
+    expect(screen.getByText('正在恢复会话...')).toBeTruthy()
+    expect(screen.queryByText('会话处于休眠状态')).toBeNull()
     expect(screen.queryByRole('button')).toBeNull()
   })
 
@@ -205,13 +205,13 @@ describe('SessionBody', () => {
         <div data-testid="msgs">messages</div>
       </SessionBody>,
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Fork from last completed turn' }))
+    fireEvent.click(screen.getByRole('button', { name: '从上一个已完成回合分叉' }))
     expect(onFork).toHaveBeenCalledTimes(1)
     // 全部动作按钮进入禁用——第二次点击打不出第二个请求
-    expect((screen.getByRole('button', { name: 'Fork from last completed turn' }) as HTMLButtonElement).disabled).toBe(true)
-    expect((screen.getByRole('button', { name: 'Resume' }) as HTMLButtonElement).disabled).toBe(true)
-    fireEvent.click(screen.getByRole('button', { name: 'Fork from last completed turn' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Resume' }))
+    expect((screen.getByRole('button', { name: '从上一个已完成回合分叉' }) as HTMLButtonElement).disabled).toBe(true)
+    expect((screen.getByRole('button', { name: '恢复' }) as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: '从上一个已完成回合分叉' }))
+    fireEvent.click(screen.getByRole('button', { name: '恢复' }))
     expect(onFork).toHaveBeenCalledTimes(1)
     expect(onResume).not.toHaveBeenCalled()
   })
@@ -226,10 +226,10 @@ describe('SessionBody', () => {
         <div data-testid="msgs">messages</div>
       </SessionBody>,
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Fork from last completed turn' }))
-    expect((screen.getByRole('button', { name: 'Fork from last completed turn' }) as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: '从上一个已完成回合分叉' }))
+    expect((screen.getByRole('button', { name: '从上一个已完成回合分叉' }) as HTMLButtonElement).disabled).toBe(true)
     await act(async () => {})
-    expect((screen.getByRole('button', { name: 'Fork from last completed turn' }) as HTMLButtonElement).disabled).toBe(false)
+    expect((screen.getByRole('button', { name: '从上一个已完成回合分叉' }) as HTMLButtonElement).disabled).toBe(false)
   })
 
   it('does not double the punctuation when the error already ends with a period', () => {
@@ -253,7 +253,7 @@ describe('SessionBody', () => {
         <div data-testid="msgs">messages</div>
       </SessionBody>,
     )
-    const btn = screen.getByRole('button', { name: 'Fork from last completed turn' }) as HTMLButtonElement
+    const btn = screen.getByRole('button', { name: '从上一个已完成回合分叉' }) as HTMLButtonElement
     // React 的事件分发层全局上报这个异常（不穿透 fireEvent）——断言只看
     // 按钮没有被永久卡死。
     fireEvent.click(btn)
@@ -267,7 +267,7 @@ describe('SessionBody', () => {
       </SessionBody>,
     )
     expect(screen.queryByTestId('msgs')).toBeNull()
-    expect(screen.getByText('Resuming session...')).toBeTruthy()
+    expect(screen.getByText('正在恢复会话...')).toBeTruthy()
   })
 
   it('renders the stderr tail as a collapsed disclosure on the card', () => {

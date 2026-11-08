@@ -103,7 +103,7 @@ export function ModelPicker({ anchor, current, currentGroupId, options, disabled
           key: `group:${g.id}`,
           label: g.name,
           sub: slotLabel,
-          heading: firstInGroup ? 'Model Groups' : undefined,
+          heading: firstInGroup ? '模型分组' : undefined,
           active: currentGroupId === g.id,
           select: () => onSelectGroup?.(g.id),
         })
@@ -117,7 +117,7 @@ export function ModelPicker({ anchor, current, currentGroupId, options, disabled
         result.push({
           key: `recent:${id}`,
           label: id,
-          heading: firstInGroup ? 'Recent' : undefined,
+          heading: firstInGroup ? '最近' : undefined,
           active: current === id,
           select: () => onSelect(id),
         })
@@ -139,7 +139,7 @@ export function ModelPicker({ anchor, current, currentGroupId, options, disabled
           key: `model:${m.id}`,
           label: m.displayName || m.id,
           sub: hasName ? m.id : undefined,
-          heading: firstInGroup ? 'Models' : undefined,
+          heading: firstInGroup ? '模型' : undefined,
           active: current ? current === m.id : m.id === defaultId,
           select: () => onSelect(m.id),
         })
@@ -237,7 +237,7 @@ export function ModelPicker({ anchor, current, currentGroupId, options, disabled
       className="model-picker"
       style={{ left: pos.x, top: pos.y }}
       role="dialog"
-      aria-label="Select model"
+      aria-label="选择模型"
       // Pop in/out from the anchor — mirrors ctx-menu-in/ctx-menu-out
       // (scale 0.98 + small y nudge). pointerEvents:'none' on exit replaces
       // the old [data-state="closing"]{pointer-events:none} rule.
@@ -253,19 +253,19 @@ export function ModelPicker({ anchor, current, currentGroupId, options, disabled
           ref={inputRef}
           className="model-picker-input"
           type="text"
-          placeholder="Search or type a model id…"
+          placeholder="搜索或输入模型 ID…"
           value={query}
           disabled={disabled}
           onChange={(e) => {
             setQuery(e.target.value)
             setSelectedIndex(0)
           }}
-          aria-label="Search models"
+          aria-label="搜索模型"
           aria-autocomplete="list"
         />
       </div>
       <div className="model-picker-list" ref={listRefMerged} role="listbox">
-        {rows.length === 0 && <div className="model-picker-empty">No matches</div>}
+        {rows.length === 0 && <div className="model-picker-empty">无匹配项</div>}
         {rows.map((row, i) => (
           <div key={row.key}>
             {row.heading !== undefined && (

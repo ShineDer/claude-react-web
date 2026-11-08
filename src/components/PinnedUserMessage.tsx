@@ -227,7 +227,7 @@ export const PinnedUserMessage = memo(function PinnedUserMessage({ text, clearin
             type="button"
             className={`pinned-user-message-dropdown-toggle${expanded ? ' open' : ''}`}
             onClick={handleToggle}
-            aria-label="Show all questions"
+            aria-label="显示全部问题"
             aria-expanded={expanded}
           >
             <IconChevronDown size={14} />

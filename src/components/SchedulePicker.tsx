@@ -88,7 +88,7 @@ export function SchedulePicker({ anchorRect, onPick, onClose }: Props) {
         <div className="schedule-picker-head">
           <IconClock size={14} aria-hidden />
           <span>Schedule send</span>
-          <button type="button" className="schedule-picker-close" aria-label="Close" onClick={onClose}>
+          <button type="button" className="schedule-picker-close" aria-label="关闭" onClick={onClose}>
             <IconX size={14} />
           </button>
         </div>
@@ -114,7 +114,7 @@ export function SchedulePicker({ anchorRect, onPick, onClose }: Props) {
           />
         </label>
         <div className="schedule-picker-actions">
-          <button type="button" className="btn" onClick={onClose}>Cancel</button>
+          <button type="button" className="btn" onClick={onClose}>取消</button>
           <button
             type="button"
             className="btn btn-primary"

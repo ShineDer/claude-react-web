@@ -11,7 +11,7 @@ export function apiErrorToastOpts(e: unknown): PushOptions | undefined {
   return typeof hint === 'string' && hint ? { detail: hint } : undefined
 }
 
-/** App-wide toast hub. Exposes `error/success/info` shorthands plus the
+/** App-wide toast hub. Exposes `error/success/信息` shorthands plus the
  *  raw `show` and `dismiss`. Auto-dismiss timers live in the provider so
  *  consumers can fire-and-forget — call `toast.error('boom')` and walk
  *  away. Returns a stable handle (memoised), safe to drop into useEffect

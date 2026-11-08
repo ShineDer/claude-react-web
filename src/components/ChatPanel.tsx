@@ -110,7 +110,7 @@ function worktreeChipTitle(
  *  a sub-second switch shows nothing beyond the chip's disabled styling. */
 const MODEL_SWITCH_INDICATOR_DELAY_MS = 1000
 
-/** Optimistic-update helper: POST to `apiPath`, update session on success,
+/** Optimistic-update helper: POST to `api路径`, update session on success,
  *  rollback + show error toast on failure. Returns the round-trip promise so
  *  callers can track in-flight state (the model chip's spinner); it never
  *  rejects — the failure path is the toast + rollback above. */
@@ -227,9 +227,9 @@ export interface ChatPanelProps {
    *  and returns a fresh session; App swaps the panel id. Triggered by the
    *  `/clear` local command. */
   onClearSession: (panelSessionId: string) => void
-  /** `/handoff` this panel — the server summarizes the conversation and
+  /** `/hand关` this panel — the server summarizes the conversation and
    *  returns a fresh seeded continuation session; App swaps the panel id.
-   *  Triggered by the `/handoff` local command. */
+   *  Triggered by the `/hand关` local command. */
   onHandoffSession: (panelSessionId: string) => void
   /** True while this panel's /handoff POST is in flight (App-owned state).
    *  Drives Chat's "Handing off…" pill + composer lockout. */
@@ -620,9 +620,9 @@ export const ChatPanel = memo(function ChatPanel({
     const value = next.trim()
     setModelMenu(null)
     if (value === (session.model ?? '')) return
-    // One switch at a time. The chip's `disabled` covers the visible case, but
+    // One switch at a time. The chip's `已禁用` covers the visible case, but
     // this guard is the authoritative stop: a second pick that arrived in the
-    // same tick would still pass a stale `disabled`, and a switch started from
+    // same tick would still pass a stale `已禁用`, and a switch started from
     // SettingsPanel's model select is invisible to this component entirely.
     // Without it the overlap issues a second POST and then clears the shared
     // label when IT settles, dropping the indicator while the first is still
@@ -634,7 +634,7 @@ export const ChatPanel = memo(function ChatPanel({
       `/sessions/${session.id}/model`,
       { model: value || undefined },
       { model: session.model },
-      `Couldn't change model`,
+      `Couldn't change 模型`,
       onSessionUpdate,
       toast.error,
     ).finally(() => setModelSwitchLabel(null))
@@ -906,7 +906,7 @@ export const ChatPanel = memo(function ChatPanel({
           </span>
         </Tooltip>
         {hasUnread && !focused && (
-          <Tooltip label="New turn completed while this panel wasn't focused" placement="bottom" align="start">
+          <Tooltip label="此面板未聚焦时有新轮次完成" placement="bottom" align="start">
             <span
               className="chat-panel-unread"
               role="img"
@@ -1108,7 +1108,7 @@ export const ChatPanel = memo(function ChatPanel({
               type="button"
               className={`chat-panel-model-badge${modelMenu ? ' open' : ''}${modelSwitching ? ' pending' : ''}`}
               // In-flight disable uses the UNDELAYED label, the same signal the
-              // picker's own `disabled` reads: two different signals would let
+              // picker's own `已禁用` reads: two different signals would let
               // the chip open a picker whose every row is already disabled.
               disabled={chipsDisabled || modelSwitchLabel !== null}
               aria-haspopup="listbox"
@@ -1266,7 +1266,7 @@ export const ChatPanel = memo(function ChatPanel({
               current={session.model}
               currentGroupId={session.modelGroupId}
               options={modelOptions}
-              // Same in-flight signal as the chip's own `disabled` (not the
+              // Same in-flight signal as the chip's own `已禁用` (not the
               // delayed spinner one): keeping the two in step is what stops the
               // chip from opening a picker whose every row is already disabled.
               disabled={chipsDisabled || modelSwitchLabel !== null}
@@ -1479,8 +1479,8 @@ export const ChatPanel = memo(function ChatPanel({
           />
         ) : (
           <div className="empty-state">
-            <h2>Session is dormant</h2>
-            <p>This session is dormant. Resume it to pick up where you left off.</p>
+            <h2>会话处于休眠状态</h2>
+            <p>本会话已休眠。恢复它即可从上次中断处继续。</p>
             {onResume && (
               <button
                 type="button"
@@ -1490,7 +1490,7 @@ export const ChatPanel = memo(function ChatPanel({
                   onResume(session.id)
                 }}
               >
-                Resume session
+                恢复会话
               </button>
             )}
           </div>

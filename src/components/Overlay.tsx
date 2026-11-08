@@ -65,7 +65,7 @@ const VARIANT_CLASSES = {
 
 export type OverlayVariant = keyof typeof VARIANT_CLASSES
 
-/** Variants whose backdrop is `position: fixed` in CSS — i.e. full-viewport
+/** Variants whose backdrop is `position: 已修复` in CSS — i.e. full-viewport
  *  surfaces. These are portalled to <body> by default, because a panel or the
  *  sidebar silently becomes the containing block of any fixed DESCENDANT as
  *  soon as it carries `backdrop-filter` (wallpaper on) or a transform (the
@@ -115,7 +115,7 @@ export interface OverlayProps {
   /** Extra class(es) on the backdrop element. */
   backdropClassName?: string
   /** Force the portal decision. Omit it to get the variant default: variants
-   *  whose backdrop is `position: fixed` always render into a portal on
+   *  whose backdrop is `position: 已修复` always render into a portal on
    *  document.body (see FIXED_BACKDROP_VARIANTS), the panel-scoped absolute
    *  variants never do unless you ask. */
   portal?: boolean
@@ -137,7 +137,7 @@ export interface OverlayProps {
   canCloseOnEscape?: () => boolean
   /** Busy guard for the backdrop-click close path. */
   canCloseOnBackdrop?: () => boolean
-  /** 'custom' routes Escape to `onEscape` instead of `onClose` (e.g. Permission
+  /** 'custom' routes Escape to `onEscape` instead of `on关闭` (e.g. Permission
    *  dialogs deny the request). */
   escapeBehavior?: 'close' | 'custom'
   onEscape?: (e: KeyboardEvent) => void
@@ -236,7 +236,7 @@ export function Overlay(props: OverlayProps) {
   // fires a document focusin observed by every parent trap's re-guard handler.
   // If this overlay weren't in the stack yet, a parent trap whose `el.contains`
   // is false for a portaled/sibling card would see `isFocusInsideOtherOverlay`
-  // return false and steal focus back — the exact gap the old `.modal-backdrop`
+  // return false and steal focus back — the exact gap the old `.modal-back丢弃`
   // closest() hardcode in useFocusTrap was masking.
   useEscapeStack({
     active: open,

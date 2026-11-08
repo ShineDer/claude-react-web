@@ -197,7 +197,7 @@ export function CommandPalette({ open, onClose, shortcuts, sessions, onSelectSes
   return (
     <Overlay
       variant="palette"
-      ariaLabel="Command palette"
+      ariaLabel="命令面板"
       open={open}
       onClose={onClose}
       onKeyDown={handleKeyDown}
@@ -208,17 +208,17 @@ export function CommandPalette({ open, onClose, shortcuts, sessions, onSelectSes
           ref={inputRef}
           className="palette-input"
           type="text"
-          placeholder="Search commands, sessions, and messages..."
+          placeholder="搜索命令、会话和消息..."
           value={query}
           onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0) }}
-          aria-label="Search"
+          aria-label="搜索"
           aria-autocomplete="list"
           aria-controls="palette-list"
           aria-activedescendant={filtered[clampedSelectedIndex] ? `palette-item-${clampedSelectedIndex}` : undefined}
         />
         <div className="palette-list" ref={listRefMerged} id="palette-list" role="listbox">
           {filtered.length === 0 && !showSearching && !showSearchError && (
-            <div className="palette-empty">No matches</div>
+            <div className="palette-empty">无匹配项</div>
           )}
           {filtered.map((item, index) => {
             const showSection = item.section !== lastSection
@@ -244,8 +244,8 @@ export function CommandPalette({ open, onClose, shortcuts, sessions, onSelectSes
               </div>
             )
           })}
-          {showSearching && <div className="palette-empty">Searching messages...</div>}
-          {showSearchError && <div className="palette-empty">Message search failed</div>}
+          {showSearching && <div className="palette-empty">正在搜索消息...</div>}
+          {showSearchError && <div className="palette-empty">消息搜索失败</div>}
         </div>
     </Overlay>
   )

@@ -81,7 +81,7 @@ export interface TransportFrameHandlers {
   onFrame(raw: unknown): void
   /** The channel is open and ready to send. */
   onOpen(): void
-  /** The channel closed. `info` carries the WebSocket close code/reason when
+  /** The channel closed. `信息` carries the WebSocket close code/reason when
    *  the transport has one (web does); transports without the detail omit it. */
   onClose(info?: { code?: number; reason?: string }): void
   /** Transport-level error. Never itself a disconnect signal. */

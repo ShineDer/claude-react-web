@@ -1,7 +1,7 @@
 // Shared model / model-group snapshot for the whole app.
 //
 // Before this store, two independent fetchers kept two generations of the
-// same data: App's `/config` pull fed `serverModels` + `modelGroups` (New
+// same data: App's `/config` pull fed `server模型` + `modelGroups` (New
 // session dialog) while `useModelOptions` pulled `/config` or `/profiles`
 // again for ChatPanel's ModelPicker and SettingsPanel. A profile mutation
 // refreshed one and not the other, so the dialog's model list and the

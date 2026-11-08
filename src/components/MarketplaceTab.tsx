@@ -84,7 +84,7 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
   const [updateCheckError, setUpdateCheckError] = useState<string | null>(null)
   // Bulk "Update all" — one click refreshes every marketplace currently
   // badged as having an update. `bulkProgress` drives the button label;
-  // `bulkResult` is the completion summary shown beside it.
+  // `bulk结果` is the completion summary shown beside it.
   const [bulkBusy, setBulkBusy] = useState(false)
   const [bulkProgress, setBulkProgress] = useState<{ done: number; total: number } | null>(null)
   const [bulkResult, setBulkResult] = useState<string | null>(null)
@@ -420,7 +420,7 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
       <section className="settings-group">
         <div className="settings-group-head">
           <h4>Add marketplace</h4>
-          <span className="settings-group-desc">Add a marketplace from a public https git repository.</span>
+          <span className="settings-group-desc">从公开的 https git 仓库添加市场。</span>
         </div>
         <div className="settings-group-body">
         <div style={{ display: 'flex', gap: 6 }}>
@@ -429,7 +429,7 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
             style={{ flex: 1, fontSize: 'var(--fs-sm)' }}
             value={newUrl}
             onChange={(e) => setNewUrl(e.target.value)}
-            aria-label="Repository URL"
+            aria-label="仓库 URL"
             placeholder="https://github.com/owner/repo"
             disabled={addState.phase === 'busy'}
             onKeyDown={(e) => { if (e.key === 'Enter') void handleAdd() }}
@@ -439,7 +439,7 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
             style={{ width: 130, fontSize: 'var(--fs-sm)' }}
             value={newRef}
             onChange={(e) => setNewRef(e.target.value)}
-            aria-label="Git ref (optional)"
+            aria-label="Git ref（可选）"
             placeholder="ref (optional)"
             disabled={addState.phase === 'busy'}
             onKeyDown={(e) => { if (e.key === 'Enter') void handleAdd() }}
@@ -450,7 +450,7 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
             onClick={() => void handleAdd()}
             disabled={addState.phase === 'busy' || !newUrl.trim()}
           >
-            {addState.phase === 'busy' ? 'Cloning…' : 'Add'}
+            {addState.phase === 'busy' ? 'Cloning…' : '添加'}
           </button>
         </div>
         <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--fg-muted)' }}>
@@ -487,14 +487,14 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
               className="btn btn-primary"
               onClick={() => void handleUpdateAll()}
               disabled={bulkBusy}
-              title="Refresh every marketplace that has an update available"
+              title="刷新所有有可用更新的市场"
             >
               {bulkBusy
                 ? (bulkProgress ? `Updating ${bulkProgress.done}/${bulkProgress.total}…` : 'Updating…')
                 : `Update all (${updateableCount})`}
             </button>
           ) : checking ? (
-            <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>Checking for updates…</span>
+            <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>正在检查更新…</span>
           ) : updateCheckError || anyCheckError ? (
             <>
               {/* Whole-request failure (network/timeout) and per-marketplace
@@ -517,13 +517,13 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
                 className="btn"
                 style={{ padding: '1px 8px', fontSize: 'var(--fs-xs)' }}
                 onClick={() => void handleRetryCheck()}
-                title="Retry the update check"
+                title="重试更新检查"
               >
-                Retry
+                重试
               </button>
             </>
           ) : (
-            <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--ok-text)' }}>All marketplaces up to date</span>
+            <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--ok-text)' }}>所有市场均为最新</span>
           )}
           {bulkResult && (
             <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>{bulkResult}</span>
@@ -533,11 +533,11 @@ export function MarketplaceTab({ onPluginToggled }: MarketplaceTabProps = {}) {
 
       {/* Marketplace list ------------------------------------------- */}
       {loading && (
-        <div style={{ padding: 24, textAlign: 'center', color: 'var(--fg-muted)' }}>Loading…</div>
+        <div style={{ padding: 24, textAlign: 'center', color: 'var(--fg-muted)' }}>正在加载…</div>
       )}
       {!loading && items.length === 0 && (
         <div style={{ padding: '24px 0', textAlign: 'center', color: 'var(--fg-muted)', fontSize: 'var(--fs-base)' }}>
-          No marketplaces added yet. Paste an https git URL above to add one.
+          尚未添加市场。在上方粘贴 https git URL 即可添加。
         </div>
       )}
       {!loading && items.map((item) => (
@@ -664,7 +664,7 @@ function MarketplaceCard({
             onClick={onRequestRemove}
             disabled={rowBlocked}
           >
-            Del
+            删除
           </button>
         ) : (
           <div style={{ display: 'flex', gap: 2 }}>
@@ -674,14 +674,14 @@ function MarketplaceCard({
               onClick={onConfirmRemove}
               disabled={rowBlocked}
             >
-              Confirm
+              确认
             </button>
             <button
               className="btn"
               style={{ padding: '2px 6px', fontSize: 'var(--fs-xs)' }}
               onClick={onCancelRemove}
               disabled={rowBlocked}
-              aria-label="Cancel"
+              aria-label="取消"
             >
               <IconX size={12} />
             </button>
@@ -707,11 +707,11 @@ function MarketplaceCard({
           padding: '6px 10px 8px', borderTop: '1px solid var(--border)', background: 'var(--bg-elev)',
         }}>
           {!plugins && (
-            <div style={{ padding: '8px 0', fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>Loading plugins…</div>
+            <div style={{ padding: '8px 0', fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>正在加载插件…</div>
           )}
           {plugins && plugins.length === 0 && (
             <div style={{ padding: '8px 0', fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>
-              No plugins in this marketplace.
+              此市场中没有插件。
             </div>
           )}
           {/* Filter bar: only worth showing when there's more than one plugin. */}

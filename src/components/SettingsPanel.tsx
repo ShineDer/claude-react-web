@@ -72,19 +72,19 @@ type SettingsTab = 'general' | 'appearance' | 'context' | 'skills' | 'hooks' | '
 const SESSION_TAB_GROUPS: SettingsNavGroup<SettingsTab>[] = [
   {
     key: 'general',
-    label: 'General',
+    label: '通用',
     tabs: [
-      { key: 'general', label: 'General' },
-      { key: 'appearance', label: 'Appearance' },
+      { key: 'general', label: '通用' },
+      { key: 'appearance', label: '外观' },
     ],
   },
   {
     key: 'behavior',
     label: 'Behavior',
     tabs: [
-      { key: 'skills', label: 'Skills' },
-      { key: 'agents', label: 'Agents' },
-      { key: 'tools', label: 'Tools' },
+      { key: 'skills', label: '技能' },
+      { key: 'agents', label: 'Agent' },
+      { key: 'tools', label: '工具' },
       { key: 'hooks', label: 'Hooks' },
     ],
   },
@@ -92,18 +92,18 @@ const SESSION_TAB_GROUPS: SettingsNavGroup<SettingsTab>[] = [
     key: 'integrations',
     label: 'Integrations',
     tabs: [
-      { key: 'mcp', label: 'MCP Servers' },
-      { key: 'plugins', label: 'Plugins' },
+      { key: 'mcp', label: 'MCP 服务器' },
+      { key: 'plugins', label: '插件' },
     ],
   },
   {
     key: 'diagnostics',
-    label: 'Diagnostics',
+    label: '诊断',
     tabs: [
-      { key: 'context', label: 'Context' },
-      { key: 'usage', label: 'Usage' },
-      { key: 'performance', label: 'Performance' },
-      { key: 'diagnostics', label: 'Diagnostics' },
+      { key: 'context', label: '上下文' },
+      { key: 'usage', label: '用量' },
+      { key: 'performance', label: '性能' },
+      { key: 'diagnostics', label: '诊断' },
     ],
   },
 ]
@@ -111,9 +111,9 @@ const SESSION_TAB_GROUPS: SettingsNavGroup<SettingsTab>[] = [
 interface Props {
   session: SessionInfo
   /** Global UI-pref defaults (server-backed). Used to compute the effective
-   *  value shown by each pref checkbox (`session.<field> ?? global`) and to
+   *  value shown by each pref checkbox (`session.<field> ?? 全局`) and to
    *  label the "Inheriting global (ON/OFF)" hint when no override is set.
-   *  `firstPartyTools` is the structured global-default map (from GET
+   *  `firstParty工具` is the structured global-default map (from GET
    *  /config) consulted when a session has no per-server override. */
   globalPrefs: {
     showPinnedUserMessage: boolean
@@ -171,7 +171,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
   // Full context-usage breakdown from the (blocking) REST endpoint. Null
   // until it is fetched — now automatic when the Context or Skills tab
   // opens (see the effect near loadDetailedUsage()).
-  // ContextBar itself runs off the WS-pushed `contextUsage` prop and never
+  // ContextBar itself runs off the WS-pushed `context用量` prop and never
   // waits on this.
   const [detailedUsage, setDetailedUsage] = useState<ContextUsage | null>(null)
   // True when the last detailed-fetch attempt failed — the Skills tab offers
@@ -291,7 +291,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
   }
 
   /** Re-fetch the static first-party server status after a toggle so the
-   *  card's no-override/no-global fallback (`tool.enabled`) tracks the
+   *  card's no-override/no-global fallback (`tool.已启用`) tracks the
    *  server's post-injection state — mirrors how McpServerCard refetches
    *  mcp-status after a toggle. Non-fatal: on failure the snapshot stays
    *  until the next mount. */
@@ -412,7 +412,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
     // NOTE: /context-usage is intentionally NOT fetched here. It's a
     // blocking SDK control request that hangs the whole panel open while
     // the subprocess is mid-turn or the proxy init handshake stalls.
-    // ContextBar runs off the WebSocket-pushed `contextUsage` prop
+    // ContextBar runs off the WebSocket-pushed `context用量` prop
     // instead (zero round-trip); the full breakdown is lazy-loaded only
     // when a detail section is expanded — see loadDetailedUsage().
 
@@ -1070,7 +1070,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
   }
 
   // Derive plugin groups. The SDK does NOT namespace plugin commands as
-  // `plugin:command` — it returns bare skill names and encodes the owning
+  // `plugin:命令` — it returns bare skill names and encodes the owning
   // plugin as a leading `(pluginName)` tag in the description (e.g.
   // "(skills) Use this skill…"). We associate a command/agent with a plugin
   // when that tag matches a name from the reloadPlugins response; everything
@@ -1098,7 +1098,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
     }
 
     for (const cmd of commands) {
-      // SDK `builtin` marker is authoritative; fall back to the "(plugin)"
+      // SDK `built输入` marker is authoritative; fall back to the "(plugin)"
       // description tag only when it's absent.
       const key = cmd.builtin === true ? '__builtin__' : keyFor(cmd.description)
       ensure(key)
@@ -1164,11 +1164,11 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
   }, [captureSettingsHeight, tab])
 
   return (
-    <aside className="settings-panel" aria-label="Session settings">
+    <aside className="settings-panel" aria-label="会话设置">
       <div className="settings-panel-header">
-        <h3>Session settings</h3>
+        <h3>会话设置</h3>
         <button className="btn btn-sm" onClick={onClose}>
-          Close
+          关闭
         </button>
       </div>
 
@@ -1192,26 +1192,26 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
       <div className="settings-stack">
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Session</h4>
-          <span className="settings-group-desc">Read-only values fixed when the session was created.</span>
+          <h4>会话</h4>
+          <span className="settings-group-desc">创建会话时固定的只读值。</span>
         </div>
-        <SettingsRow stack title="Session ID">
+        <SettingsRow stack title="会话 ID">
           <div className="settings-readonly-value mono" title={session.id}>{session.id}</div>
         </SettingsRow>
         <SettingsRow stack title="CWD">
           <div className="settings-readonly-value mono" title={session.cwd ?? '—'}>{session.cwd ?? '—'}</div>
         </SettingsRow>
-        <SettingsRow stack title="Created">
+        <SettingsRow stack title="已创建">
           <div className="settings-readonly-value" title={new Date(session.createdAt).toLocaleString()}>{new Date(session.createdAt).toLocaleString()}</div>
         </SettingsRow>
       </section>
 
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Live controls</h4>
-          <span className="settings-group-desc">Applied to this session. Some fields commit on blur.</span>
+          <h4>实时控制</h4>
+          <span className="settings-group-desc">已应用到本次会话。部分字段在失焦时保存。</span>
         </div>
-        <SettingsRow stack title={<label htmlFor={panelUid + '-title'}>Title</label>}>
+        <SettingsRow stack title={<label htmlFor={panelUid + '-title'}>标题</label>}>
           <input
             id={panelUid + '-title'}
             ref={titleInputRef}
@@ -1242,7 +1242,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
         <SessionProfileSelect session={session} onSessionUpdate={onSessionUpdate} />
         <SettingsRow
           stack
-          title={<label htmlFor={panelUid + '-model'}>Model</label>}
+          title={<label htmlFor={panelUid + '-model'}>模型</label>}
           hint="Changes apply to the next assistant turn."
         >
           <select
@@ -1252,7 +1252,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
             onChange={(e) => void changeModel(e.target.value)}
             disabled={busy || session.terminated}
           >
-            <option value="">(default)</option>
+            <option value="">（默认）</option>
             {modelOptions.models.map((m) => (
               <option key={m.id} value={m.id}>
                 {/* `||` not `??` — SDK has been observed to return
@@ -1267,7 +1267,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
 
         <SettingsRow
           stack
-          title={<label htmlFor={panelUid + '-permission-mode'}>Permission mode</label>}
+          title={<label htmlFor={panelUid + '-permission-mode'}>权限模式</label>}
           hint={<>Switches take effect on the very next tool call without needing to
             restart the session. Plan and Autonomous are forwarded to the
             Claude CLI for enforcement (older CLI versions fall back to the
@@ -1321,14 +1321,14 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
             disabled={busy || session.terminated}
           />
           <button className="btn btn-primary settings-apply-btn" onClick={applySettings} disabled={busy || session.terminated}>
-            Apply settings
+            应用设置
           </button>
         </div>
       </section>
 
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Memory</h4>
+          <h4>记忆</h4>
           <span className="settings-group-desc">
             {!session.running && !session.terminated
               ? 'Resume the session to change memory settings.'
@@ -1336,7 +1336,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
           </span>
         </div>
         <SettingsRow
-          title="Auto-memory"
+          title="自动记忆"
           hint={<>Lets Claude read from and write to this project's auto-memory directory; recalled
             memories appear in the transcript.{' '}
             {session.memory?.autoMemoryEnabled === undefined
@@ -1351,12 +1351,12 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 disabled={memoryDisabled}
                 onClick={() => void changeMemory({ autoMemoryEnabled: null })}
               >
-                Reset (use default)
+                重置（使用默认值）
               </button>
             )}</>}
         >
           <Switch
-            label="Auto-memory"
+            label="自动记忆"
             checked={session.memory?.autoMemoryEnabled === true}
             disabled={memoryDisabled}
             onChange={(next) => void changeMemory({ autoMemoryEnabled: next })}
@@ -1365,7 +1365,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
 
         <SettingsRow
           stack
-          title={<label htmlFor={panelUid + '-memory-dir'}>Memory directory</label>}
+          title={<label htmlFor={panelUid + '-memory-dir'}>记忆目录</label>}
           hint={<>Overrides the default memory directory (supports <code>~/</code>). Ignored when pinned
             in project settings. Clearing the field restores the default.
             {session.memory?.autoMemoryDirectory !== undefined && (
@@ -1375,7 +1375,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 disabled={memoryDisabled}
                 onClick={() => void changeMemory({ autoMemoryDirectory: null })}
               >
-                Reset (use default)
+                重置（使用默认值）
               </button>
             )}</>}
         >
@@ -1402,7 +1402,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
         </SettingsRow>
 
         <SettingsRow
-          title="Background memory consolidation"
+          title="后台记忆整合"
           hint={<>Auto-dream: consolidates accumulated memories in the background so recall stays
             relevant.{' '}
             {session.memory?.autoDreamEnabled === undefined
@@ -1417,12 +1417,12 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 disabled={memoryDisabled}
                 onClick={() => void changeMemory({ autoDreamEnabled: null })}
               >
-                Reset (use default)
+                重置（使用默认值）
               </button>
             )}</>}
         >
           <Switch
-            label="Background memory consolidation"
+            label="后台记忆整合"
             checked={session.memory?.autoDreamEnabled === true}
             disabled={memoryDisabled}
             onChange={(next) => void changeMemory({ autoDreamEnabled: next })}
@@ -1432,7 +1432,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
 
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Sandbox</h4>
+          <h4>沙箱</h4>
           <span className="settings-group-desc">
             {!session.running && !session.terminated
               ? 'Resume the session to change sandbox settings.'
@@ -1440,13 +1440,13 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
           </span>
         </div>
         <SettingsRow
-          title="Run commands in a sandbox"
+          title="在沙箱中运行命令"
           hint={<>Isolates Bash file/network access behind permission rules. macOS needs nothing; Linux
             /WSL2 require <code>bubblewrap</code> + <code>socat</code>. When off, commands run with
             the project/SDK default.</>}
         >
           <Switch
-            label="Run commands in a sandbox"
+            label="在沙箱中运行命令"
             checked={session.sandbox != null}
             disabled={sandboxDisabled}
             onChange={(next) => void toggleSandbox(next)}
@@ -1456,11 +1456,11 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
         {session.sandbox != null && (
           <>
             <SettingsRow
-              title="Auto-allow sandboxed commands"
+              title="自动允许沙箱命令"
               hint="Runs sandboxed Bash without prompting (the SDK's default when unset). Toggle off to require a prompt even for sandboxed commands."
             >
               <Switch
-                label="Auto-allow sandboxed commands"
+                label="自动允许沙箱命令"
                 checked={session.sandbox.autoAllowBashIfSandboxed === true}
                 disabled={sandboxDisabled}
                 onChange={() => void toggleSandboxBool('autoAllowBashIfSandboxed')}
@@ -1468,11 +1468,11 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
             </SettingsRow>
 
             <SettingsRow
-              title="Allow unsandboxed fallback"
+              title="允许回退到无沙箱"
               hint="When on, commands that can't run in the sandbox may retry unsandboxed via dangerouslyDisableSandbox. Off forces every command to stay sandboxed."
             >
               <Switch
-                label="Allow unsandboxed fallback"
+                label="允许回退到无沙箱"
                 checked={session.sandbox.allowUnsandboxedCommands === true}
                 disabled={sandboxDisabled}
                 onChange={() => void toggleSandboxBool('allowUnsandboxedCommands')}
@@ -1480,11 +1480,11 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
             </SettingsRow>
 
             <SettingsRow
-              title="Fail hard if unavailable"
+              title="不可用时强制失败"
               hint="Exit an error if the sandbox can't start. Off (default) degrades gracefully to running unsandboxed."
             >
               <Switch
-                label="Fail hard if unavailable"
+                label="不可用时强制失败"
                 checked={session.sandbox.failIfUnavailable === true}
                 disabled={sandboxDisabled}
                 onChange={() => void toggleSandboxBool('failIfUnavailable')}
@@ -1493,10 +1493,10 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
 
             <div className="settings-group-body">
               <details className="settings-advanced">
-                <summary>Advanced (network / filesystem overrides)</summary>
+                <summary>高级（覆盖网络 / 文件系统）</summary>
                 <SettingsRow
                   stack
-                  title={<label htmlFor={panelUid + '-sandbox-domains'}>Allowed network domains</label>}
+                  title={<label htmlFor={panelUid + '-sandbox-domains'}>允许的网络域名</label>}
                   hint="Pre-approved hosts sandboxed commands may reach. The SDK prompts for anything not listed. Empty means &quot;prompt / deny by default&quot;."
                 >
                   <input
@@ -1522,7 +1522,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 </SettingsRow>
                 <SettingsRow
                   stack
-                  title={<label htmlFor={panelUid + '-sandbox-write'}>Extra writable paths</label>}
+                  title={<label htmlFor={panelUid + '-sandbox-write'}>额外可写路径</label>}
                   hint="Paths sandboxed commands may write beyond the working dir / session temp dir."
                 >
                   <input
@@ -1558,7 +1558,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
       <div className="settings-stack">
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Display</h4>
+          <h4>显示</h4>
           <span className="settings-group-desc">
             Per-session overrides of the global defaults. Reset restores inheritance.
           </span>
@@ -1567,7 +1567,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
             global); toggling writes a per-session override. "Reset" clears
             the override so the session re-inherits the global default live. */}
         <SettingsRow
-          title="Show pinned “current question” header"
+          title="显示固定的“当前问题”标题"
           hint={<>Pins the user message of the turn in view at the top of the chat
             when it scrolls out of sight, so you keep context while reading a
             long reply.{' '}
@@ -1581,12 +1581,12 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 disabled={busy || session.terminated}
                 onClick={() => void changePref({ showPinnedUserMessage: null })}
               >
-                Reset (inherit global)
+                重置（继承全局）
               </button>
             )}</>}
         >
           <Switch
-            label="Show pinned current question header"
+            label="显示固定的当前问题标题"
             checked={effShowPinned}
             disabled={busy || session.terminated}
             onChange={(next) => void changePref({ showPinnedUserMessage: next })}
@@ -1594,7 +1594,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
         </SettingsRow>
 
         <SettingsRow
-          title="Auto-generate session recap"
+          title="自动生成会话摘要"
           hint={<>Automatically produces a session summary after the conversation has
             been idle. Manual recap (Alt+R) still works when this is off.{' '}
             {session.autoRecap === undefined
@@ -1607,12 +1607,12 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 disabled={busy || session.terminated}
                 onClick={() => void changePref({ autoRecap: null })}
               >
-                Reset (inherit global)
+                重置（继承全局）
               </button>
             )}</>}
         >
           <Switch
-            label="Auto-generate session recap"
+            label="自动生成会话摘要"
             checked={effAutoRecap}
             disabled={busy || session.terminated}
             onChange={(next) => void changePref({ autoRecap: next })}
@@ -1634,7 +1634,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 disabled={busy || session.terminated}
                 onClick={() => void changePref({ toolGroupCards: null })}
               >
-                Reset (inherit global)
+                重置（继承全局）
               </button>
             )}</>}
         >
@@ -1667,7 +1667,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                   disabled={busy || session.terminated}
                   onClick={() => void changePref({ autoExpandRunningGroups: null })}
                 >
-                  Reset (inherit global)
+                  重置（继承全局）
                 </button>
               )}</>}
           >
@@ -1681,7 +1681,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
         )}
 
         <SettingsRow
-          title="Show message card headers"
+          title="显示消息卡片标题"
           hint={<>Shows the assistant/you label, timestamp, and sending status row on
             each message card. When off, message cards render as bare content.{' '}
             {session.showMessageHeaders === undefined
@@ -1694,12 +1694,12 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                 disabled={busy || session.terminated}
                 onClick={() => void changePref({ showMessageHeaders: null })}
               >
-                Reset (inherit global)
+                重置（继承全局）
               </button>
             )}</>}
         >
           <Switch
-            label="Show message card headers"
+            label="显示消息卡片标题"
             checked={effShowMessageHeaders}
             disabled={busy || session.terminated}
             onChange={(next) => void changePref({ showMessageHeaders: next })}
@@ -1713,7 +1713,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
       <div className="settings-stack">
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Context usage</h4>
+          <h4>上下文用量</h4>
           <span className="settings-group-desc">Live usage of this session's context window.</span>
         </div>
         <div className="settings-group-body">
@@ -1740,7 +1740,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
             at the cost of more summarization.
           </span>
           {!session.running && !session.terminated && (
-            <span className="hint">Resume the session to change the auto-compact window.</span>
+            <span className="hint">恢复会话以更改自动压缩窗口。</span>
           )}
         </div>
       </section>
@@ -1808,7 +1808,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
               {detailedUsage
                 ? formatJson(detailedUsage)
                 : loadingUsage
-                  ? 'Loading...'
+                  ? '加载中...'
                   : usage
                     ? formatJson(usage)
                     : '-'}
@@ -1886,7 +1886,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
               {usage?.skills
                 ? "Couldn't refresh the skill token breakdown — showing last known numbers. "
                 : "Couldn't load the skill token breakdown — "}
-              <button type="button" className="settings-reset-link" onClick={loadDetailedUsage}>retry</button>
+              <button type="button" className="settings-reset-link" onClick={loadDetailedUsage}>重试</button>
             </span>
           )}
         </div>
@@ -1907,7 +1907,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
       <section className="settings-group">
         <div className="settings-group-head">
           <div className="settings-group-head-row">
-            <h4>Plugins</h4>
+            <h4>插件</h4>
             <div className="settings-section-head-actions">
               <button className="btn btn-sm" onClick={reloadPlugins} disabled={busy || session.terminated || reloadingPlugins}>
                 {reloadingPlugins ? <IconLoader size={12} className="settings-card-spin" /> : 'Reload plugins'}
@@ -1935,7 +1935,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
             </div>
           )}
           {pluginGroups.length === 0 && !commands.length && (
-            <div className="settings-note">No plugins loaded</div>
+            <div className="settings-note">未加载插件</div>
           )}
           {pluginGroups.map(([key, group]) => (
             <PluginCard
@@ -1955,14 +1955,14 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
       <section className="settings-group">
         <div className="settings-group-head">
           <div className="settings-group-head-row">
-            <h4>Marketplace</h4>
+            <h4>市场</h4>
             <div className="settings-section-head-actions">
               <button className="btn btn-sm" onClick={() => setShowMarketplace(true)}>
-                Browse plugins
+                浏览插件
               </button>
             </div>
           </div>
-          <span className="settings-group-desc">Browse and install plugins from registered marketplaces.</span>
+          <span className="settings-group-desc">从已注册市场浏览并安装插件。</span>
         </div>
       </section>
       </div>
@@ -1971,13 +1971,13 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
       {tab === 'mcp' && (
       <div className="settings-stack">
         <div className="settings-tab-head">
-          <h4>MCP servers</h4>
+          <h4>MCP 服务器</h4>
           <div className="settings-section-head-actions">
             <button
               className="btn btn-sm"
               onClick={() => { setMcpInstallerEdit(undefined); setShowMcpInstaller(true) }}
             >
-              Manage
+              管理
             </button>
           </div>
         </div>
@@ -2023,7 +2023,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
           </section>
         )}
         {(!globalNamesSettled || (mcpStatusLoading && effectiveMcpWithOverride.length === 0)) && <Skeleton rows={2} />}
-        {globalNamesSettled && !mcpStatusLoading && effectiveMcpWithOverride.length === 0 && <EmptyState icon={<IconTerminal size={16} />} title="No MCP servers" />}
+        {globalNamesSettled && !mcpStatusLoading && effectiveMcpWithOverride.length === 0 && <EmptyState icon={<IconTerminal size={16} />} title="无 MCP 服务器" />}
         {globalNamesSettled && !globalNamesError && mcpBoxes.filter((box) => box.servers.length > 0).map((box) => (
           <section className="settings-group" key={box.title}>
             <div className="settings-group-head">
@@ -2079,7 +2079,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
         {session.running && availableMcpNames.length > 0 && (
           <section className="settings-group">
             <div className="settings-group-head">
-              <h4>Available from global config</h4>
+              <h4>可从全局配置使用</h4>
               <span className="settings-group-desc">Enabled global servers not connected to this session.</span>
             </div>
             <div className="settings-group-body settings-carded-group-body">
@@ -2091,7 +2091,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
                     onClick={() => void addMcpServer(name)}
                     disabled={busy || session.terminated}
                   >
-                    Add
+                    添加
                   </button>
                 </div>
               ))}
@@ -2141,7 +2141,7 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
       <Overlay
         variant="marketplace"
         portal
-        ariaLabel="Plugin Marketplace"
+        ariaLabel="插件市场"
         open={showMarketplace}
         onClose={() => setShowMarketplace(false)}
         trapFocus
@@ -2150,8 +2150,8 @@ export const SettingsPanel = memo(function SettingsPanel({ session, globalPrefs,
         exitDurationMs={0}
       >
         <div className="modal-header">
-          <h3>Plugin Marketplace</h3>
-          <button className="btn btn-sm" onClick={() => setShowMarketplace(false)}>Close</button>
+          <h3>插件市场</h3>
+          <button className="btn btn-sm" onClick={() => setShowMarketplace(false)}>关闭</button>
         </div>
         <div style={{ overflowY: 'auto', padding: 16 }}>
           <Suspense fallback={<Skeleton className="lazy-tab-loading" />}>
@@ -2263,11 +2263,11 @@ function LoadedSkillsRows({ rows, cwd }: { rows: SkillFrontmatter[]; cwd?: strin
 type SessionSkillKind = 'inherit' | 'default' | 'all' | 'allowlist' | 'disabled'
 
 const SESSION_SKILL_OPTIONS: { kind: SessionSkillKind; title: string; desc: string }[] = [
-  { kind: 'inherit', title: 'Inherit (use global)', desc: 'Follow the server-wide policy from Settings → Skills.' },
-  { kind: 'default', title: 'SDK default', desc: 'Leave skill discovery to the SDK (name-only surfacing).' },
-  { kind: 'all', title: 'Enable all discovered skills', desc: 'Load every filesystem skill the SDK can discover.' },
-  { kind: 'allowlist', title: 'Enable selected skills only', desc: 'Load only the checked skill names.' },
-  { kind: 'disabled', title: 'Disable all skills', desc: 'Force every skill off for this session.' },
+  { kind: 'inherit', title: '继承（使用全局）', desc: 'Follow the server-wide policy from Settings → Skills.' },
+  { kind: 'default', title: 'SDK 默认', desc: 'Leave skill discovery to the SDK (name-only surfacing).' },
+  { kind: 'all', title: '启用所有已发现的技能', desc: 'Load every filesystem skill the SDK can discover.' },
+  { kind: 'allowlist', title: '仅启用所选技能', desc: 'Load only the checked skill names.' },
+  { kind: 'disabled', title: '禁用所有技能', desc: 'Force every skill off for this session.' },
 ]
 
 function overrideToKind(override: SessionSkillOverride | undefined): SessionSkillKind {
@@ -2389,10 +2389,10 @@ function SessionSkillPolicyCard({
       <span className="hint" style={{ display: 'block', marginTop: 8 }}>{effectiveHint}</span>
       {kind === 'allowlist' && (
         <div className="settings-skill-allowlist">
-          {!loaded && <div className="settings-empty-note">Loading skills…</div>}
+          {!loaded && <div className="settings-empty-note">正在加载技能…</div>}
           {loaded && error && <div className="settings-empty-note">Couldn't load skills: {error}</div>}
           {loaded && !error && skillNames.length === 0 && (
-            <EmptyState icon={<IconSparkles size={16} />} title="No skills discovered for this workspace" />
+            <EmptyState icon={<IconSparkles size={16} />} title="此工作区未发现技能" />
           )}
           {skillNames.map((name) => (
             <label
@@ -2504,7 +2504,7 @@ function PluginCard({
               onClick={toggle}
               disabled={disabled}
             >
-              {enabled ? 'Disable' : 'Enable'}
+              {enabled ? '禁用' : '启用'}
             </button>
           )
         )}
@@ -2520,7 +2520,7 @@ function PluginCard({
       <AnimatedCollapse open={expanded}>
         <div className="settings-card-body">
           {commands.length > 0 && (
-            <div className="settings-card-grouplabel">Skills</div>
+            <div className="settings-card-grouplabel">技能</div>
           )}
           {commands.map((cmd) => (
             <div key={cmd.name} className="settings-card-item">
@@ -2529,7 +2529,7 @@ function PluginCard({
             </div>
           ))}
           {agents.length > 0 && (
-            <div className="settings-card-grouplabel spaced">Agents</div>
+            <div className="settings-card-grouplabel spaced">Agent</div>
           )}
           {agents.map((agent) => (
             <div key={agent.name} className="settings-card-item">
@@ -2607,7 +2607,7 @@ function FirstPartyStatusCard({
       <div className="settings-card-head">
         <span className="settings-card-dot" style={{ '--dot': enabled ? 'var(--plugin-active)' : 'var(--plugin-inactive)' } as CSSProperties} />
         <span className="settings-card-name">{tool.name}</span>
-        <span className="settings-card-badge built-in">built-in</span>
+        <span className="settings-card-badge built-in">内置</span>
         {tool.tools.length > 0 && (
           <span className="settings-card-meta">{tool.tools.length} tool{tool.tools.length !== 1 ? 's' : ''}</span>
         )}
@@ -2620,9 +2620,9 @@ function FirstPartyStatusCard({
             className="btn btn-xs"
             onClick={() => onToggle(!enabled)}
             disabled={inert}
-            title={enabled ? 'Disable' : 'Enable'}
+            title={enabled ? '禁用' : '启用'}
           >
-            {enabled ? 'Disable' : 'Enable'}
+            {enabled ? '禁用' : '启用'}
           </button>
         )}
         {tool.tools.length > 0 && (
@@ -2638,11 +2638,11 @@ function FirstPartyStatusCard({
       </div>
       {tool.description && <div className="settings-card-note">{tool.description}</div>}
       {tool.error && <div className="settings-first-party-error">{tool.error}</div>}
-      {!tool.hasCwd && <div className="settings-card-note">No session working directory — not injected.</div>}
+      {!tool.hasCwd && <div className="settings-card-note">无会话工作目录 — 未注入。</div>}
       {hasOverride && (
         <div className="settings-card-note">
           <button type="button" className="settings-reset-link" disabled={inert} onClick={onReset}>
-            Reset (inherit global)
+            重置（继承全局）
           </button>
         </div>
       )}
@@ -2678,7 +2678,7 @@ function McpFailedPanel({ error, config }: { error: string; config?: unknown }) 
         <>
           <div className="settings-mcp-diagnostic">
             <code>{diag.value}</code>
-            <CopyButton getValue={() => diag.value} label="Copy" />
+            <CopyButton getValue={() => diag.value} label="复制" />
           </div>
           <div className="settings-mcp-diagnostic-hint">
             {diag.kind === 'command'
@@ -2728,7 +2728,7 @@ export function McpServerCard({
         <span className="settings-card-name">
           {server.name}
           {isGlobal && (
-            <span className="settings-card-badge global" title="From the global MCP config library">global</span>
+            <span className="settings-card-badge global" title="From the global MCP config library">全局</span>
           )}
           {sourceBadge && (
             <span className={sourceBadge.className} title={sourceBadge.title}>{sourceBadge.text}</span>
@@ -2746,7 +2746,7 @@ export function McpServerCard({
         )}
         {canReconnect && (
           <button className="btn btn-xs" onClick={() => onReconnect(server.name)} disabled={inert}>
-            Reconnect
+            重新连接
           </button>
         )}
         {pending ? (
@@ -2761,12 +2761,12 @@ export function McpServerCard({
           <>
             {canDisable && (
               <button className="btn btn-xs" onClick={() => onToggle(server.name, false)} disabled={inert}>
-                Disable
+                禁用
               </button>
             )}
             {canEnable && (
               <button className="btn btn-xs" onClick={() => onToggle(server.name, true)} disabled={inert}>
-                Enable
+                启用
               </button>
             )}
           </>

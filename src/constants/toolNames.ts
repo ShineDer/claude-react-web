@@ -36,14 +36,14 @@ export const WORKFLOW_TOOL_NAME = 'Workflow'
  *  Kept a separate constant from SUBAGENT_TOOL_NAMES for the reason documented
  *  on WORKFLOW_TOOL_NAME: the WorkingBubble's subagent pill and the dismiss
  *  path key off the subagent index, and a skill is not a subagent. It gets its
- *  own index (`activeSkills`) and reuses SubagentOverlay for the drill-in. */
+ *  own index (`active技能`) and reuses SubagentOverlay for the drill-in. */
 export const SKILL_TOOL_NAME = 'Skill'
 
 /** Plan-mode PROPOSAL tool — the model submits a finished plan and asks to
  *  exit plan mode and start executing. Carries the plan body / allowedPrompts.
  *  This is the only name that should drive PlanCard / plan-review rendering.
  *
- *  NOTE: `EnterPlanMode` is deliberately NOT here. Despite the similar name it
+ *  NOTE: `EnterPlan模式` is deliberately NOT here. Despite the similar name it
  *  is a SEPARATE, semantically-opposite current SDK tool (`EnterPlanModeInput`
  *  is empty — it signals "I'm about to start planning", with no plan to review).
  *  Treating the two as aliases produced an empty "Plan proposal" card and a

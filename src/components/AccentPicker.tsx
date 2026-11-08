@@ -45,8 +45,8 @@ function CustomColorSwatch({ onChange, onCommitColor }: CustomColorSwatchProps) 
     <label
       className="accent-swatch accent-swatch-custom"
       style={{ '--swatch': 'transparent', '--swatch-strong': 'var(--fg)' } as CSSProperties}
-      aria-label="Add a custom colour"
-      title="Add a custom colour"
+      aria-label="添加自定义颜色"
+      title="添加自定义颜色"
     >
       <input
         ref={inputRef}
@@ -97,8 +97,8 @@ export const AccentSwatchGrid = memo(function AccentSwatchGrid({
           onClick={() => onChange(undefined)}
           role="radio"
           aria-checked={value === undefined}
-          aria-label="Use global accent"
-          title="Use global accent"
+          aria-label="使用全局强调色"
+          title="使用全局强调色"
         />
       )}
       {ACCENT_COLORS.map((c) => (
@@ -119,7 +119,7 @@ export const AccentSwatchGrid = memo(function AccentSwatchGrid({
       {displayRecents.length > 0 && (
         <>
           <div className="accent-picker-divider" role="presentation">
-            <span className="accent-picker-label">Recent</span>
+            <span className="accent-picker-label">最近</span>
           </div>
           {displayRecents.map((hex) => {
             const active = activeCustom === hex.toLowerCase()

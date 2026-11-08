@@ -261,8 +261,8 @@ export function QuestionDialog({ open = true, request, onSubmit, onClarify, onSk
           className="question-minimize-btn"
           onClick={onMinimize}
           disabled={busy}
-          aria-label="Minimize"
-          title="Minimize — reopen later from the question card in the transcript"
+          aria-label="最小化"
+          title="最小化 — 稍后可从对话记录中的问题卡片重新打开"
         >
           <IconX size={14} />
         </button>
@@ -270,14 +270,14 @@ export function QuestionDialog({ open = true, request, onSubmit, onClarify, onSk
 
       {clarifying ? (
         <div className="modal-section question-body" ref={setClarifyingOs}>
-          <label className="hint" htmlFor="question-clarification">Ask a follow-up or provide context.</label>
+          <label className="hint" htmlFor="question-clarification">追问或补充上下文。</label>
           <textarea
             ref={feedbackRef}
             id="question-clarification"
             className="textarea question-clarify-input"
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
-            placeholder="Ask a follow-up or provide context..."
+            placeholder="追问或补充上下文..."
             maxLength={4000}
             rows={5}
             disabled={busy}
@@ -311,11 +311,11 @@ export function QuestionDialog({ open = true, request, onSubmit, onClarify, onSk
             style={{ flex: 1 }}
             title={clarifying ? 'Back to the questions' : 'Skip every question — the model will continue with no guidance'}
           >
-            {clarifying ? 'Back' : 'Skip all'}
+            {clarifying ? '返回' : 'Skip all'}
           </button>
           {!clarifying && (
             <button className="btn" onClick={enterClarification} disabled={busy} style={{ flex: 1 }}>
-              Chat about this
+              就此聊天
             </button>
           )}
           <button
@@ -357,7 +357,7 @@ function QuestionBlock({ index, question, value, onSingle, onMulti, otherActive,
       <div className="question-header">
         {question.header && <span className="question-chip">{question.header}</span>}
         <span className="question-index">Q{index + 1}</span>
-        {isMulti && <span className="question-mode">multi-select</span>}
+        {isMulti && <span className="question-mode">多选</span>}
       </div>
       <div className="question-text">{question.question}</div>
       <div
@@ -472,15 +472,15 @@ function QuestionBlock({ index, question, value, onSingle, onMulti, otherActive,
             {isMulti ? (otherActive ? <IconCheckSquare size={16} /> : <IconSquare size={16} />) : otherActive ? <IconCircleDot size={16} /> : <IconCircle size={16} />}
           </span>
           <div className="question-option-body">
-            <div className="question-option-label">Other</div>
+            <div className="question-option-label">其他</div>
           </div>
         </button>
         {otherActive && (
           <input
             type="text"
             className="question-other-input"
-            placeholder="Type your answer..."
-            aria-label="Other (type your answer)"
+            placeholder="输入你的答案..."
+            aria-label="其他（输入你的答案）"
             value={otherText}
             onChange={(e) => onOtherTextChange(e.target.value)}
             // Enter would trigger the dialog's outer focus-trap form

@@ -23,16 +23,16 @@ import {
 import type { McpServerConfigMeta } from '../types'
 
 interface Props {
-  /** Called after the config has been written. `openNewSession` reflects
+  /** Called after the config has been written. `openNew会话` reflects
    *  whether the parent should auto-open the NewSessionDialog once the main
    *  UI mounts. Two call sites, and only the first goes through
    *  `/config/setup`:
    *
    *    1. The wizard's finalize path, after `/config/setup` has succeeded.
-   *       Here `openNewSession` reflects whether the user clicked the final
+   *       Here `openNew会话` reflects whether the user clicked the final
    *       "Create New Session" button (vs Skip / Done).
    *    2. The desktop pre-screen's hand-off (`SetupWebImport.onConfigured`
-   *       → the `showImport` early return above), triggered by the user's
+   *       → the `show导入` early return above), triggered by the user's
    *       leave button (labelled `Finish` once an import has left the server
    *       configured, `Skip` otherwise) and only once an earlier import has
    *       left the server
@@ -156,7 +156,7 @@ export function SetupPage({ onConfigured }: Props) {
   const [updateRegistry, setUpdateRegistry] = useState('https://registry.npmjs.org')
   // `enabled: false` — no auto-probe on mount. During setup the registry
   // isn't saved yet, so the only meaningful probe is the explicit "Check
-  // now" below, which passes the type value as an override. `info` here
+  // now" below, which passes the type value as an override. `信息` here
   // therefore only ever reflects an override probe, never the saved config.
   const updateProbe = useUpdateInfo(false)
   // The exact (trimmed) registry value the last "Check now" probed. We only
@@ -487,7 +487,7 @@ export function SetupPage({ onConfigured }: Props) {
 
   /** Persist the wizard's accumulated state via /config/setup. Called from
    *  Step 4 — both the primary "Create New Session" and the "Skip / Done"
-   *  paths land here. `openNewSession` is forwarded to the parent. */
+   *  paths land here. `openNew会话` is forwarded to the parent. */
   const finalize = useCallback(
     async (openNewSession: boolean) => {
       // Allow proceeding if either the user entered a new token or the
@@ -685,7 +685,7 @@ export function SetupPage({ onConfigured }: Props) {
   return (
     <div className="setup-page" ref={setPageOs}>
       <div className="setup-card">
-        <h1 className="setup-title">Welcome to Claude Web</h1>
+        <h1 className="setup-title">欢迎使用 Claude Web</h1>
         <p className="setup-subtitle">{stepMeta(step).subtitle}</p>
 
         {/* Progress dots — clickable for already-visited steps so the user
@@ -697,7 +697,7 @@ export function SetupPage({ onConfigured }: Props) {
          *  be filtered out of NVDA/VO button lists, making the wizard's
          *  position-indicator inaccessible. Future-step dots are disabled
          *  because they really aren't reachable. */}
-        <ol className="setup-progress" aria-label="Setup progress">
+        <ol className="setup-progress" aria-label="设置进度">
           {STEPS.map(({ id: s, short }, idx) => {
             const isCurrent = s === step
             const isVisited = s < step
@@ -737,12 +737,12 @@ export function SetupPage({ onConfigured }: Props) {
           <div key={step} className={`setup-step-body setup-step-${stepDirection}`}>
             {step === 0 && (
               <div className="setup-field setup-field-environment">
-                <label className="setup-label">Claude CLI Environment</label>
+                <label className="setup-label">Claude CLI 环境</label>
 
                 {healthChecking && (
                   <div className="setup-health-row setup-health-row-checking">
                     <span className="setup-spinner spinner" aria-hidden="true" />
-                    <span className="setup-hint">Probing local Claude CLI…</span>
+                    <span className="setup-hint">正在探测本地 Claude CLI…</span>
                   </div>
                 )}
 
@@ -775,13 +775,13 @@ export function SetupPage({ onConfigured }: Props) {
                       </span>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <p style={{ ...styles.hint, color: 'var(--fg)' }}>
-                          Claude CLI was not detected on this server.
+                          未在此服务器上检测到 Claude CLI。
                         </p>
                         {health.error && <p className="setup-prefilled-hint">{health.error}</p>}
                       </div>
                     </div>
-                    <p className="setup-label">Install</p>
-                    <p className="setup-hint">Run this in a terminal on the machine hosting this server:</p>
+                    <p className="setup-label">安装</p>
+                    <p className="setup-hint">在托管此服务器的机器上的终端中运行：</p>
                     <pre className="setup-code-block">
                       <code>npm install -g @anthropic-ai/claude-code</code>
                     </pre>
@@ -848,7 +848,7 @@ export function SetupPage({ onConfigured }: Props) {
                       title={showToken ? 'Hide token' : 'Show token'}
                       aria-pressed={showToken}
                     >
-                      {showToken ? 'Hide' : 'Show'}
+                      {showToken ? '隐藏' : 'Show'}
                     </button>
                   </div>
                   {tokenPrefilled && (
@@ -877,7 +877,7 @@ export function SetupPage({ onConfigured }: Props) {
 
                 <div className="setup-field">
                   <label className="setup-label" htmlFor="base-url">
-                    Base URL <span style={styles.optional}>(optional)</span>
+                    Base URL <span style={styles.optional}>（可选）</span>
                   </label>
                   <p id="base-url-hint" className="setup-hint">
                     Override the API endpoint if using a proxy or relay. Defaults to{' '}
@@ -917,8 +917,8 @@ export function SetupPage({ onConfigured }: Props) {
             {step === 2 && (
               <>
                 <div className="setup-field">
-                  <label className="setup-label">Available Models</label>
-                  <p className="setup-hint">First model is the default. Add model IDs one at a time.</p>
+                  <label className="setup-label">可用模型</label>
+                  <p className="setup-hint">第一个模型为默认模型。请逐个添加模型 ID。</p>
                   {modelsPrefilled && (
                     <p className="setup-prefilled-hint">
                       Pre-filled from{' '}
@@ -960,7 +960,7 @@ export function SetupPage({ onConfigured }: Props) {
                           className="btn"
                           style={styles.smallIconBtn}
                           onClick={() => removeModel(m)}
-                          title="Remove"
+                          title="移除"
                           aria-label={`Remove ${m}`}
                         >
                           <IconX size={12} />
@@ -980,11 +980,11 @@ export function SetupPage({ onConfigured }: Props) {
                             addModel()
                           }
                         }}
-                        aria-label="New model ID"
+                        aria-label="新模型 ID"
                         placeholder="model-id (e.g. claude-sonnet-4-20250514)"
                       />
                       <button type="button" className="btn" style={styles.smallAddBtn} onClick={addModel}>
-                        Add
+                        添加
                       </button>
                     </div>
                     {duplicateMsg && (
@@ -997,7 +997,7 @@ export function SetupPage({ onConfigured }: Props) {
 
                 <div className="setup-field">
                   <label className="setup-label" htmlFor="setup-recap-model">
-                    Recap Model <span style={styles.optional}>(optional)</span>
+                    Recap Model <span style={styles.optional}>（可选）</span>
                   </label>
                   <p className="setup-hint">
                     Model used for AI session summaries. (default) uses the session's aux model — the model
@@ -1012,7 +1012,7 @@ export function SetupPage({ onConfigured }: Props) {
                       setRecapModelTouched(true)
                     }}
                   >
-                    <option value="">(default)</option>
+                    <option value="">（默认）</option>
                     {/* Keep an explicit-but-unlisted model selectable, so the
                       select never renders blank while a model is stored. */}
                     {recapModel && !modelList.includes(recapModel) ? (
@@ -1028,7 +1028,7 @@ export function SetupPage({ onConfigured }: Props) {
 
                 <div className="setup-field">
                   <label className="setup-label" htmlFor="setup-commit-message-model">
-                    Commit Message Model <span style={styles.optional}>(optional)</span>
+                    Commit Message Model <span style={styles.optional}>（可选）</span>
                   </label>
                   <p className="setup-hint">
                     Model used for AI-generated commit messages in the Git panel. (default) uses the session's
@@ -1043,7 +1043,7 @@ export function SetupPage({ onConfigured }: Props) {
                       setCommitModelTouched(true)
                     }}
                   >
-                    <option value="">(default)</option>
+                    <option value="">（默认）</option>
                     {commitMessageModel && !modelList.includes(commitMessageModel) ? (
                       <option value={commitMessageModel}>{commitMessageModel} (not in this list)</option>
                     ) : null}
@@ -1056,14 +1056,14 @@ export function SetupPage({ onConfigured }: Props) {
                 </div>
 
                 <p className="setup-hint">
-                  You can edit the model list later from the global settings panel.
+                  你之后可以在全局设置面板中编辑模型列表。
                 </p>
               </>
             )}
 
             {step === 3 && (
               <div className="setup-field">
-                <label className="setup-label">MCP Servers</label>
+                <label className="setup-label">MCP 服务器</label>
                 <p className="setup-hint">
                   Import MCP servers configured in your Claude CLI
                   {mcpConfigPath ? (
@@ -1100,7 +1100,7 @@ export function SetupPage({ onConfigured }: Props) {
                       <p className="setup-prefilled-hint">{claudeMcpError}</p>
                     </div>
                     <button type="button" onClick={retryClaudeMcp} style={styles.secondaryBtn}>
-                      Retry
+                      重试
                     </button>
                   </div>
                 )}
@@ -1191,7 +1191,7 @@ export function SetupPage({ onConfigured }: Props) {
                             )}
                             {status === 'exists' && 'Already exists'}
                             {status === 'failed' && (
-                              <span style={{ color: 'var(--msg-error-fg)' }}>Failed</span>
+                              <span style={{ color: 'var(--msg-error-fg)' }}>失败</span>
                             )}
                           </span>
                         </div>
@@ -1214,21 +1214,21 @@ export function SetupPage({ onConfigured }: Props) {
                         disabled={importingMcp}
                         style={{ ...styles.secondaryBtn, alignSelf: 'flex-start', marginTop: 4 }}
                       >
-                        {importingMcp ? 'Importing…' : 'Import all'}
+                        {importingMcp ? '导入中…' : 'Import all'}
                       </button>
                     )}
                   </div>
                 )}
 
                 <p className="setup-hint">
-                  You can manage MCP servers anytime from the global settings panel.
+                  你可以随时在全局设置面板中管理 MCP 服务器。
                 </p>
               </div>
             )}
 
             {step === 4 && (
               <div className="setup-field">
-                <label className="setup-label">Desktop Notifications</label>
+                <label className="setup-label">桌面通知</label>
                 <p className="setup-hint">
                   Get notified when Claude finishes a turn while this tab is in the background.
                 </p>
@@ -1243,7 +1243,7 @@ export function SetupPage({ onConfigured }: Props) {
                     onClick={() => void notifications.toggle()}
                     title={notificationTooltip(notifications.permission, notifications.enabled)}
                     disabled={notifications.permission === 'unsupported'}
-                    aria-label="Toggle desktop notifications"
+                    aria-label="切换桌面通知"
                     style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: 6 }}
                   >
                     {notifications.enabled ? (
@@ -1257,17 +1257,17 @@ export function SetupPage({ onConfigured }: Props) {
                     )}
                   </button>
                 )}
-                <p className="setup-hint">You can toggle this anytime from the bell icon in the header.</p>
+                <p className="setup-hint">你可以随时通过页头的铃铛图标切换此项。</p>
               </div>
             )}
 
             {step === 5 && (
               <div className="setup-field">
                 <label className="setup-label" htmlFor="update-registry">
-                  Update registry <span style={styles.optional}>(optional)</span>
+                  Update registry <span style={styles.optional}>（可选）</span>
                 </label>
                 <p id="update-registry-hint" className="setup-hint">
-                  The npm registry probed for the <code style={styles.code}>latest</code> dist-tag to tell you
+                  The npm registry probed for the <code style={styles.code}>最新</code> dist-tag to tell you
                   when a new version of Claude Web is available. Leave empty to disable update checks.
                 </p>
                 <input
@@ -1349,7 +1349,7 @@ export function SetupPage({ onConfigured }: Props) {
 
             {step === LAST_STEP && (
               <div className="setup-field">
-                <label className="setup-label">You're all set</label>
+                <label className="setup-label">一切就绪</label>
                 {daemonWarning && (
                   <p role="alert" className="setup-field-error">
                     {daemonWarning}
@@ -1366,7 +1366,7 @@ export function SetupPage({ onConfigured }: Props) {
                  *  context for why. This hint surfaces the cause. */}
                 {!tokenValid && (
                   <p role="alert" className="setup-field-error">
-                    Auth token is missing — click step 1 above to fix it.
+                    缺少认证 Token — 点击上方第 1 步修复。
                   </p>
                 )}
               </div>
@@ -1388,7 +1388,7 @@ export function SetupPage({ onConfigured }: Props) {
             <div style={styles.footerLeft}>
               {step > FIRST_STEP && (
                 <button type="button" onClick={goBack} disabled={submitting} style={styles.secondaryBtn}>
-                  Back
+                  返回
                 </button>
               )}
               {/* Recheck only makes sense on Step 0 after a failed probe.
@@ -1401,7 +1401,7 @@ export function SetupPage({ onConfigured }: Props) {
                   onClick={() => void probeClaudeHealth(true)}
                   style={styles.secondaryBtn}
                 >
-                  Recheck
+                  重新检查
                 </button>
               )}
             </div>
@@ -1424,7 +1424,7 @@ export function SetupPage({ onConfigured }: Props) {
                     ...(healthChecking ? styles.submitBtnDisabled : null),
                   }}
                 >
-                  Continue
+                  继续
                 </button>
               )}
               {step > 0 && step < LAST_STEP && (
@@ -1437,7 +1437,7 @@ export function SetupPage({ onConfigured }: Props) {
                     ...(step === 1 && !tokenValid ? styles.submitBtnDisabled : null),
                   }}
                 >
-                  Next
+                  下一个
                 </button>
               )}
               {step === LAST_STEP && (
@@ -1455,7 +1455,7 @@ export function SetupPage({ onConfigured }: Props) {
                     aria-busy={submitting || undefined}
                     style={styles.secondaryBtn}
                   >
-                    {submitting ? 'Saving…' : 'Skip'}
+                    {submitting ? '保存中…' : 'Skip'}
                   </button>
                   <button
                     type="button"
@@ -1474,7 +1474,7 @@ export function SetupPage({ onConfigured }: Props) {
                         aria-hidden="true"
                       />
                     )}
-                    {submitting ? 'Saving…' : 'Create New Session'}
+                    {submitting ? '保存中…' : 'Create New Session'}
                   </button>
                 </>
               )}

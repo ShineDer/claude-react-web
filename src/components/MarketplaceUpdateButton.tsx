@@ -57,7 +57,7 @@ export function MarketplaceUpdateButton({
         }
       >
         {hasUpdate && <span className="marketplace-update-dot" aria-hidden />}
-        {busy ? 'Updating…' : 'Update'}
+        {busy ? 'Updating…' : '更新'}
       </button>
     </>
   )

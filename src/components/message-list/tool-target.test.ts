@@ -8,7 +8,7 @@ describe('toolTargetLabel', () => {
   it('reduces a file path to its basename', () => {
     expect(toolTargetLabel('Read', { file_path: 'src/components/MessageList.tsx' }))
       .toBe('MessageList.tsx')
-    expect(toolTargetLabel('Edit', { file_path: 'D:\\codes\\app\\src\\hooks\\useWsHub.ts' }))
+    expect(toolTargetLabel('编辑', { file_path: 'D:\\codes\\app\\src\\hooks\\useWsHub.ts' }))
       .toBe('useWsHub.ts')
     expect(toolTargetLabel('Read', { file_path: 'README.md' })).toBe('README.md')
   })

@@ -44,7 +44,7 @@ function setup(sessions: SessionInfo[] = []) {
 describe('DesktopTitlebarTabs', () => {
   it('empty state: + opens the create menu instead of creating a session', () => {
     const { onNewSession } = setup([])
-    const plus = screen.getByRole('button', { name: 'Create' })
+    const plus = screen.getByRole('button', { name: '创建' })
     fireEvent.click(plus)
     expect(onNewSession).not.toHaveBeenCalled()
     const labels = Array.from(document.querySelectorAll('.ctx-menu-label')).map((e) => e.textContent)
@@ -53,14 +53,14 @@ describe('DesktopTitlebarTabs', () => {
 
   it('with tabs: + opens the same create menu', () => {
     const { onNewSession } = setup([makeSession({ id: 's1', title: 'Alpha' })])
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     expect(onNewSession).not.toHaveBeenCalled()
     expect(screen.getByRole('menu')).toBeTruthy()
   })
 
   it('New session… from the menu fires onNewSession', () => {
     const { onNewSession } = setup([])
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     fireEvent.click(document.querySelectorAll('.ctx-menu-item')[0])
     expect(onNewSession).toHaveBeenCalledOnce()
     expect(screen.queryByRole('menu')).toBeNull()
@@ -68,7 +68,7 @@ describe('DesktopTitlebarTabs', () => {
 
   it('New group… from the menu opens the create prompt', () => {
     const { askPrompt, onCreateGroup } = setup([])
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     fireEvent.click(document.querySelectorAll('.ctx-menu-item')[1])
     expect(askPrompt).toHaveBeenCalledOnce()
     expect(askPrompt.mock.calls[0][0].title).toBe('New group')
@@ -82,7 +82,7 @@ describe('DesktopTitlebarTabs', () => {
     // make group creation unreachable from the titlebar.
     const sessions = [makeSession({ id: 's1' }), makeSession({ id: 's2' }), makeSession({ id: 's3' })]
     const { onNewSession, askPrompt } = setup(sessions)
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    fireEvent.click(screen.getByRole('button', { name: '创建' }))
     const items = document.querySelectorAll<HTMLButtonElement>('.ctx-menu-item')
     expect(items[0].disabled).toBe(true)
     expect(items[1].disabled).toBe(false)

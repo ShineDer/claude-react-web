@@ -43,8 +43,8 @@ export const GrepToolView = memo(function GrepToolView({ input, toolUseId, searc
       {outputMode && outputMode !== 'files_with_matches' && (
         <span className="tool-chip">{outputMode}</span>
       )}
-      {caseInsensitive && <span className="tool-chip" title="Case insensitive">-i</span>}
-      {multiline && <span className="tool-chip" title="Multiline mode">multiline</span>}
+      {caseInsensitive && <span className="tool-chip" title="不区分大小写">-i</span>}
+      {multiline && <span className="tool-chip" title="多行模式">多行</span>}
       {context != null
         ? <span className="tool-chip">±{context}</span>
         : (before != null || after != null) && (

@@ -19,9 +19,9 @@ export function McpToolRow({ tool, itemClassName }: { tool: McpServerTool; itemC
   return (
     <div className={itemClassName ? `settings-card-item ${itemClassName}` : 'settings-card-item'}>
       <code>{tool.name}</code>
-      {tool.annotations?.readOnly && <span className="settings-tag readonly">read-only</span>}
-      {tool.annotations?.destructive && <span className="settings-tag destructive">destructive</span>}
-      {tool.annotations?.openWorld && <span className="settings-tag openworld">open-world</span>}
+      {tool.annotations?.readOnly && <span className="settings-tag readonly">只读</span>}
+      {tool.annotations?.destructive && <span className="settings-tag destructive">破坏性</span>}
+      {tool.annotations?.openWorld && <span className="settings-tag openworld">开放世界</span>}
       {tool.description && <span className="settings-card-desc">{tool.description}</span>}
     </div>
   )
@@ -38,12 +38,12 @@ export function McpToolsList({ tools, loading, error, onClose }: {
   return (
     <div className="settings-card-body settings-mcp-tools">
       <div className="settings-mcp-tools-head">
-        <span className="settings-card-grouplabel">Tools</span>
-        <button className="btn btn-xs" onClick={onClose}>Hide</button>
+        <span className="settings-card-grouplabel">工具</span>
+        <button className="btn btn-xs" onClick={onClose}>隐藏</button>
       </div>
-      {loading && <div className="settings-card-desc">Loading tools...</div>}
+      {loading && <div className="settings-card-desc">正在加载工具...</div>}
       {!loading && error && <div className="settings-mcp-tools-error">{error}</div>}
-      {!loading && !error && tools.length === 0 && <div className="settings-card-desc">No tools returned by this server.</div>}
+      {!loading && !error && tools.length === 0 && <div className="settings-card-desc">此服务器未返回工具。</div>}
       {!loading && !error && tools.map((tool) => (
         <McpToolRow key={tool.name} tool={tool} itemClassName="settings-mcp-tool-item" />
       ))}

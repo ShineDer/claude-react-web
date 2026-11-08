@@ -45,7 +45,7 @@ describe('summarizeToolGroup', () => {
   })
 
   it('degrades a long run to a stable prefix plus a +N call tally', () => {
-    const names = ['Read', 'Grep', 'Edit', 'Write', 'Glob', 'Bash', 'WebFetch', 'NotebookEdit']
+    const names = ['Read', 'Grep', '编辑', 'Write', 'Glob', 'Bash', 'WebFetch', 'NotebookEdit']
     const blocks = names.map((n, i) =>
       toolBlock(`t${i}`, n, { file_path: `src/very/deep/path/File${i}Name.tsx` }),
     )
@@ -215,7 +215,7 @@ describe('groupMayMatchSearch', () => {
   })
 
   it('matches string input values', () => {
-    const strBlock = toolBlock('c', 'Edit', { old_string: 'hello', new_string: 'world' })
+    const strBlock = toolBlock('c', '编辑', { old_string: 'hello', new_string: 'world' })
     expect(groupMayMatchSearch([strBlock], 'hello')).toBe(true)
   })
 })

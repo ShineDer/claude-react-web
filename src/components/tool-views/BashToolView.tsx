@@ -1,6 +1,6 @@
 // Bash / PowerShell tool_use view — shares one component across both
 // tools (same input shape: command, description, run_in_background,
-// timeout), branching on `toolName` to swap the prompt glyph.
+// timeout), branching on `tool名称` to swap the prompt glyph.
 //
 // Extracted from ToolUseBlock.tsx for modularity.
 
@@ -17,14 +17,14 @@ const BASH_PREVIEW_LINES = 3
 const BASH_SINGLE_LINE_PREVIEW = 200
 
 /**
- * Compact one-liner header (`$ command` + description subtitle) so a long
+ * Compact one-liner header (`$ 命令` + description subtitle) so a long
  * stretch of bash hops doesn't bury the transcript in nested JSON. Long
  * or multiline commands collapse into <details> with the first 3 lines
  * as a preview — the model often pipes here-docs that easily exceed the
  * fold threshold.
  *
  * Also serves the `PowerShell` tool (same input shape: command,
- * description, run_in_background, timeout). The `toolName` prop swaps
+ * description, run_in_background, timeout). The `tool名称` prop swaps
  * the prompt glyph: `$` for Bash, `PS>` for PowerShell — both are
  * universally recognised shell prompts and disambiguate the language
  * at a glance when both tools appear in the same transcript.
@@ -53,9 +53,9 @@ export const BashToolView = memo(function BashToolView({ input, toolName, toolUs
 
   const chips = (
     <>
-      {inBackground && <span className="tool-chip tool-chip-accent">background</span>}
+      {inBackground && <span className="tool-chip tool-chip-accent">后台</span>}
       {timeoutMs != null && (
-        <span className="tool-chip" title="Timeout in milliseconds">
+        <span className="tool-chip" title="超时（毫秒）">
           {formatBashTimeout(timeoutMs)}
         </span>
       )}

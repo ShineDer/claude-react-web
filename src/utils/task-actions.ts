@@ -80,7 +80,7 @@ export function createDedupGuard(holdMs: number): DedupGuard {
 /** Whether the per-card "background this task" action should be offered.
  *  A live turn always offers it; outside a turn, a synchronous subagent still
  *  mid-flight (an SDK auto-continuation turn — e.g. after a task-notification
- *  lands with includePartialMessages off, where `turnActive` is false) keeps
+ *  lands with includePartialMessages off, where `turn已启用` is false) keeps
  *  it available so the user can detach that subagent. Gated on `!terminated`
  *  because a dead session's subagent record would be stale — POSTing against
  *  it surfaces a 410 error banner instead of a toast. */
@@ -102,7 +102,7 @@ export function shouldOfferBackgroundAction(args: {
  *  Gated on `!terminated`: a dead session receives no completion signal, so
  *  the bubble would otherwise stay mounted forever.
  *
- *  Deliberately holds NO `computeWaiting` term. `waiting` requires
+ *  Deliberately holds NO `computeWaiting` term. `等待中` requires
  *  `!turnActive && !terminated && (indicatorCount > 0 || hasTranscriptBackground)`,
  *  every part of which this clause already covers — `indicatorCount > 0`
  *  implies `taskCount > 0`. That superset relation is asserted where it is

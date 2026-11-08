@@ -1,4 +1,4 @@
-// UsagePanel's per-model "cache" cell — SDK 0.3.311 splits cache WRITES by
+// UsagePanel's per-model "缓存" cell — SDK 0.3.311 splits cache WRITES by
 // TTL (cacheCreationEphemeral5mInputTokens / …1hInputTokens, both optional
 // subsets of cacheCreationInputTokens). The cell keeps showing the combined
 // read+write total; when either sub-field is present it gains a `title`

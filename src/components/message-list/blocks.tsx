@@ -27,7 +27,7 @@ export const BlockView = memo(function BlockView({ block, searchQuery, activeMat
     if (src) {
       return <MsgImage src={src} alt="pasted image" decoding="async" />
     }
-    return <div className="tool-input">[image: invalid]</div>
+    return <div className="tool-input">[图片：无效]</div>
   }
   if (block.type === 'thinking' && typeof block.thinking === 'string') {
     if (block.thinking.trim().length === 0) return null
@@ -50,7 +50,7 @@ export const BlockView = memo(function BlockView({ block, searchQuery, activeMat
         summaryClassName="thinking-summary"
         summary={(
           <>
-            <span className="thinking-label">thinking</span>
+            <span className="thinking-label">思考中</span>
             <span className="thinking-preview">{preview}</span>
           </>
         )}

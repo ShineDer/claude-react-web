@@ -77,9 +77,15 @@ async function walk(
   }
 
   for (const entry of entries) {
-    if (!entry.isDirectory()) continue
+    // Follow symlinks: Dirent reports the LINK's type, so a symlinked skill
+    // dir here would otherwise be skipped. Dangling links throw on stat() and
+    // fall out of the recursion below.
+    if (!entry.isDirectory() && !entry.isSymbolicLink()) continue
     if (SKIP_DIR_SET.has(entry.name)) continue
-    await walk(baseDir, join(dir, entry.name), depth + 1, found)
+    const child = join(dir, entry.name)
+    const target = await fs.stat(child).catch(() => null)
+    if (!target?.isDirectory()) continue
+    await walk(baseDir, child, depth + 1, found)
   }
 }
 

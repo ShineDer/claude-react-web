@@ -147,7 +147,7 @@ import { clamp } from './utils/clamp'
  * The server broadcasts a `session-update` frame for *every* SDK message in
  * any session (metadata churn: lastTurnAt, pendingPermissionCount, working,
  * messageCount, …). Without this guard, each frame produces a brand-new
- * `sessions` array → `orderedSessions` memo rebuilds → `sidebarSections`
+ * `sessions` array → `ordered会话` memo rebuilds → `sidebarSections`
  * rebuilds → the memo'd `<SessionList>` receives a new `sessions` prop and
  * re-renders every `<SessionCard>`. With 3 panels streaming that's 3 full
  * sidebar re-renders per token burst, even when the metadata is byte-for-byte
@@ -288,7 +288,7 @@ export function App() {
     initialMessageCount: number
   } | null>(null)
   const sideChatRef = useRef(sideChat)
-  // eslint-disable-next-line react-hooks/refs -- intentional render-time ref sync; async close/create callbacks read this ref so they don't capture a stale `sideChat` (useEffect would lag by one render)
+  // eslint-disable-next-line react-hooks/refs -- intentional render-time ref sync; async close/create callbacks read this ref so they don't capture a stale `side聊天` (useEffect would lag by one render)
   sideChatRef.current = sideChat
   /** Panels currently playing their exit animation. Each entry holds a
    *  snapshot of the SessionInfo at the moment the panel was removed so
@@ -335,13 +335,13 @@ export function App() {
   )
   const [defaults, setDefaults] = useState<Defaults>({})
   const [serverModels, setServerModels] = useState<string[]>([])
-  /** Model Groups from the same /config snapshot as `serverModels` — threaded
+  /** Model Groups from the same /config snapshot as `server模型` — threaded
    *  to the New session dialog so it never issues its own /config. */
   const [modelGroups, setModelGroups] = useState<ModelGroupConfig[]>([])
   /** Global UI-pref defaults (server-backed, config.json). Sessions without
    *  an explicit per-session override inherit these. Refreshed live whenever
    *  the global settings modal saves (handleGlobalSettingsSaved →
-   *  refreshConfigResponse). `firstPartyTools` is the structured global
+   *  refreshConfigResponse). `firstParty工具` is the structured global
    *  default map (GET /config folds the legacy `appToolsGit` boolean into
    *  it at load, so the map is always authoritative). Defaults to undefined
    *  so the first-party UI falls back to live tool status until the first
@@ -467,7 +467,7 @@ export function App() {
     transparency,
     setTransparency,
   } = useTheme()
-  // Global background (default/glow skins). Depends on `skin` so a switch to a
+  // Global background (default/glow skins). Depends on `sk输入` so a switch to a
   // background-locked skin suppresses the effect but keeps the stored choice
   // (see useBackground). An image rides the CSS background; a video comes back
   // as `activeVideoSrc` and is rendered as its own element below.
@@ -739,7 +739,7 @@ export function App() {
    *  the default `session-removed` handler closes the panel slot / evicts X
    *  from its group, which would pre-empt the swap. So while an id is in
    *  this set, the `session-removed` handler skips everything except
-   *  dropping X from the sidebar list; `handleClear`'s swap owns the slot. */
+   *  dropping X from the sidebar list; `handle清除`'s swap owns the slot. */
   const clearingIdsRef = useRef<Set<string>>(new Set())
   // State mirror of clearingIdsRef so the panel can re-render to show the
   // clearing blur (view-only — does NOT gate the data swap). The WS guard
@@ -766,7 +766,7 @@ export function App() {
   // (stuck server `clearing` flag / cross-tab) still cleans up instead of
   // leaving the panel blurred forever.
   const clearingInFlightRef = useRef<Map<string, number>>(new Map())
-  // ids just swapped in by `swapSession` (X→Y). Read+cleared by the
+  // ids just swapped in by `swap会话` (X→Y). Read+cleared by the
   // exit-detection layout effect to suppress the closing-ghost ONLY for true
   // swaps — not for maxOpen eviction / single-panel switch / slot drag-replace,
   // which are also length-preserving 1-for-1 openIds changes but genuine
@@ -776,7 +776,7 @@ export function App() {
   // replacement (session-created(Y) after session-removed(X) already tore X
   // out of the group) can still land in the right group. Keyed by source id.
   const evictedFromGroupRef = useRef<Map<string, string>>(new Map())
-  // Forward-declared ref for `teardownRemovedSession` (declared later, after
+  // Forward-declared ref for `teardownRemoved会话` (declared later, after
   // its deps). The WS `session-removed` handler (in an effect above) calls it
   // via this ref to avoid a use-before-declaration; synced at render time
   // where the callback is defined. Same pattern as `animatePanelsRef`.
@@ -913,7 +913,7 @@ export function App() {
   }, [])
 
   // When the panel capacity shrinks (e.g. desktop → mobile resize/rotation
-  // drops maxOpen to 1), `openSession`'s eviction only gates NEW opens — it
+  // drops maxOpen to 1), `open会话`'s eviction only gates NEW opens — it
   // never retroactively trims already-open panels. Without this, narrowing
   // the viewport would leave 3 panels crammed into one column. Trim down to
   // `maxOpen`, preserving the focused panel (or the most recent one).
@@ -1135,7 +1135,7 @@ export function App() {
             // in any session (metadata churn: lastTurnAt, working,
             // pendingPermissionCount, …). Most re-broadcasts carry
             // identical metadata. Replacing the array here unconditionally
-            // would give `orderedSessions` a new identity → the entire
+            // would give `ordered会话` a new identity → the entire
             // sidebar re-renders on every message in every open session
             // (3 panels streaming = 3 sidebar re-renders per token burst).
             // Bail when nothing the sidebar reads actually changed. The
@@ -1203,15 +1203,15 @@ export function App() {
           // `/clear`, restart, and fork all spawn a fresh session Y that
           // should land in an existing session X's group. The server tags
           // this frame with `joinGroupOf` = X. Append Y to X's group NOW,
-          // in the same batch as `setSessions` above, so neither X nor Y
+          // in the same batch as `set会话` above, so neither X nor Y
           // flashes under "Ungrouped" before the POST response runs.
           //
           // APPEND (not replace) is deliberate: X is still in `sessions`
-          // until the POST-driven `swapSession` (clear/restart, same tab) or
+          // until the POST-driven `swap会话` (clear/restart, same tab) or
           // `session-removed(X)` (cross-tab) evicts it. Replacing X→Y here
           // would evict X from its group while X is still in `sessions`,
           // flashing X under "Ungrouped". Appending keeps X grouped until
-          // it's actually gone, so no flash. `swapSession`/`handleAddToGroup`
+          // it's actually gone, so no flash. `swap会话`/`handleAddTo分组`
           // are idempotent over an already-appended Y (dedup).
           //
           // sidebarOrder is intentionally NOT touched here: swapSession
@@ -1233,7 +1233,7 @@ export function App() {
               })
               return next
             })
-            // For /clear + restart (`evictingSource` true): X is being evicted by
+            // For /clear + restart (`evicting来源` true): X is being evicted by
             // the POST-driven swapSession (same tab) or session-removed
             // (cross-tab), and that path places Y EXACTLY in X's slot. We
             // deliberately do NOT append Y to the group here: appending would
@@ -1243,13 +1243,13 @@ export function App() {
             // above keeps Y hidden (not rendered as Ungrouped, not rendered at
             // the tail) until swapSession/teardown places it.
             //
-            // For crash-recovery fork (`replacesSource` true): X is dead, Y is
+            // For crash-recovery fork (`replaces来源` true): X is dead, Y is
             // its continuation. REPLACE X with Y in the group and sidebar order
             // so Y lands in X's exact slot — even when the group is full (X
             // leaves, so the group never exceeds maxGroupSize). X stays in the
             // sidebar as a dead artifact (ungrouped).
             //
-            // For user fork (`evictingSource`/`replacesSource` absent) X stays,
+            // For user fork (`evicting来源`/`replaces来源` absent) X stays,
             // so append now so the forked session lands in its source's group
             // immediately; the maxGroupSize cap stands and handleAddToGroup can
             // toast on overflow.
@@ -1293,8 +1293,8 @@ export function App() {
           // so the transcript is detached; kept for resume). The `removed`
           // frame can land before handleClear's atomic X→Y swap (driven by
           // the POST response). While X is mid-clear, skip ALL teardown —
-          // INCLUDING the `setSessions` removal — so X stays fully alive in
-          // sessions/openIds/groups until handleClear's `swapSession` replaces
+          // INCLUDING the `set会话` removal — so X stays fully alive in
+          // sessions/openIds/groups until handleClear's `swap会话` replaces
           // it atomically. This keeps the sidebar (group row) and panel grid
           // stable across the WS-vs-POST race (no shrink, no compaction).
           // Record that the server confirmed X's removal so handleClear's
@@ -1410,7 +1410,7 @@ export function App() {
    *  always one ungrouped session OR the members of one group (capped at
    *  maxOpen). Opening a session that isn't part of the current view SWITCHES
    *  the grid to that session's group / single panel instead of stacking it
-   *  beside the current panels — the pre-unification `openSession` behaviour
+   *  beside the current panels — the pre-unification `open会话` behaviour
    *  that let a foreign session mix into a group view. When the session is
    *  already open but its group is only partially shown (a mobile single-panel
    *  view that later resized to desktop), selecting it again expands the grid
@@ -1464,8 +1464,8 @@ export function App() {
 
   /** Tear down the Side Chat hosted on `parentId` (if any): drop the drawer
    *  state, DELETE the ephemeral session, purge its transcript cache. Mirrors
-   *  the block that used to live inline in `closeSession`; extracted so
-   *  `handleClear`'s swap path can reuse it (it doesn't go through
+   *  the block that used to live inline in `close会话`; extracted so
+   *  `handle清除`'s swap path can reuse it (it doesn't go through
    *  closeSession, and the guarded `session-removed(X)` skips the side-chat
    *  teardown at App.tsx:814-823 — so without this, /clear on a panel hosting
    *  a side chat leaked the ephemeral session). */
@@ -1479,7 +1479,7 @@ export function App() {
   }, [])
 
   /** Atomic local X→Y session swap. In one batched state update, replaces
-   *  `oldId` with `newId`/`newSession` everywhere a session id is tracked:
+   *  `oldId` with `newId`/`new会话` everywhere a session id is tracked:
    *  sessions (remove old, upsert new at old's position), openIds, focusedId,
    *  groups (sessionIds), sidebarOrder, lastSeenTurn. Used by /clear, restart
    *  and discard. Driven by the POST response (which carries Y), so `sessions`
@@ -1606,7 +1606,7 @@ export function App() {
    *  sessions/openIds/focusedId/lastSeenTurn/sidebarOrder/groups, prune the
    *  notification edge-detector + callback registries, clear pending-delete
    *  state, and clean up a hosted side chat. Shared by the `session-removed`
-   *  WS handler (cross-tab + local deletes) and `handleClear`'s error path
+   *  WS handler (cross-tab + local deletes) and `handle清除`'s error path
    *  (server processed the clear but the POST response was lost — X is dead
    *  and must be fully evicted, not just dropped from the panel). */
   const teardownRemovedSession = useCallback(
@@ -1748,7 +1748,7 @@ export function App() {
   /** Deactivate a group: close every open panel that belongs to it WITHOUT
    *  touching group membership (the group and its members stay, so the
    *  sidebar header can re-activate it later). This is intentionally a
-   *  separate path from `closeSession`, whose synced close==ungroup
+   *  separate path from `close会话`, whose synced close==ungroup
    *  semantics would empty the group. The pure transition lives in
    *  `closeGroupPanelsState` so it is unit-testable without mounting App. */
   const closeGroupPanels = useCallback(
@@ -1976,7 +1976,7 @@ export function App() {
 
   const handleCreate = useCallback(
     async (form: NewSessionForm) => {
-      // `groupId` / `newGroupName` are frontend-only fields — don't forward
+      // `groupId` / `newGroup名称` are frontend-only fields — don't forward
       // them to the SDK.
       const { groupId, newGroupName, ...rest } = form
       try {
@@ -2513,7 +2513,7 @@ export function App() {
       // Ungrouped session → single-panel mode (replace all open panels).
       if (!sessionGroup) {
         setLastSeenTurn((prev) => ({ ...prev, [id]: s.lastTurnAt ?? Date.now() }))
-        // `s.canRetryResume`: a transiently-terminated session (crash /
+        // `s.canRetry恢复`: a transiently-terminated session (crash /
         // query error) may still be recoverable — attempt the resume; the
         // server probes the transcript and 410s if it's genuinely gone.
         // Ungrouped opens never auto-wake a deliberately-slept session
@@ -2532,7 +2532,7 @@ export function App() {
       }
 
       // Grouped session — sync the whole group into the main grid and focus
-      // the clicked member. The pure `openTargetForSession` is the single
+      // the clicked member. The pure `openTargetFor会话` is the single
       // "what should the grid show" rule shared with palette/resume/fork:
       // every live group member when they all fit, otherwise just the clicked
       // one (mobile single-panel). `sameSet` detects the already-synced case
@@ -2755,7 +2755,7 @@ export function App() {
       panelCache,
     ).map((id) => ({ id }))
     // Swap-detection: suppress the closing-ghost ONLY for a true X→Y swap
-    // (driven by `swapSession`, which marks the new id in `justSwappedInRef`).
+    // (driven by `swap会话`, which marks the new id in `justSwappedInRef`).
     // A structural 1-for-1 check (gone==1 && added==1) would ALSO match
     // maxOpen eviction, single-panel session switch, and slot drag-replace —
     // all genuine closes that should play the ghost. Consume the marker BEFORE
@@ -3225,7 +3225,7 @@ export function App() {
               {
                 combo: 'alt+n',
                 handler: () => setNewSessionDialogOpen(true),
-                description: 'New session',
+                description: '新会话',
               } satisfies Shortcut,
             ]),
         // Desktop Windows has no native menu (custom titlebar + ☰), so the
@@ -3239,19 +3239,19 @@ export function App() {
                 combo: 'mod+n',
                 handler: () => setNewSessionDialogOpen(true),
                 allowInInput: true,
-                description: 'New session',
+                description: '新会话',
               } satisfies Shortcut,
               {
                 combo: 'mod+,',
                 handler: () => setGlobalSettingsOpen(true),
                 allowInInput: true,
-                description: 'Settings',
+                description: '设置',
               } satisfies Shortcut,
               {
                 combo: 'mod+r',
                 handler: () => window.__CRW_DESKTOP__?.viewAction?.('reload'),
                 allowInInput: true,
-                description: 'Reload',
+                description: '重新加载',
               } satisfies Shortcut,
               {
                 combo: 'mod+shift+i',
@@ -3288,7 +3288,7 @@ export function App() {
         {
           combo: 'mod+shift+x',
           handler: () => setStructuredOpen(true),
-          description: 'Structured output',
+          description: '结构化输出',
         },
         {
           // NOT mod+shift+r: that's the browser hard-reload combo on
@@ -3318,7 +3318,7 @@ export function App() {
         {
           combo: 'mod+k',
           handler: () => setPaletteOpen((v) => !v),
-          description: 'Command palette',
+          description: '命令面板',
         },
         {
           combo: 'mod+b',
@@ -3343,7 +3343,7 @@ export function App() {
           combo: 'mod+?',
           handler: () => toggleShortcutHelp(helpOpenRef.current),
           allowInInput: true,
-          description: 'Keyboard shortcuts',
+          description: '键盘快捷键',
         },
         {
           combo: 'shift+tab',
@@ -3982,7 +3982,7 @@ export function App() {
       title: 'Rename session',
       message: <p>Rename &ldquo;{sessionTitleOrFallback(s)}&rdquo;.</p>,
       defaultValue: s.title ?? '',
-      confirmLabel: 'Rename',
+      confirmLabel: '重命名',
       placeholder: 'Session name',
       onConfirm: async (value) => {
         const title = value.trim()
@@ -3990,7 +3990,7 @@ export function App() {
         try {
           await api.patch<{ session: SessionInfo }>(`/sessions/${s.id}`, { title })
         } catch (err) {
-          toast.error(`Couldn't rename session: ${(err as Error).message}`)
+          toast.error(`重命名会话失败：${(err as Error).message}`)
         }
       },
     })
@@ -4128,7 +4128,7 @@ export function App() {
         updateSession(res.session)
       } catch (err) {
         const msg = (err as Error).message
-        // Same rationale as `resumeSession`: transcript-missing already
+        // Same rationale as `resume会话`: transcript-missing already
         // surfaces in the panel via the terminated banner.
         if (!/transcript file is missing/i.test(msg)) {
           toast.error(`Couldn't resume session: ${msg}`, {
@@ -4152,7 +4152,7 @@ export function App() {
   //   main-grid     — drop a sidebar card on the empty grid to open it
   const dndSensors = useAppDndSensors()
   const [dndActive, setDndActive] = useState<DragPayload | null>(null)
-  /** Which surface the active drag started on (payload `origin` extra). The
+  /** Which surface the active drag started on (payload `orig输入` extra). The
    *  strip lifts compact tab/chip ghosts, a sidebar SECTION drag lifts a real
    *  header+cards preview, and the sidebar's cards/pills keep their card/pill
    *  ghosts. State, not a ref — renderDndGhost reads it during render. */
@@ -4675,10 +4675,10 @@ export function App() {
     [closeResume, resumeIntoPanel],
   )
 
-  /** `/clear` or `/handoff` a panel: POST to the server (which atomically
+  /** `/clear` or `/hand关` a panel: POST to the server (which atomically
    *  spawns a fresh session Y and detaches X — for handoff Y is seeded with
    *  the aux-LLM hand-off summary, so the POST takes seconds while the aux
-   *  call summarizes), then swap X→Y locally in ONE batched `swapSession`
+   *  call summarizes), then swap X→Y locally in ONE batched `swap会话`
    *  transaction (sessions/openIds/groups/sidebarOrder/lastSeenTurn).
    *  swapSession first fades X out (WAAPI, ~160ms) so the replacement reads
    *  as an in-place X-out/Y-in; data commits right after the fade. The WS
@@ -4883,7 +4883,7 @@ export function App() {
   }, [applyConfigResponse])
 
   // Profile mutations change modelList / modelGroups on the active profile.
-  // Refresh the App-level /config snapshot so `serverModels` and `modelGroups`
+  // Refresh the App-level /config snapshot so `server模型` and `modelGroups`
   // stay the same generation (previously only useModelOptions refetched, so
   // the New session dialog's model list and group list could disagree).
   useEffect(
@@ -4929,7 +4929,7 @@ export function App() {
 
   const handleGlobalSettingsSaved = useCallback(() => {
     // Surface refresh failures so saved global settings don't silently
-    // leave the App with stale `defaults` / `serverModels`. The modal
+    // leave the App with stale `defaults` / `server模型`. The modal
     // closes on its own success path; we can't bubble back into it, so
     // we log. Better than `void`-discarding the rejection — at least the
     // failure is visible in the console.
@@ -4938,7 +4938,7 @@ export function App() {
     })
     // Also re-probe the registry: the user may have just edited the
     // updateCheckRegistry field in the About tab, and the cached
-    // snapshot would still reflect the previous URL (or `disabled`)
+    // snapshot would still reflect the previous URL (or `已禁用`)
     // until the cache TTL expires. A force refresh here makes "save"
     // feel responsive — the banner / About tab reflect the new URL
     // before the modal is fully closed.
@@ -4959,7 +4959,7 @@ export function App() {
           <span className="brand-dot app-loading-dot" aria-hidden />
           <div className="app-loading-copy">
             <p className="app-loading-title">Claude Web</p>
-            <p className="app-loading-subtitle">Loading workspace...</p>
+            <p className="app-loading-subtitle">正在加载工作区...</p>
           </div>
           <div className="app-loading-spinner" aria-hidden />
         </div>
@@ -4975,7 +4975,7 @@ export function App() {
               <span className="brand-dot app-loading-dot" aria-hidden />
               <div className="app-loading-copy">
                 <p className="app-loading-title">Claude Web</p>
-                <p className="app-loading-subtitle">Preparing setup...</p>
+                <p className="app-loading-subtitle">正在准备设置...</p>
               </div>
               <div className="app-loading-spinner" aria-hidden />
             </div>
@@ -5023,12 +5023,12 @@ export function App() {
           it slides into view. Sends focus to the chat panels region so
           a Tab-only user doesn't have to walk through the entire
           sidebar to reach the conversation. */}
-      <a className="skip-link" href="#main">Skip to chat</a>
+      <a className="skip-link" href="#main">跳到聊天</a>
       {/* Desktop-only: a persisted `sidebarCollapsed` must not inert the mobile
           drawer (the user may collapse on desktop, then resize to mobile). */}
       <aside
         className="sidebar"
-        aria-label="Sessions"
+        aria-label="session"
         inert={!isMobile && sidebarCollapsed}
         aria-hidden={!isMobile && sidebarCollapsed}
         {...drawerSwipe}
@@ -5082,12 +5082,12 @@ export function App() {
           className={`sidebar-resizer ${sidebarResize.dragging ? 'dragging' : ''}`}
           role="separator"
           aria-orientation="vertical"
-          aria-label="Resize sidebar"
+          aria-label="调整侧栏大小"
           onMouseDown={sidebarResize.startDrag}
           onKeyDown={onSidebarResizerKeyDown}
           // Double-click resets to default.
           onDoubleClick={() => setSidebarWidth(280)}
-          title="Drag to resize · double-click to reset"
+          title="拖动调整大小 · 双击重置"
           tabIndex={0}
         />
       </aside>
@@ -5107,13 +5107,13 @@ export function App() {
           activating the skip-link (`href="#main"`) actually moves focus
           here. Without it, the browser scrolls into view but focus stays
           at the link, and the next Tab walks back through the sidebar ?           defeating the whole point of the skip-link. */}
-      <main className="main" id="main" tabIndex={-1} aria-label="Chat panels">
+      <main className="main" id="main" tabIndex={-1} aria-label="聊天面板">
         {/* Visually-hidden page heading so the landmark has a top-level
             <h1> for screen-reader orientation. Without it the first heading
             a SR user meets inside <main> is a per-panel header or the
             empty-state <h2> — there's no "you are in the chat area" h1.
             The aria-label on <main> names the region; this names the page. */}
-        <h1 className="sr-only">Chat</h1>
+        <h1 className="sr-only">聊天</h1>
         <header className="main-header">
           {/* Windows custom titlebar: ☰ app menu replaces the native File/Edit
               bar. macOS keeps the native menu (no ☰). */}
@@ -5127,7 +5127,7 @@ export function App() {
             <button
               className="btn btn-icon drawer-toggle"
               onClick={() => setDrawerOpen((v) => !v)}
-              aria-label="Open sessions"
+              aria-label="打开会话"
               aria-expanded={drawerOpen}
             >
               <IconMenu size={18} />
@@ -5256,13 +5256,13 @@ export function App() {
               Group preserves the labelled-region semantics so a screen
               reader still announces "App actions" without making a
               keyboard promise we don't keep. */}
-          <div className="main-toolbar" role="group" aria-label="App actions">
+          <div className="main-toolbar" role="group" aria-label="应用操作">
             <button
               className={`btn btn-icon ${notifications.enabled ? 'active' : ''}`}
               onClick={() => void notifications.toggle()}
               title={notificationTooltip(notifications.permission, notifications.enabled)}
               disabled={notifications.permission === 'unsupported'}
-              aria-label="Toggle desktop notifications"
+              aria-label="切换桌面通知"
             >
               <IconBellToggle
                 size={16}
@@ -5285,16 +5285,16 @@ export function App() {
             <button
               className="btn btn-icon"
               onClick={() => setUploadsDialogOpen(true)}
-              title="Uploaded files"
-              aria-label="Uploaded files"
+              title="已上传文件"
+              aria-label="已上传文件"
             >
               <IconFolderSearch size={16} />
             </button>
             <button
               className="btn btn-icon"
               onClick={() => setGlobalSettingsOpen(true)}
-              title="Global Settings"
-              aria-label="Global Settings"
+              title="全局设置"
+              aria-label="全局设置"
             >
               <IconSettings size={16} />
             </button>
@@ -5314,7 +5314,7 @@ export function App() {
         >
           {openSessions.length === 0 && (
             <div className="empty-state app-empty-state">
-              <p className="app-empty-state-eyebrow">Workspace ready</p>
+              <p className="app-empty-state-eyebrow">工作区已就绪</p>
               <h2>{sessions.length > 0 ? 'No session open' : 'Start a new session'}</h2>
               <p>
                 {sessions.length > 0
@@ -5326,10 +5326,10 @@ export function App() {
                   className="btn btn-primary empty-state-cta"
                   onClick={() => setNewSessionDialogOpen(true)}
                 >
-                  New session
+                  新会话
                 </button>
                 <button className="btn empty-state-cta" onClick={() => setPaletteOpen(true)}>
-                  Command palette
+                  命令面板
                 </button>
               </div>
               <p className="empty-state-hint">
@@ -5451,11 +5451,11 @@ export function App() {
                 className={`panel-divider ${draggingDivider === openIdx ? 'dragging' : ''}`}
                 role="separator"
                 aria-orientation="vertical"
-                aria-label="Resize panel"
+                aria-label="调整面板大小"
                 onMouseDown={onDividerMouseDown(openIdx)}
                 onKeyDown={onPanelDividerKeyDown(openIdx)}
                 onDoubleClick={() => setPanelRatios(Object.fromEntries(resolvedOpenIds.map((id) => [id, 1])))}
-                title="Drag to resize · double-click to reset"
+                title="拖动调整大小 · 双击重置"
                 tabIndex={0}
               />,
             ]
@@ -5591,9 +5591,9 @@ export function App() {
           <UpdateDialog
             // The dialog's SUBJECT is the version range it shows, and it has
             // two ways to be re-pointed while open: a mode flip, or the probed
-            // `updateInfo.info.latest` moving under it when a probe lands. request-snapshot's contract is
+            // `updateInfo.info.最新` moving under it when a probe lands. request-snapshot's contract is
             // that such a caller must REMOUNT, because its `data` is "the last
-            // data that ARRIVED, regardless of key" and `snapshotFailed` keeps
+            // data that ARRIVED, regardless of key" and `snapshot失败` keeps
             // the previous key's data rather than clearing it. Without the
             // remount, a FAILED refetch would leave the previous range's notes
             // on screen under the new title — the dialog surfaces `error` only
@@ -5643,7 +5643,7 @@ export function App() {
           <Suspense fallback={null}>
             <PromptDialog
               key="snippet-save"
-              title="Save snippet"
+              title="保存片段"
               message={
                 <>
                   <p>Pick a label for this snippet. The current composer text will be saved as its content.</p>
@@ -5652,7 +5652,7 @@ export function App() {
               }
               defaultValue=""
               confirmLabel="Save"
-              placeholder="Snippet label"
+              placeholder="片段标签"
               onConfirm={(label) => {
                 snippets.add(label, pendingSnippetSave.content)
                 setPendingSnippetSave(null)

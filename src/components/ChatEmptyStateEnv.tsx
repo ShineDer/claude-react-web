@@ -115,7 +115,7 @@ export function ChatEmptyStateEnv({ mcpServerNames, enabledPlugins, sessionId, r
   }
 
   const menuItems = (name: string): ContextMenuItem[] => {
-    // The posted `enabled` is the NEW state: a currently-disabled server
+    // The posted `已启用` is the NEW state: a currently-disabled server
     // enables (true), a live one disables (false).
     const status = statuses[name]
     return [
@@ -126,14 +126,14 @@ export function ChatEmptyStateEnv({ mcpServerNames, enabledPlugins, sessionId, r
       // server the user most likely came to fix.
       ...(status !== undefined
         ? [{
-            label: status === 'disabled' ? 'Enable' : 'Disable',
+            label: status === 'disabled' ? '启用' : '禁用',
             onClick: () => void toggleMcp(name, status === 'disabled'),
           }]
         : [
-            { label: 'Enable', onClick: () => void toggleMcp(name, true) },
-            { label: 'Disable', onClick: () => void toggleMcp(name, false) },
+            { label: '启用', onClick: () => void toggleMcp(name, true) },
+            { label: '禁用', onClick: () => void toggleMcp(name, false) },
           ]),
-      { label: 'Reconnect', onClick: () => void reconnectMcp(name) },
+      { label: '重新连接', onClick: () => void reconnectMcp(name) },
     ]
   }
 
@@ -200,7 +200,7 @@ export function ChatEmptyStateEnv({ mcpServerNames, enabledPlugins, sessionId, r
       )}
       {pluginChips && (
         <div className="chat-empty-env-row">
-          <span className="chat-empty-env-label">Plugins</span>
+          <span className="chat-empty-env-label">插件</span>
           <span className="chat-empty-env-chips">
             {pluginChips.map((c) => (
               // title carries the compound key so ambiguous names stay

@@ -586,7 +586,7 @@ describe('ToolGroupCard', () => {
     // The group must have been LIVE this mount for the `wasLive && turnActive`
     // hold to matter, so drive status + closure through a harness: starts with
     // a running tool (→ live), settles it, then flips `closed` as if a
-    // non-foldable row (text/thinking/user) landed after the group.
+    // non-foldable row (text/思考中/user) landed after the group.
     function ClosureHarness() {
       const [status, setStatus] = useState<Map<string, ToolStatus>>(
         new Map([

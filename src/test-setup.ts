@@ -4,7 +4,7 @@
 // built-in auto-cleanup never registers — RTL only installs its own afterEach
 // hook when a *global* `afterEach` already exists. Without this file each
 // render stays mounted past the end of its test, so any effect timer whose only
-// cancel path is the unmount cleanup — SessionCard's 260ms `.slot-in` timer,
+// cancel path is the unmount cleanup — SessionCard's 260ms `.slot-输入` timer,
 // usePresenceValue's exit timer — survives into vitest's jsdom teardown. Firing
 // there calls dispatchSetState with `window` already gone ("ReferenceError:
 // window is not defined"), which vitest counts as an unhandled error and exits

@@ -245,11 +245,11 @@ interface Props {
    *  detaches the pre-clear conversation and returns a fresh session under a
    *  new id). Invoked by the `/clear` local command. */
   onClearSession: (panelSessionId: string) => void
-  /** `/handoff` this panel. App owns the POST + panel id-swap (the server
+  /** `/hand关` this panel. App owns the POST + panel id-swap (the server
    *  summarizes the conversation, spawns a fresh seeded continuation session
-   *  and returns it). Invoked by the `/handoff` local command. Required (like
+   *  and returns it). Invoked by the `/hand关` local command. Required (like
    *  /clear) so a missing pass-through fails loudly rather than swallowing
-   *  `/handoff`. */
+   *  `/hand关`. */
   onHandoffSession: (panelSessionId: string) => void
   /** True while this panel's /handoff POST is in flight. Renders the
    *  "Handing off…" pill over the blurred transcript AND locks the composer —
@@ -316,9 +316,9 @@ interface Props {
   /** Global UI-pref defaults (server-backed). Effective values are
    *  `session.<field> ?? globalPrefs.<field>` — a per-session override
    *  wins, otherwise the global default applies. Forwarded to
-   *  <SettingsPanel> for the override UI. `streamingRenderMode` is
+   *  <SettingsPanel> for the override UI. `streamingRender模式` is
    *  global-only (no per-session override) and feeds MessageList's
-   *  `streamingMode` seam verbatim. */
+   *  `streaming模式` seam verbatim. */
   globalPrefs: {
     showPinnedUserMessage: boolean
     autoRecap: boolean
@@ -555,7 +555,7 @@ export const Chat = memo(function Chat({
   // Ref mirror of the turn-active signal for App's Escape / Alt+B guards. It
   // deliberately omits the `activePhase` leg (an SDK auto-continuation turn is
   // not the user's own turn), and goes through the same tested predicate as
-  // `turnActive` below so the liveness gate can't be dropped from this copy
+  // `turn已启用` below so the liveness gate can't be dropped from this copy
   // without failing a test.
   const turnActiveRef = useRef(false)
   turnActiveRef.current = computeTurnActive({
@@ -696,7 +696,7 @@ export const Chat = memo(function Chat({
     // Clear the bridge the moment the server contradicts it: the turn started
     // (`session.working` / `activePhase`), or the session died, where no
     // confirmation can ever arrive. The termination arm matters because the
-    // bridge otherwise keeps `turnActive`, `turnActiveRef` and the
+    // bridge otherwise keeps `turn已启用`, `turnActiveRef` and the
     // WorkingBubble's ACTIVE state true on a dead session until the safety net
     // fires 30s later.
     if (session.terminated || session.working || hasActivePhase) {
@@ -1002,7 +1002,7 @@ export const Chat = memo(function Chat({
   // The WorkingBubble's dwelled phase label (transient sub-300ms blips between
   // phases don't churn it) is computed inside LiveWorkingBubble, which owns
   // the phase / token-rate subscriptions so their changes re-render only that
-  // leaf. `turnActive` above reads the raw `activePhase != null`, so turn-end
+  // leaf. `turn已启用` above reads the raw `activePhase != null`, so turn-end
   // detection stays immediate.
   // Authoritative background-task counts from the session store's `tasks`
   // mirror (same data TasksPanel reads). Read via a primitive-count selector
@@ -1254,7 +1254,7 @@ export const Chat = memo(function Chat({
   }, [discardAnchors])
 
   /** Open the discard confirmation modal (rendered locally via
-   *  `discardConfirm`). The checkbox toggles `deleteOriginal` (also unlink
+   *  `discard确认`). The checkbox toggles `deleteOriginal` (also unlink
    *  the source transcript, irreversible). confirmLabel follows the
    *  checkbox so the button matches the chosen severity. */
   const [discardConfirm, setDiscardConfirm] = useState<{
@@ -2020,7 +2020,7 @@ export const Chat = memo(function Chat({
   //
   // The one exception is an SDK auto-continuation turn (e.g. the model
   // processing a background subagent's <task-notification> after the parent
-  // turn ended): there `turnActive` is false when includePartialMessages is
+  // turn ended): there `turn已启用` is false when includePartialMessages is
   // off (no activePhase to signal the live stream), yet a synchronous
   // subagent is genuinely mid-flight and the session is live. A live sync
   // subagent record keeps the action available for that window.
@@ -2029,7 +2029,7 @@ export const Chat = memo(function Chat({
   // stops running, not on every activeSubagents identity churn.
   /** Whether this panel mounts the WorkingBubble at all. A tested predicate
    *  (utils/task-actions) rather than an inline expression: the mount condition
-   *  is subtle — it deliberately carries no separate `waiting` disjunct, and
+   *  is subtle — it deliberately carries no separate `等待中` disjunct, and
    *  the reason is an invariant of useSessionTaskCounts. See its doc. */
   const mountWorkingBubble = shouldMountWorkingBubble({
     turnActive,
@@ -2132,7 +2132,7 @@ export const Chat = memo(function Chat({
             ...(exportMenuPos.selection.trim()
               ? [
                   {
-                    label: 'Copy',
+                    label: '复制',
                     icon: <IconCopy size={14} />,
                     onClick: () => {
                       // The menu closes on click, so there is no inline
@@ -2154,18 +2154,18 @@ export const Chat = memo(function Chat({
               return pluginItems.length > 0 ? [...pluginItems, { label: '' } as ContextMenuItem] : []
             })(),
             {
-              label: 'Search messages',
+              label: '搜索消息',
               icon: <IconSearch size={14} />,
               onClick: () => openSearch(),
             },
             { label: '' },
             {
-              label: 'Scroll to previous user message',
+              label: '滚动到上一条用户消息',
               icon: <IconArrowUp size={14} />,
               onClick: () => scrollNavRef.current?.prev(),
             },
             {
-              label: 'Scroll to next user message',
+              label: '滚动到下一条用户消息',
               icon: <IconArrowDown size={14} />,
               onClick: () => scrollNavRef.current?.next(),
             },
@@ -2179,7 +2179,7 @@ export const Chat = memo(function Chat({
               onClick: () => scrollNavRef.current?.toBottom(),
             },
             ...(onDiscard ? [{
-              label: 'Discard this message and after',
+              label: '丢弃此消息及之后的消息',
               icon: <IconScissors size={14} />,
               danger: true,
               // Legal cut point = the right-clicked message is an assistant
@@ -2199,7 +2199,7 @@ export const Chat = memo(function Chat({
             // snapshot anchor — the server re-guards phase on the real POST
             // (409 if working, 410/412 for terminated/dormant).
             {
-              label: 'Rewind files to this message',
+              label: '将文件回退到此消息',
               icon: <IconRotateCcw size={14} />,
               danger: true,
               disabled: !isRewindableWithSnapshot(exportMenuPos.targetId),
@@ -2219,7 +2219,7 @@ export const Chat = memo(function Chat({
             } as ContextMenuItem,
             { label: '' },
             {
-              label: 'Export as Markdown',
+              label: '导出为 Markdown',
               icon: <IconFileText size={14} />,
               onClick: () => {
                 exportConversation(messages, sessionTitleOrFallback(session))
@@ -2227,7 +2227,7 @@ export const Chat = memo(function Chat({
               },
             },
             {
-              label: 'Export as JSON',
+              label: '导出为 JSON',
               icon: <IconFileCode size={14} />,
               onClick: () => {
                 exportConversationJson(messages, sessionTitleOrFallback(session))
@@ -2238,7 +2238,7 @@ export const Chat = memo(function Chat({
             ...(onSideChat && session.messageCount > 0 && !session.parentId
               ? [
                   {
-                    label: 'Side Chat',
+                    label: '侧边聊天',
                     icon: <IconMessageCircle size={14} />,
                     onClick: () => onSideChat(session.id),
                   },
@@ -2247,7 +2247,7 @@ export const Chat = memo(function Chat({
             ...(onOpenSettingsPanel
               ? [
                   {
-                    label: 'Settings',
+                    label: '设置',
                     icon: <IconSettings size={14} />,
                     onClick: () => onOpenSettingsPanel(session.id),
                   },
@@ -2269,7 +2269,7 @@ export const Chat = memo(function Chat({
             ...(onClosePanel
               ? [
                   {
-                    label: groupLabel ? `Remove from "${groupLabel}"` : 'Close panel',
+                    label: groupLabel ? `Remove from "${groupLabel}"` : '关闭面板',
                     icon: <IconX size={14} />,
                     onClick: () => onClosePanel(session.id),
                   },
@@ -2282,21 +2282,21 @@ export const Chat = memo(function Chat({
               ? [
                   { label: '' },
                   {
-                    label: 'Delete session',
+                    label: '删除会话',
                     icon: <IconTrash size={14} />,
                     danger: true,
                     onClick: () => {
                       const title = sessionTitleOrFallback(session)
                       if (onAskConfirm) {
                         onAskConfirm({
-                          title: 'Delete session?',
+                          title: '删除会话？',
                           message: (
                             <>
                               <p>Delete &ldquo;{title}&rdquo;?</p>
                               <p>This permanently removes the conversation from disk. The Anthropic SDK&rsquo;s own session log on disk is kept, but the app won&rsquo;t reference it anymore.</p>
                             </>
                           ),
-                          confirmLabel: 'Delete',
+                          confirmLabel: '删除',
                           destructive: true,
                           onConfirm: () => onDelete(session.id),
                         })
@@ -2384,19 +2384,19 @@ export const Chat = memo(function Chat({
         </div>
         {discardConfirm && (
           <ConfirmDialog
-            title="Discard messages after this point?"
+            title="丢弃此后的消息？"
             message={
               <>
                 <p>Messages after {discardConfirm.preview ? `「${discardConfirm.preview}」` : 'this reply'}{' '}
                 will be discarded. The conversation continues from here in a new session.</p>
                 <p className="confirm-dialog-hint">
                   {discardConfirm.deleteOriginal
-                    ? <>The original conversation will be <strong>permanently deleted</strong> — it cannot be recovered.</>
+                    ? <>The original conversation will be <strong>已永久删除</strong> — it cannot be recovered.</>
                     : <>The original is kept on disk and can be recovered via <code>/resume</code>.</>}
                 </p>
               </>
             }
-            confirmLabel={discardConfirm.deleteOriginal ? 'Discard and delete' : 'Discard'}
+            confirmLabel={discardConfirm.deleteOriginal ? 'Discard and delete' : '丢弃'}
             destructive
             busy={discardConfirm.busy}
             checkboxLabel="Also delete the original conversation (irreversible)"
@@ -2422,7 +2422,7 @@ export const Chat = memo(function Chat({
         )}
         {rewindConfirm && (
           <ConfirmDialog
-            title="Rewind files to this message?"
+            title="将文件回退到此消息？"
             message={
               <>
                 <p>Files created after this message will be deleted (except gitignored or very large untracked files) and existing files will be restored to their state when this message was sent. The conversation is not truncated.</p>
@@ -2430,7 +2430,7 @@ export const Chat = memo(function Chat({
                   <p className="confirm-dialog-hint">Preview failed: {rewindConfirm.dryError}</p>
                 )}
                 {!rewindConfirm.dryError && !rewindConfirm.dry && (
-                  <p className="confirm-dialog-hint">Loading diff preview…</p>
+                  <p className="confirm-dialog-hint">正在加载差异预览…</p>
                 )}
                 {rewindConfirm.dry && !rewindConfirm.dry.canRewind && (
                   <p className="confirm-dialog-hint">
@@ -2575,7 +2575,7 @@ export const Chat = memo(function Chat({
         )}
 
       {/* WorkingBubble — same portal-into-bottomOverlay path as the dock. The
-          mount condition (and why it carries no separate `waiting` disjunct)
+          mount condition (and why it carries no separate `等待中` disjunct)
           lives in shouldMountWorkingBubble. */}
       {workingSlot &&
         createPortal(
@@ -2690,7 +2690,7 @@ export const Chat = memo(function Chat({
 
       <Overlay
         variant="settings"
-        ariaLabel="Session settings"
+        ariaLabel="会话设置"
         open={settingsOpen}
         onClose={() => onCloseSettings?.()}
         renderCard={false}
@@ -2766,7 +2766,7 @@ export const Chat = memo(function Chat({
 
       <Overlay
         variant="tasks"
-        ariaLabel="Tasks"
+        ariaLabel="任务"
         open={tasksPanelOpen}
         onClose={() => onCloseTasksPanel?.()}
         renderCard={false}

@@ -53,13 +53,13 @@ describe('SkillToolView', () => {
     expect(screen.getByText('brainstorming')).toBeTruthy()
     expect(screen.getByText('superpowers')).toBeTruthy()
     expect(screen.getByText('idea')).toBeTruthy()
-    expect(screen.queryByText('forked execution')).toBeNull()
+    expect(screen.queryByText('分叉执行')).toBeNull()
   })
 
   it('renders no drill-in when no record exists yet (frame ahead of its record)', () => {
     renderView(null)
     expect(screen.getByText('code-review')).toBeTruthy()
-    expect(screen.queryByText('forked execution')).toBeNull()
+    expect(screen.queryByText('分叉执行')).toBeNull()
   })
 
   it('offers the drill-in once the fork has child calls, counting agents separately', () => {
@@ -71,7 +71,7 @@ describe('SkillToolView', () => {
         child('Agent', 'c4'),
       ],
     }))
-    expect(screen.getByText('forked execution')).toBeTruthy()
+    expect(screen.getByText('分叉执行')).toBeTruthy()
     expect(screen.getByText('4 calls · 2 agents')).toBeTruthy()
   })
 
@@ -82,7 +82,7 @@ describe('SkillToolView', () => {
 
   it('opens the drill-in for its own tool_use id', () => {
     const { open } = renderView(record({ childCalls: [child('Agent', 'c1')] }))
-    fireEvent.click(screen.getByText('forked execution'))
+    fireEvent.click(screen.getByText('分叉执行'))
     expect(open).toHaveBeenCalledWith(SKILL_ID)
   })
 

@@ -29,7 +29,7 @@ describe('imageBlockToDataUrl', () => {
   })
 
   it('returns null for a non-base64 source type', () => {
-    expect(imageBlockToDataUrl(imageBlock({ source: { type: 'url', url: 'http://x' } }))).toBeNull()
+    expect(imageBlockToDataUrl(imageBlock({ source: { type: 'URL', url: 'http://x' } }))).toBeNull()
   })
 
   it('returns null for an empty data payload', () => {

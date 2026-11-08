@@ -75,7 +75,7 @@ interface Props {
   showMessageHeaders?: boolean
   /** Where the live turn's text renders ('overlay' | 'inline'). Global-only
    *  pref (no per-session override), resolved by ChatPanel and fed verbatim
-   *  to SessionMessageList's `streamingMode` seam. */
+   *  to SessionMessageList's `streaming模式` seam. */
   streamingMode: StreamingRenderMode
   /** True close — deletes the ephemeral session. */
   onClose: () => void
@@ -144,20 +144,20 @@ export const SideChatDrawer = memo(function SideChatDrawer({
   /** Waiting = a background subagent is still in flight after the side-chat
    *  turn ended. Uses the SHARED predicates (computeWaiting /
    *  shouldMountWorkingBubble) so the RULE is the main panel's, with the task
-   *  leg deliberately zeroed out: the drawer passes no `onOpenTasks` (the Tasks
+   *  leg deliberately zeroed out: the drawer passes no `onOpen任务` (the Tasks
    *  overlay is owned by the main panel), and WorkingBubble renders the count
-   *  pill only when `onOpenTasks` is present — so a wait driven purely by a
+   *  pill only when `onOpen任务` is present — so a wait driven purely by a
    *  background task record would be an empty `Waiting...` bar with no pill and
    *  no entry point.
    *
-   *  The INPUTS are the drawer's own, not Chat's: `turnActive` is
+   *  The INPUTS are the drawer's own, not Chat's: `turn已启用` is
    *  `session.working` alone — no optimistic `pendingTurnSince` bridge and no
    *  `activePhase` leg. That mirrors the drawer's existing behaviour (it can
    *  show nothing during an SDK auto-continuation turn while the main panel
    *  shows its bubble); it is not a claim that the two surfaces agree on which
    *  turns count. The transcript-side leg is shared (hasTranscriptBackground).
    *
-   *  `activeSubagents` is read directly from the store (a narrow selector) so
+   *  `active子 agent` is read directly from the store (a narrow selector) so
    *  the drawer re-renders only when the subagent list actually changes — not
    *  on every streaming flush the old aggregate ChatStream pulled along.
    */
@@ -275,14 +275,14 @@ export const SideChatDrawer = memo(function SideChatDrawer({
             </span>
           </button>
         </Tooltip>
-        <span className="side-chat-drawer-title">Side Chat</span>
-        <Tooltip label="Close (delete session)" placement="bottom">
+        <span className="side-chat-drawer-title">侧边聊天</span>
+        <Tooltip label="关闭（删除会话）" placement="bottom">
           <button
             type="button"
             className="btn btn-icon"
             disabled={isExiting || isCollapsing}
             onClick={() => setIsExiting(true)}
-            aria-label="Close Side Chat"
+            aria-label="关闭侧边聊天"
           >
             <IconX size={14} />
           </button>
@@ -316,9 +316,9 @@ export const SideChatDrawer = memo(function SideChatDrawer({
             // state is the natural place to teach that property before
             // they invest in a long thread.
             <div className="chat-messages-empty-side">
-              <div className="chat-messages-empty-title">Ask a quick question.</div>
+              <div className="chat-messages-empty-title">快速提问。</div>
               <div className="chat-messages-empty-hint">
-                This side chat is ephemeral — closing it deletes the conversation.
+                此侧边聊天是临时的 — 关闭即删除对话。
               </div>
             </div>
           )}
@@ -395,8 +395,8 @@ export const SideChatDrawer = memo(function SideChatDrawer({
               className="btn btn-icon"
               onClick={() => fileInputRef.current?.click()}
               disabled={session.terminated || sending}
-              title="Attach image"
-              aria-label="Attach image"
+              title="附加图片"
+              aria-label="附加图片"
             >
               <IconPaperclip size={16} />
             </button>

@@ -53,7 +53,7 @@ function StatusIcon({ status }: { status: TaskRecordUi['status'] }) {
 
 /** Icon for a task's kind. Matches the FRIENDLY vocabulary ('shell' /
  *  'subagent' / 'monitor' / 'workflow'), which is the canonical one: the CLI's
- *  frames spell it `local_bash` / `local_agent` / `local_workflow` and every
+ *  frames spell it `local_bash` / `local_agent` / `local_workf低` and every
  *  writer into `session.tasks` folds that on the way in (see normalizeTaskType
  *  in shared/tasks.ts). Add a mapping there, not a branch here, when a new
  *  discriminant appears. */
@@ -151,9 +151,9 @@ export const TasksPanel = memo(function TasksPanel({
   const animatedActive = Math.round(useCountUp(indicatorCount, 300))
 
   return (
-    <aside className="tasks-panel" role="region" aria-label="Tasks" ref={setPanelOs}>
+    <aside className="tasks-panel" role="region" aria-label="任务" ref={setPanelOs}>
       <header className="tasks-panel-header">
-        <span className="tasks-panel-title">Tasks</span>
+        <span className="tasks-panel-title">任务</span>
         <span className="tasks-panel-count">
           {animatedActive > 0 ? `${animatedActive} running` : 'idle'}
           {ambientActive > 0 && (
@@ -166,7 +166,7 @@ export const TasksPanel = memo(function TasksPanel({
           )}
         </span>
         <span className="tasks-panel-spacer" />
-        <button className="tasks-panel-icon-btn" onClick={onClose} aria-label="Close">
+        <button className="tasks-panel-icon-btn" onClick={onClose} aria-label="关闭">
           <IconX size={14} />
         </button>
       </header>
@@ -185,7 +185,7 @@ export const TasksPanel = memo(function TasksPanel({
         )}
         {finished.length > 0 && (
           <section className="tasks-panel-section">
-            <div className="tasks-panel-section-title">Finished</div>
+            <div className="tasks-panel-section-title">已完成</div>
             {finished.map((t) => (
               <TaskRow key={t.taskId} task={t} stopping={false} onStop={stopTask} onViewTranscript={openTranscript} />
             ))}
@@ -240,7 +240,7 @@ const TaskRow = memo(function TaskRow({
         </span>
         {(task.subagentType || task.workflowName || task.taskType) && (
           <span className="tasks-row-meta">
-            {[task.subagentType ?? task.workflowName ?? task.taskType, task.isBackgrounded ? 'background' : null, task.skipTranscript || task.ambient ? 'ambient' : null, task.reason === 'worker_restart' ? 'worker restarted' : null]
+            {[task.subagentType ?? task.workflowName ?? task.taskType, task.isBackgrounded ? '后台' : null, task.skipTranscript || task.ambient ? 'ambient' : null, task.reason === 'worker_restart' ? 'worker restarted' : null]
               .filter(Boolean)
               .join(' · ')}
           </span>
@@ -271,7 +271,7 @@ const TaskRow = memo(function TaskRow({
           type="button"
           className="tasks-row-view"
           title={`View on-disk transcript: ${task.description || task.taskId}`}
-          aria-label="View subagent transcript"
+          aria-label="查看子 agent 记录"
           onClick={() => onViewTranscript(task)}
         >
           <IconFileText size={12} />

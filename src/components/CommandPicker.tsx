@@ -43,7 +43,7 @@ interface CommandGroup {
   commands: SlashCommand[]
 }
 
-/** Split commands into groups by plugin. A command marked `builtin` by the SDK
+/** Split commands into groups by plugin. A command marked `built输入` by the SDK
  *  is Claude Code's own; otherwise the SDK encodes the owning plugin as a
  *  leading "(plugin)" tag in the description (names are bare, with no
  *  "plugin:" prefix), and a missing tag also means built-in. */
@@ -150,7 +150,7 @@ export function CommandPicker({ commands, query, selectedIndex, anchorRef, onSel
   return createPortal(
     <div className="cmd-picker os-hidden" ref={rootRef} role="listbox">
       {filtered.length === 0 ? (
-        <div className="cmd-picker-empty">No matching commands</div>
+        <div className="cmd-picker-empty">无匹配命令</div>
       ) : (
         groups.map((group) => (
           <div key={group.plugin ?? '__builtin__'}>

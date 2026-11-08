@@ -232,7 +232,7 @@ describe('Overlay', () => {
     // Queried by class: while closed the backdrop is aria-hidden="true", which
     // makes getByRole treat it as inaccessible — which is exactly the point.
     const { container, rerender } = render(
-      <Overlay variant="settings" renderCard={false} open={false} keepMounted onClose={() => {}} ariaLabel="Settings">
+      <Overlay variant="settings" renderCard={false} open={false} keepMounted onClose={() => {}} ariaLabel="设置">
         <div className="settings-panel">panel</div>
       </Overlay>,
     )
@@ -242,7 +242,7 @@ describe('Overlay', () => {
     expect(backdrop.getAttribute('aria-hidden')).toBe('true')
 
     rerender(
-      <Overlay variant="settings" renderCard={false} open keepMounted onClose={() => {}} ariaLabel="Settings">
+      <Overlay variant="settings" renderCard={false} open keepMounted onClose={() => {}} ariaLabel="设置">
         <div className="settings-panel">panel</div>
       </Overlay>,
     )

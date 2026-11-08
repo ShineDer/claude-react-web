@@ -62,18 +62,18 @@ export function McpExportDialog({ open = true, servers, onClose }: Props) {
       ariaLabel="Export MCP servers"
     >
       <div className="modal-header">
-        <h3>Export MCP Servers</h3>
-        <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="Close"><IconX size={14} /></button>
+        <h3>导出 MCP 服务器</h3>
+        <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="关闭"><IconX size={14} /></button>
       </div>
       <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 10, maxHeight: '60vh', overflowY: 'auto' }}>
         <div className="settings-section-head" style={{ alignItems: 'center' }}>
           <span className="settings-note">{servers.length} server{servers.length !== 1 ? 's' : ''}</span>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className="btn" onClick={() => setSelected(Object.fromEntries(names.map((n) => [n, true])))}>Select all</button>
-            <button className="btn" onClick={() => setSelected(Object.fromEntries(names.map((n) => [n, false])))}>Select none</button>
+            <button className="btn" onClick={() => setSelected(Object.fromEntries(names.map((n) => [n, true])))}>全选</button>
+            <button className="btn" onClick={() => setSelected(Object.fromEntries(names.map((n) => [n, false])))}>全不选</button>
           </div>
         </div>
-        {servers.length === 0 && <div className="hint">No MCP servers configured.</div>}
+        {servers.length === 0 && <div className="hint">未配置 MCP 服务器。</div>}
         {servers.map((srv) => (
           <label key={srv.name} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--fs-base)' }}>
             <input
@@ -90,14 +90,14 @@ export function McpExportDialog({ open = true, servers, onClose }: Props) {
           Include secret values (env/headers)
         </label>
         {!includeSecrets && (
-          <span className="settings-note">Secrets will be blanked — re-enter them on the target machine.</span>
+          <span className="settings-note">密钥将被清空 — 请在目标机器上重新输入。</span>
         )}
         {error && <div style={{ color: 'var(--danger-text)', fontSize: 'var(--fs-base)' }}>{error}</div>}
       </div>
       <div className="modal-footer">
-        <span className="hint">Press Esc to cancel.</span>
+        <span className="hint">按 Esc 取消。</span>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button className="btn" onClick={onClose} disabled={exporting}>Cancel</button>
+          <button className="btn" onClick={onClose} disabled={exporting}>取消</button>
           <button className="btn btn-primary" onClick={() => void download()} disabled={exporting || selectedCount === 0}>
             {exporting ? 'Exporting…' : 'Download'}
           </button>

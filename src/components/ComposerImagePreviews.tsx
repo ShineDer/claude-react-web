@@ -32,7 +32,7 @@ export function ComposerImagePreviews({
             type="button"
             className="image-preview-remove"
             onClick={() => onRemove(img.id)}
-            aria-label="Remove image"
+            aria-label="移除图片"
           >
             <IconX size={12} />
           </button>

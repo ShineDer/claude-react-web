@@ -10,7 +10,7 @@ const SERVER_LABELS: Record<ServerResetItem, string> = {
   'app-settings': 'App settings (reset to defaults; keeps connection)',
   'mcp-configs': 'MCP server configurations',
   'marketplaces': 'Marketplaces & enabled plugins',
-  'snippets': 'Composer snippets',
+  'snippets': '输入框片段',
   'ui-state': 'Session groups & sidebar order',
   'logs': 'Persisted log files (clears all; today reopens empty)',
   'credentials': 'Connection credentials (authToken, baseUrl, access token)',
@@ -106,10 +106,10 @@ export function ResetConfigDialog({ open, onClose }: Props) {
   const normalServer = (SERVER_RESET_ITEMS.filter((it) => !(DANGER_ITEMS as readonly string[]).includes(it)) as ServerResetItem[])
 
   return (
-    <Overlay variant="modal" cardClassName="modal-reset-config" ariaLabel="Clear configuration & data" open={open} onClose={onClose} canCloseOnBackdrop={() => !clearing} inertOnExit>
+    <Overlay variant="modal" cardClassName="modal-reset-config" ariaLabel="清除配置与数据" open={open} onClose={onClose} canCloseOnBackdrop={() => !clearing} inertOnExit>
         <div className="modal-header">
           <h3>Clear configuration &amp; data</h3>
-          <button className="btn btn-icon-sm" onClick={onClose} disabled={clearing} aria-label="Close"><IconX size={14} /></button>
+          <button className="btn btn-icon-sm" onClick={onClose} disabled={clearing} aria-label="关闭"><IconX size={14} /></button>
         </div>
         <div className="modal-section reset-config-body">
           <div className="reset-group">
@@ -117,10 +117,10 @@ export function ResetConfigDialog({ open, onClose }: Props) {
             {normalServer.map(renderServer)}
           </div>
           <div className="reset-group">
-            <div className="reset-group-label">Browser data</div>
+            <div className="reset-group-label">浏览器数据</div>
             <label className="reset-row">
               <input type="checkbox" ref={(el) => { if (el) el.indeterminate = someBrowser }} checked={allBrowser} onChange={toggleAllBrowser} />
-              <span><strong>Browser data</strong> (all local caches)</span>
+              <span><strong>浏览器数据</strong> (all local caches)</span>
             </label>
             <div className="reset-sub">
               {BROWSER_CHILDREN.map((c) => (
@@ -129,21 +129,21 @@ export function ResetConfigDialog({ open, onClose }: Props) {
             </div>
           </div>
           <div className="reset-group reset-danger-zone">
-            <div className="reset-group-label">Danger zone</div>
+            <div className="reset-group-label">危险区域</div>
             {(DANGER_ITEMS as readonly ServerResetItem[]).map(renderServer)}
           </div>
         </div>
         <div className="modal-footer">
           <span className="hint">{totalSelected ? `Will clear ${totalSelected} item(s)` : 'Select items to clear'}</span>
           <div className="modal-footer-actions">
-            <button className="btn" onClick={onClose} disabled={clearing}>Cancel</button>
+            <button className="btn" onClick={onClose} disabled={clearing}>取消</button>
             {confirmGate ? (
               <>
-                <input className="input" aria-label="Type reset to confirm" placeholder="type reset to confirm" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} style={{ width: 160 }} />
-                <button className="btn btn-danger" disabled={confirmText !== 'reset' || clearing} onClick={doClear}>Confirm</button>
+                <input className="input" aria-label="输入 reset 确认" placeholder="输入 reset 确认" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} style={{ width: 160 }} />
+                <button className="btn btn-danger" disabled={confirmText !== 'reset' || clearing} onClick={doClear}>确认</button>
               </>
             ) : (
-              <button className="btn btn-danger" disabled={!totalSelected || clearing} onClick={doClear}>Clear selected</button>
+              <button className="btn btn-danger" disabled={!totalSelected || clearing} onClick={doClear}>清除已选</button>
             )}
           </div>
         </div>

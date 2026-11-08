@@ -96,10 +96,10 @@ async function importDesktopSetupPage() {
  *  （onContinue），所以这里没有那一击，向导直接从 step 0 开始。
  *  Step 0's Continue, the token, then Next up to the Finish step. */
 async function walkToFinish() {
-  fireEvent.click(await screen.findByText('Continue'))      // step 0 → step 1
+  fireEvent.click(await screen.findByText('继续'))      // step 0 → step 1
   fireEvent.change(screen.getByPlaceholderText('sk-ant-...'), { target: { value: 'sk-test' } })
   // Desktop: 1→2→3→4→5→7 —— 5 次 Next（pre-fix the fifth renders step id 6 and throws）。
-  for (let i = 0; i < 5; i++) fireEvent.click(screen.getByText('Next'))
+  for (let i = 0; i < 5; i++) fireEvent.click(screen.getByText('下一个'))
 }
 
 describe('SetupPage — desktop wizard (no Autostart step)', () => {
@@ -183,7 +183,7 @@ describe('SetupPage — desktop wizard (no Autostart step)', () => {
 
     fireEvent.click(screen.getByText('Skip'))
     expect(await screen.findByText('Step 1 of 7')).toBeTruthy()
-    expect(screen.getByText('Continue')).toBeTruthy()
+    expect(screen.getByText('继续')).toBeTruthy()
     // 同一个选择器在向导里必须抓得到（否则上面那句 toBeNull 只证明选择器写错了，
     // 证明不了进度点不存在）。
     expect(document.querySelector('.setup-progress')).not.toBeNull()
@@ -206,7 +206,7 @@ describe('SetupPage — desktop wizard (no Autostart step)', () => {
     render(<SetupPage onConfigured={vi.fn(async () => {})} />)
 
     await walkToFinish()
-    fireEvent.click(screen.getByText('Back'))
+    fireEvent.click(screen.getByText('返回'))
 
     expect(await screen.findByText(/Choose the npm registry/)).toBeTruthy()
     expect(screen.getByText('Step 6 of 7')).toBeTruthy()

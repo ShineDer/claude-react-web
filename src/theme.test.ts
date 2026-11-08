@@ -50,7 +50,7 @@ describe('isBackgroundSrc', () => {
 describe('a scheme with no host', () => {
   it('is refused, because nothing can be fetched from it', () => {
     // `url("https://")` is not resolvable, so it commits a checked radio and an
-    // "Applied" badge over a wallpaper that paints nothing.
+    // "已应用" badge over a wallpaper that paints nothing.
     expect(isBackgroundSrc('https://')).toBe(false)
     expect(isBackgroundVideoSrc('https://')).toBe(false)
     expect(isBackgroundSrc('https://?a=1')).toBe(false)

@@ -104,7 +104,7 @@ describe('useHistoryImageRecall', () => {
     // maps an empty set to an empty result.
     const build = vi.fn(async (imgs: readonly PersistedImage[]) => imgs as PastedImage[])
     const { result } = renderHook(() => useHistoryImageRecall(apply, build))
-    act(() => result.current.recallEntry('missing'))
+    act(() => result.current.recallEntry('缺失'))
     await flushPipeline()
     expect(apply).toHaveBeenCalledWith([])
     expect(build).toHaveBeenCalledWith([])

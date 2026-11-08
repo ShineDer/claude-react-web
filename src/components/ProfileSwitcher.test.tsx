@@ -91,7 +91,7 @@ describe('ProfileSwitcher', () => {
     const onManageProfiles = vi.fn()
     render(<ToastProvider><ProfileSwitcher onManageProfiles={onManageProfiles} /></ToastProvider>)
     fireEvent.click(screen.getByRole('button'))
-    fireEvent.click(screen.getByText('Manage profiles…'))
+    fireEvent.click(screen.getByText('管理配置档案…'))
     expect(onManageProfiles).toHaveBeenCalled()
   })
 })

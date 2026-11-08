@@ -173,10 +173,10 @@ export class SessionStore {
    *  cache. The Map reference is compared by identity so the filtered
    *  array is only reallocated when activeSubagents actually changes.
    *
-   *  Includes `background` (async subagents whose launch ack has landed but
+   *  Includes `后台` (async subagents whose launch ack has landed but
    *  whose real completion hasn't — they're still working in the background
-   *  and must stay in the WorkingBubble's subagent pill) alongside `running`, AND
-   *  `pending` (the post-turn-end form of `background`): the WorkingBubble
+   *  and must stay in the WorkingBubble's subagent pill) alongside `运行中`, AND
+   *  `pending` (the post-turn-end form of `后台`): the WorkingBubble
    *  stays mounted in its `Waiting` state while any `pending` subagent
    *  remains, so the user sees that background work is still in flight after
    *  the parent turn ended. A `pending` subagent is dismissible (via the × in

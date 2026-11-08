@@ -1,6 +1,6 @@
 // Session-aware desktop notification coordinator.
 //
-// Wraps `useNotifications` with the App-level orchestration layer:
+// Wraps `use通知` with the App-level orchestration layer:
 //
 //   1. Edge-detect when a session's `working` flag flips true→false and
 //      fire a "turn complete" toast. Seeded by `seedWorkingState` when a

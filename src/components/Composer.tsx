@@ -244,12 +244,12 @@ export const Composer = memo(function Composer({
     ? 'Background tasks'
     : tasksAmbientOnly
       ? `${tasksTotal} background housekeeping task${tasksTotal === 1 ? '' : 's'}`
-      : `${tasksIndicator} background task${tasksIndicator === 1 ? '' : 's'} running`
+      : `${tasksIndicator} background task${tasksIndicator === 1 ? '' : 's'} 运行中`
   const tasksTitle = tasksIdle
     ? 'Open Tasks'
     : tasksAmbientOnly
-      ? `${tasksTotal} background housekeeping task${tasksTotal === 1 ? '' : 's'} — click to open Tasks`
-      : `${tasksIndicator} background task${tasksIndicator === 1 ? '' : 's'} running — click to open Tasks`
+      ? `${tasksTotal} background housekeeping task${tasksTotal === 1 ? '' : 's'} — click to open 任务`
+      : `${tasksIndicator} background task${tasksIndicator === 1 ? '' : 's'} running — click to open 任务`
 
   // ── Right-click context menu state ─────────────────────────────
   //
@@ -394,7 +394,7 @@ export const Composer = memo(function Composer({
 
   // `recallHistory` (fresh identity per render — it closes over history /
   // input / pastedImages / onRecallImages) changes every keystroke, and
-  // `pickerOpen` / `disabled` flip on interaction; read them through refs so
+  // `pickerOpen` / `已禁用` flip on interaction; read them through refs so
   // the native listener stays attached instead of rebinding per render.
   const latestRef = useRef({ recallHistory })
   latestRef.current = { recallHistory }
@@ -530,7 +530,7 @@ export const Composer = memo(function Composer({
     const { start, end } = savedSelection
     if (start === end) return
     const sel = input.slice(start, end)
-    // Plain `writeClipboard`, not `useCopy`: the menu closes on click so there
+    // Plain `writeClipboard`, not `use复制`: the menu closes on click so there
     // is no element to flip, and success stays silent the way the native Ctrl+C
     // this stands in for does.
     if (!(await writeClipboard(sel))) toast.error('Copy failed — use Ctrl+C instead.')
@@ -594,15 +594,15 @@ export const Composer = memo(function Composer({
   const menuItems = useMemo<ContextMenuItem[]>(() => {
     const hasSelection = savedSelection.start !== savedSelection.end
     const items: ContextMenuItem[] = [
-      { label: 'Cut', icon: <IconScissors size={14} />, onClick: () => void handleCut(), disabled: !hasSelection || disabled },
-      { label: 'Copy', icon: <IconCopy size={14} />, onClick: () => void handleCopy(), disabled: !hasSelection },
-      { label: 'Paste', icon: <IconDownload size={14} />, onClick: () => void handlePaste(), disabled: disabled },
-      { label: 'Select all', onClick: handleSelectAll, disabled: input.length === 0 },
+      { label: '剪切', icon: <IconScissors size={14} />, onClick: () => void handleCut(), disabled: !hasSelection || disabled },
+      { label: '复制', icon: <IconCopy size={14} />, onClick: () => void handleCopy(), disabled: !hasSelection },
+      { label: '粘贴', icon: <IconDownload size={14} />, onClick: () => void handlePaste(), disabled: disabled },
+      { label: '全选', onClick: handleSelectAll, disabled: input.length === 0 },
     ]
     if (onRecap) {
       items.push({})
       items.push({
-        label: 'Generate recap',
+        label: '生成回顾',
         icon: <IconPencil size={14} />,
         onClick: onRecap,
         disabled: !canRecap,
@@ -618,13 +618,13 @@ export const Composer = memo(function Composer({
     }
     if (snippets.snippets.length > 0) items.push({})
     items.push({
-      label: 'Save current input as snippet…',
+      label: '将当前输入保存为片段…',
       icon: '+',
       onClick: handleSaveCurrentAsSnippet,
       disabled: input.trim() === '',
     })
     items.push({
-      label: 'Manage snippets…',
+      label: '管理片段…',
       icon: <IconSettings size={14} />,
       onClick: onOpenSnippetsManager,
     })
@@ -682,14 +682,14 @@ export const Composer = memo(function Composer({
         <div className="session-ended">
           <span>This session ended unexpectedly{reasonText ? `: ${reasonText}` : error ? `: ${error}` : ''}.</span>
           <span className="session-ended-hint">
-            Resume to continue in place, or fork from your last completed turn.
+            恢复以原地继续，或从上次完成的回合分叉。
           </span>
           <div className="session-ended-actions">
             <button type="button" className="chat-panel-resume-btn" onClick={onResume}>
-              Resume
+              恢复
             </button>
             <button type="button" className="chat-panel-resume-btn" onClick={onForkFromLastCompleted}>
-              Fork from last completed turn
+              从上一个已完成回合分叉
             </button>
           </div>
           {/* Keep the orb slot mounted so Chat can still portal ContextOrb
@@ -702,7 +702,7 @@ export const Composer = memo(function Composer({
     return (
       <div className="session-ended">
         <span>This session has ended{reasonText ? `: ${reasonText}` : ''}.</span>
-        <span className="session-ended-hint">Create a new session to continue.</span>
+        <span className="session-ended-hint">新建会话以继续。</span>
         <span ref={contextOrbSlotRef} className="ctx-orb-slot session-ended-orb" />
       </div>
     )
@@ -755,7 +755,7 @@ export const Composer = memo(function Composer({
   }
   if (bashMode) {
     composerRows.push(
-      <div className="composer-bash-indicator" aria-label="Bash mode" key="bash-indicator">
+      <div className="composer-bash-indicator" aria-label="Bash 模式" key="bash-indicator">
         <span className="composer-bash-badge" aria-hidden>{sharedMode ? '!!' : '!'}</span>
         <span className="composer-bash-label">
           {sharedMode
@@ -774,7 +774,7 @@ export const Composer = memo(function Composer({
           onClick={() => setPreviewMode(false)}
         >
           <IconPencil size={12} />
-          Edit
+          编辑
         </button>
         <button
           type="button"
@@ -788,7 +788,7 @@ export const Composer = memo(function Composer({
           type="button"
           className="composer-expanded-close"
           onClick={() => { setExpanded(false); setPreviewMode(false) }}
-          aria-label="Exit expanded mode"
+          aria-label="退出扩展模式"
         >
           <IconX size={14} />
         </button>
@@ -826,7 +826,7 @@ export const Composer = memo(function Composer({
             {input.trim() ? (
               <Markdown text={input} />
             ) : (
-              <div className="composer-preview-empty">Nothing to preview yet.</div>
+              <div className="composer-preview-empty">尚无可预览内容。</div>
             )}
           </div>
         ) : (
@@ -982,8 +982,8 @@ export const Composer = memo(function Composer({
           type="button"
           onClick={openFilePicker}
           disabled={disabled}
-          title="Attach files"
-          aria-label="Attach files"
+          title="附加文件"
+          aria-label="附加文件"
         >
           <IconPaperclip size={18} />
         </button>

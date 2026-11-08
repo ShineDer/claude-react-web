@@ -1,6 +1,6 @@
 // Provider-profiles editor tab for the global Settings modal. Each provider
 // profile carries its own credentials + model set + model groups; this tab
-// renders one card per profile and wires mutations through `useProfiles`.
+// renders one card per profile and wires mutations through `use配置档`.
 //
 // The authToken field uses the dirty-token pattern: an empty password-style
 // input means "keep the existing token on save". The client only ever holds
@@ -238,7 +238,7 @@ export function ProfilesSettingsTab({ saveAllRef }: { saveAllRef?: MutableRefObj
       <section className="settings-group">
         <div className="settings-group-head">
           <div className="settings-group-head-row">
-            <h4>Profiles</h4>
+            <h4>配置档</h4>
             <button
               className="btn"
               onClick={() => { setCreateError(null); setShowCreateDialog(true) }}
@@ -255,7 +255,7 @@ export function ProfilesSettingsTab({ saveAllRef }: { saveAllRef?: MutableRefObj
         <div className="settings-group-body settings-carded-group-body">
           {profiles.length === 0 && (
             <div className="settings-profile-empty">
-              No profiles yet. Add one to get started.
+              尚无配置。添加一个以开始。
             </div>
           )}
           {profiles.map((p) => (
@@ -542,7 +542,7 @@ function ProfileCard({
       return (
         <DragGhost>
           <div className={`settings-model-row${idx === 0 ? ' default' : ''}`}>
-            <span className="settings-model-rank">{idx === 0 ? 'Default' : idx + 1}</span>
+            <span className="settings-model-rank">{idx === 0 ? '默认' : idx + 1}</span>
             <code className="settings-model-id">{modelList[idx].id}</code>
           </div>
         </DragGhost>
@@ -574,7 +574,7 @@ function ProfileCard({
             {expanded ? <IconChevronDown size={12} /> : <IconChevronRight size={12} />}
           </span>
           <span className="settings-card-name">{profile.name}</span>
-          {profile.isActive && <StatusBadge tone="accent">Active</StatusBadge>}
+          {profile.isActive && <StatusBadge tone="accent">已启用</StatusBadge>}
         </button>
         <div className="settings-mcp-actions">
           <button className="btn" onClick={() => void handleTest()} disabled={testing || saving || !canTest}
@@ -587,10 +587,10 @@ function ProfileCard({
             disabled={profile.isActive || saving}
             title={profile.isActive ? 'Already active' : 'Make this the active profile'}
           >
-            Set active
+            设为活跃
           </button>
           <button className="btn btn-primary" onClick={() => void handleSave()} disabled={saving}>
-            {saving ? 'Saving...' : 'Save'}
+            {saving ? '保存中...' : '保存'}
           </button>
           {!confirmDelete ? (
             <button
@@ -599,7 +599,7 @@ function ProfileCard({
               disabled={deleteDisabled}
               title={deleteDisabled ? (profile.isActive ? 'Cannot delete the active profile' : 'Cannot delete the last profile') : 'Delete this profile'}
             >
-              Delete
+              删除
             </button>
           ) : (
             <div className="settings-mcp-confirm">
@@ -607,9 +607,9 @@ function ProfileCard({
                 className="btn btn-danger"
                 onClick={() => { void onDelete(); setConfirmDelete(false) }}
               >
-                Confirm
+                确认
               </button>
-              <button className="btn" onClick={() => setConfirmDelete(false)} aria-label="Cancel">
+              <button className="btn" onClick={() => setConfirmDelete(false)} aria-label="取消">
                 <IconX size={12} />
               </button>
             </div>
@@ -644,9 +644,9 @@ function ProfileCard({
         >
           <div className="settings-card-body settings-profile-body">
           <section className="settings-profile-section">
-            <h4 className="settings-profile-section-label">Connection</h4>
+            <h4 className="settings-profile-section-label">连接</h4>
             <div className="settings-field">
-              <label htmlFor={`${uid}-name`}>Name</label>
+              <label htmlFor={`${uid}-name`}>名称</label>
               <input
                 className="input"
                 id={`${uid}-name`}
@@ -657,7 +657,7 @@ function ProfileCard({
             </div>
 
             <div className="settings-field">
-              <label htmlFor={`${uid}-authtoken`}>Auth Token</label>
+              <label htmlFor={`${uid}-authtoken`}>认证 Token</label>
               <input
                 className="input"
                 id={`${uid}-authtoken`}
@@ -674,24 +674,24 @@ function ProfileCard({
             </div>
 
             <div className="settings-field">
-              <label htmlFor={`${uid}-baseurl`}>Base URL</label>
+              <label htmlFor={`${uid}-baseURL`}>基础 URL</label>
               <input
                 className="input"
-                id={`${uid}-baseurl`}
+                id={`${uid}-baseURL`}
                 value={baseUrl}
                 onChange={(e) => { setBaseUrl(e.target.value); setTestResult(null); setDirty(true) }}
                 placeholder="https://api.anthropic.com"
               />
-              <span className="hint">API endpoint (default: https://api.anthropic.com)</span>
+              <span className="hint">API 端点（默认：https://api.anthropic.com）</span>
             </div>
           </section>
 
           <section className="settings-profile-section">
-            <h4 className="settings-profile-section-label">Models</h4>
+            <h4 className="settings-profile-section-label">模型</h4>
 
             {/* Available Models — ordered list editor (adapted from ModelsTab) */}
             <div className="settings-field">
-              <label>Available Models</label>
+              <label>可用模型</label>
               <span className="hint">First model is the default. Drag the rank badge, or use the arrows, to reorder.</span>
               <div className="settings-model-list">
                 {modelList.length > 1 && (
@@ -699,7 +699,7 @@ function ProfileCard({
                     <button
                       className="btn btn-xs settings-model-sort-btn"
                       onClick={sortModels}
-                      title="Sort alphabetically (A→Z)"
+                      title="按字母排序（A→Z）"
                     >
                       A→Z
                     </button>
@@ -732,7 +732,7 @@ function ProfileCard({
                           {...attributes}
                           {...listeners}
                         >
-                          {i === 0 ? 'Default' : i + 1}
+                          {i === 0 ? '默认' : i + 1}
                         </span>
                         <input
                           className="input settings-model-input"
@@ -772,13 +772,13 @@ function ProfileCard({
                           }}
                           aria-label={`Model ID ${i + 1}: ${row.id}`}
                         />
-                        <div className="settings-model-move" role="group" aria-label="Move model priority">
+                        <div className="settings-model-move" role="group" aria-label="移动模型优先级">
                           <button
                             className="btn-icon-sm settings-model-action"
                             onClick={() => moveModel(i, -1)}
                             disabled={i === 0}
-                            title="Move up"
-                            aria-label="Move up"
+                            title="上移"
+                            aria-label="上移"
                           >
                             <IconArrowUp size={12} />
                           </button>
@@ -786,8 +786,8 @@ function ProfileCard({
                             className="btn-icon-sm settings-model-action"
                             onClick={() => moveModel(i, 1)}
                             disabled={i === modelList.length - 1}
-                            title="Move down"
-                            aria-label="Move down"
+                            title="下移"
+                            aria-label="下移"
                           >
                             <IconArrowDown size={12} />
                           </button>
@@ -795,8 +795,8 @@ function ProfileCard({
                         <button
                           className="btn-icon-sm settings-model-action danger"
                           onClick={() => removeModel(row.uid)}
-                          title="Remove"
-                          aria-label="Remove"
+                          title="移除"
+                          aria-label="移除"
                         >
                           <IconX size={12} />
                         </button>
@@ -816,17 +816,17 @@ function ProfileCard({
                       // here would insert a half-composed id.
                       if (e.key === 'Enter' && !e.nativeEvent.isComposing) addModel()
                     }}
-                    aria-label="New model ID"
+                    aria-label="新模型 ID"
                     placeholder="model-id (e.g. claude-sonnet-4-20250514)"
                   />
-                  <button className="btn btn-xs settings-model-add-btn" onClick={addModel}>Add</button>
+                  <button className="btn btn-xs settings-model-add-btn" onClick={addModel}>添加</button>
                 </div>
               </div>
             </div>
 
             {/* Recap Model dropdown (over this profile's own modelList) */}
             <div className="settings-field">
-              <label htmlFor={`${uid}-recap-model`}>Recap Model</label>
+              <label htmlFor={`${uid}-recap-model`}>摘要模型</label>
               <span className="hint">
                 Model used for AI session summaries. (default) uses the session's aux model — the
                 model group's haiku slot, else the session's own model.
@@ -838,7 +838,7 @@ function ProfileCard({
                   value={recapModel}
                   onChange={(e) => { setRecapModel(e.target.value); setDirty(true) }}
                 >
-                  <option value="">(default)</option>
+                  <option value="">（默认）</option>
                   {/* A stored model that is not in this list needs its own
                       option: with no matching option the select renders
                       blank, hiding which model will actually be used (and
@@ -856,7 +856,7 @@ function ProfileCard({
 
             {/* Commit Message Model dropdown (over this profile's own modelList) */}
             <div className="settings-field">
-              <label htmlFor={`${uid}-commit-message-model`}>Commit Message Model</label>
+              <label htmlFor={`${uid}-commit-message-model`}>提交信息模型</label>
               <span className="hint">
                 Model used for AI-generated commit messages in Git panel. (default) uses the
                 session's aux model (the model group's haiku slot, else the session's model).
@@ -868,7 +868,7 @@ function ProfileCard({
                   value={commitMessageModel}
                   onChange={(e) => { setCommitMessageModel(e.target.value); setDirty(true) }}
                 >
-                  <option value="">(default)</option>
+                  <option value="">（默认）</option>
                   {commitMessageModel && !modelList.some((r) => r.id === commitMessageModel) ? (
                     <option value={commitMessageModel}>{commitMessageModel} (not in this list)</option>
                   ) : null}
@@ -882,7 +882,7 @@ function ProfileCard({
           </section>
 
           <section className="settings-profile-section">
-            <h4 className="settings-profile-section-label">Model Groups</h4>
+            <h4 className="settings-profile-section-label">模型分组</h4>
 
             {/* Model Groups — adapted from ModelGroupsTab */}
             <div className="settings-field">
@@ -893,7 +893,7 @@ function ProfileCard({
               </span>
               <div className="settings-model-list">
                 {modelGroups.length === 0 && (
-                  <div className="settings-model-empty">No groups yet. Add one to bundle tier models.</div>
+                  <div className="settings-model-empty">暂无分组。添加一个以归组同层模型。</div>
                 )}
                 <SortableContext items={modelGroups.map((g) => g.id)} strategy={verticalListSortingStrategy}>
                 {modelGroups.map((g, i) => {
@@ -920,7 +920,7 @@ function ProfileCard({
                         <span
                           ref={setActivatorNodeRef}
                           className={`settings-model-rank${canDragGroups ? ' settings-model-grip' : ''}`}
-                          title={canDragGroups ? 'Drag to reorder' : 'Group'}
+                          title={canDragGroups ? 'Drag to reorder' : '分组'}
                           {...attributes}
                           {...listeners}
                         >
@@ -930,15 +930,15 @@ function ProfileCard({
                           className="input settings-model-input"
                           value={g.name}
                           onChange={(e) => updateModelGroup(g.id, { name: e.target.value })}
-                          aria-label="Group name"
+                          aria-label="分组名称"
                         />
-                        <div className="settings-model-move" role="group" aria-label="Move group priority">
+                        <div className="settings-model-move" role="group" aria-label="移动分组优先级">
                           <button
                             className="btn-icon-sm settings-model-action"
                             onClick={() => moveModelGroup(i, -1)}
                             disabled={i === 0}
-                            title="Move up"
-                            aria-label="Move up"
+                            title="上移"
+                            aria-label="上移"
                           >
                             <IconArrowUp size={12} />
                           </button>
@@ -946,8 +946,8 @@ function ProfileCard({
                             className="btn-icon-sm settings-model-action"
                             onClick={() => moveModelGroup(i, 1)}
                             disabled={i === modelGroups.length - 1}
-                            title="Move down"
-                            aria-label="Move down"
+                            title="下移"
+                            aria-label="下移"
                           >
                             <IconArrowDown size={12} />
                           </button>
@@ -955,8 +955,8 @@ function ProfileCard({
                         <button
                           className="btn-icon-sm settings-model-action danger"
                           onClick={() => removeModelGroup(g.id)}
-                          title="Remove"
-                          aria-label="Remove"
+                          title="移除"
+                          aria-label="移除"
                         >
                           <IconX size={12} />
                         </button>
@@ -978,10 +978,10 @@ function ProfileCard({
                           </div>
                         ))}
                         <div className="settings-model-group-main">
-                          <label className="settings-model-group-slot-label" htmlFor={`${uid}-${g.id}-main`}>Main</label>
+                          <label className="settings-model-group-slot-label" htmlFor={`${uid}-${g.id}-ma-in`}>主</label>
                           <select
                             className="input settings-model-select"
-                            id={`${uid}-${g.id}-main`}
+                            id={`${uid}-${g.id}-ma-in`}
                             value={g.main ?? 'opus'}
                             onChange={(e) => updateModelGroup(g.id, { main: e.target.value as 'opus' | 'sonnet' | 'haiku' })}
                           >
@@ -1001,7 +1001,7 @@ function ProfileCard({
                   {modelList.map((r) => <option key={r.uid} value={r.id} />)}
                 </datalist>
                 <div className="settings-model-add-row">
-                  <button className="btn btn-xs settings-model-add-btn" onClick={addModelGroup}>Add Group</button>
+                  <button className="btn btn-xs settings-model-add-btn" onClick={addModelGroup}>添加分组</button>
                 </div>
               </div>
             </div>

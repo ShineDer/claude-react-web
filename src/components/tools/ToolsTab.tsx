@@ -103,7 +103,7 @@ export default function ToolsTab({ sessionId }: Props) {
     <div className="settings-stack">
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Built-in tool surface</h4>
+          <h4>内置工具集</h4>
           <span className="settings-group-desc">
             Restrict which built-in tools this session sees. Applies the next time this session is
             cleared or forked (spawn-time — the SDK has no runtime setting for it), and resets if the
@@ -111,11 +111,11 @@ export default function ToolsTab({ sessionId }: Props) {
           </span>
         </div>
         <div className="settings-group-body tools-tab">
-          <label className="field-label">tools (comma-separated, empty = default)</label>
+          <label className="field-label">工具（逗号分隔，留空 = 默认）</label>
           <input value={tools} onChange={(e) => setTools(e.target.value)} placeholder={BUILTIN_TOOLS.join(', ')} />
           <label className="field-label">allowedTools (auto-allow without prompting)</label>
-          <input value={allowed} onChange={(e) => setAllowed(e.target.value)} placeholder="Edit, Read" />
-          <label className="field-label">disallowedTools (removed from context)</label>
+          <input value={allowed} onChange={(e) => setAllowed(e.target.value)} placeholder="编辑、读取" />
+          <label className="field-label">disallowedTools（已从上下文移除）</label>
           <input value={disallowed} onChange={(e) => setDisallowed(e.target.value)} placeholder="WebFetch" />
           <label className="field-label">toolAliases (JSON object, e.g. {"{ \"Bash\": \"mcp__ws__bash\" }"})</label>
           <textarea value={aliases} onChange={(e) => setAliases(e.target.value)} rows={3} />

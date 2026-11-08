@@ -23,9 +23,9 @@
 //   - Without `title`: the message renders as the main (single-line) text.
 //
 // Interactive toasts (onClick set):
-//   - With `actionLabel`: a dedicated button sits between the message and
+//   - With `action标签`: a dedicated button sits between the message and
 //     the dismiss ✕. The message stays plain text.
-//   - Without `actionLabel`: the whole body (title + message) becomes a
+//   - Without `action标签`: the whole body (title + message) becomes a
 //     button so the entire toast surface (minus the ✕) is the click
 //     target. This is the right shape for "Open session" / "Jump to X"
 //     patterns where the message *is* the link.
@@ -86,7 +86,7 @@ export function ToastHost() {
   const topFor = (i: number) => (heights[0] ?? 0) + i * STACK_PEEK - (heights[i] ?? 0)
 
   return (
-    <div className="toast-host" role="region" aria-label="Notifications" ref={hostRef}>
+    <div className="toast-host" role="region" aria-label="通知" ref={hostRef}>
       {toasts.map((t, i) => {
         const interactive = !!t.onClick
         const inlineButton = interactive && !t.actionLabel

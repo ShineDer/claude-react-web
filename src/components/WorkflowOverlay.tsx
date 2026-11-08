@@ -169,7 +169,7 @@ export const WorkflowOverlay = memo(function WorkflowOverlay({
       className="workflow-overlay"
       role="dialog"
       aria-modal="false"
-      aria-label="Workflow details"
+      aria-label="工作流详情"
       onMouseDown={(e) => {
         if (isExiting) return
         // Click-outside-to-close. The scrim covers the region outside the panel
@@ -183,7 +183,7 @@ export const WorkflowOverlay = memo(function WorkflowOverlay({
       onAnimationEnd={(e) => {
         // The exit fade runs on the scrim, so this arrives via bubbling. Match
         // on BOTH the source element and the animation name —
-        // `overlay-backdrop-out` is shared by every overlay in the app.
+        // `overlay-backdrop-输出` is shared by every overlay in the app.
         if (!isExiting) return
         const target = e.target as HTMLElement
         if (target.classList.contains('workflow-overlay-scrim') && e.animationName === 'overlay-backdrop-out') {
@@ -211,8 +211,8 @@ export const WorkflowOverlay = memo(function WorkflowOverlay({
             className="workflow-overlay-close"
             onClick={onClose}
             disabled={isExiting}
-            title="Close (Esc)"
-            aria-label="Close"
+            title="关闭 (Esc)"
+            aria-label="关闭"
           >
             <IconX size={14} />
           </button>
@@ -241,7 +241,7 @@ export const WorkflowOverlay = memo(function WorkflowOverlay({
           <aside className="workflow-phase-tree">
             {phaseGroups.length === 0 ? (
               <div className="workflow-phase-empty">
-                No phases declared yet.
+                尚未声明阶段。
               </div>
             ) : (
               phaseGroups.map(([phaseTitle, children]) => (
@@ -324,7 +324,7 @@ const PhaseGroup = memo(function PhaseGroup({
     <span className="workflow-phase-summary">
       <span className="workflow-phase-title">{title}</span>
       <span className="workflow-phase-count">
-        {done}/{total}{running > 0 ? ` · ${running} active` : ''}{errored > 0 ? ` · ${errored} failed` : ''}
+        {done}/{total}{running > 0 ? ` · ${running} active` : ''}{errored > 0 ? ` · ${errored} 失败` : ''}
       </span>
     </span>
   )
@@ -338,7 +338,7 @@ const PhaseGroup = memo(function PhaseGroup({
       contentClassName="workflow-phase-group-content"
     >
       {children_.length === 0 ? (
-        <div className="workflow-phase-no-children">No agents yet</div>
+        <div className="workflow-phase-no-children">暂无 Agent</div>
       ) : (
         <ul className="workflow-phase-children">
           {children_.map((child) => (

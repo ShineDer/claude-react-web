@@ -3,7 +3,7 @@
 // pulling it into a dedicated type module lets the context components and
 // the future SessionSynchronizer depend on it without dragging in the whole
 // ChatStream surface. The interface body is byte-for-byte the former
-// `useChatStream.ContextUsage`.
+// `useChatStream.Context用量`.
 import type { SkillFrontmatter } from '../types'
 
 export interface ContextUsage {

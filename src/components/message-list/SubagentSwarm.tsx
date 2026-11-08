@@ -11,7 +11,7 @@
 //
 // The bar height no longer scales with fan-out width — one row's worth of
 // subagent chrome at any count — and the per-agent detail moves into a
-// popover: `progressSummary` / `lastToolName` / elapsed per row, plus the
+// popover: `progressSummary` / `lastTool名称` / elapsed per row, plus the
 // drill-in. (The bar itself is still `flex-wrap: wrap` and the pill still
 // `nowrap`, so a row that overflows the column can wrap as a whole; what can
 // no longer happen is growth proportional to the agent count.) A single agent
@@ -77,7 +77,7 @@ const STALE_ACTIVITY_MS = 30 * 60 * 1000
  *
  *  `pending` is excluded (see isActivelyWorking). Rows whose `endedAt ??
  *  startedAt` is older than STALE_ACTIVITY_MS are also excluded: a stranded
- *  `running` record from 14h/38h ago would otherwise dominate oldestStart
+ *  `运行中` record from 14h/38h ago would otherwise dominate oldestStart
  *  while the live agent is seconds old. A legitimately long-running agent is
  *  safe — its child frames keep `endedAt` fresh. */
 function oldestStart(subagents: readonly ActiveSubagent[]): number | undefined {
@@ -122,7 +122,7 @@ export const SubagentSwarmPill = memo(function SubagentSwarmPill({
   const close = useCallback(() => setAnchor(null), [])
 
   // Everything alive has been swept to `pending` (background work outliving
-  // the turn) — calm the pill the same way `.working-bar-waiting` calms the
+  // the turn) — calm the pill the same way `.working-bar-等待中` calms the
   // bar, so it doesn't read as active in-turn work.
   const allWaiting = total > 0 && running === 0
 
@@ -234,7 +234,7 @@ function SubagentSwarmPopover({
   // Singular-aware for the same reason the pill's label is (see above): the
   // dialog must not announce the plural straight after the button announced
   // the singular for the same one-agent set.
-  const popoverLabel = subagents.length === 1 ? 'Subagent in flight' : 'Subagents in flight'
+  const popoverLabel = subagents.length === 1 ? '运行中的子 agent' : '运行中的子 agent'
 
   // Measure after layout, clamp into the viewport, and stamp the owning
   // panel (the popover portals to <body>, so DOM ancestry can no longer
@@ -273,7 +273,7 @@ function SubagentSwarmPopover({
   // a left press released off the trigger, and the clamp parking the popover
   // over the pill (pre-existing geometry — the popover hit-tests first, so the
   // second click lands on its head or a row; in a host passing no
-  // `onOpenSubagent` those rows are inert, leaving Esc / an outside click).
+  // `onOpen子 agent` those rows are inert, leaving Esc / an outside click).
   useOutsideMouseDown({ ref, onClose, triggerRef })
 
   // The last agent settling closes the popover: an empty list would otherwise
@@ -323,9 +323,9 @@ function SubagentSwarmPopover({
       <div className="subagent-swarm-pop-head">
         <span className="subagent-swarm-pop-title">{popoverLabel}</span>
         <span className="subagent-swarm-pop-meta">
-          {running > 0 && `${running} running`}
+          {running > 0 && `${running} 运行中`}
           {running > 0 && waiting > 0 && ' · '}
-          {waiting > 0 && `${waiting} waiting`}
+          {waiting > 0 && `${waiting} 等待中`}
         </span>
       </div>
       <div className="subagent-swarm-pop-list" ref={listRefMerged}>

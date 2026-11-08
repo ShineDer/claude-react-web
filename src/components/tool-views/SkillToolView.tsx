@@ -60,7 +60,7 @@ export function SkillToolView({ input, toolUseId, searchQuery, activeMatchIdx }:
   const isRunning = record?.status === 'running'
 
   const chips = namespace ? (
-    <span className="tool-chip tool-chip-accent" title="Skill namespace">{namespace}</span>
+    <span className="tool-chip tool-chip-accent" title="技能命名空间">{namespace}</span>
   ) : null
 
   return (
@@ -90,7 +90,7 @@ export function SkillToolView({ input, toolUseId, searchQuery, activeMatchIdx }:
           title={`Open the forked execution — ${skillName || raw}`}
         >
           <span className="skill-tool-fork-marker" aria-hidden><IconChevronRight size={12} /></span>
-          <span className="skill-tool-fork-label">forked execution</span>
+          <span className="skill-tool-fork-label">分叉执行</span>
           <span className="skill-tool-fork-meta">
             {childCalls.length} call{childCalls.length === 1 ? '' : 's'}
             {agentCount > 0 && ` · ${agentCount} agent${agentCount === 1 ? '' : 's'}`}

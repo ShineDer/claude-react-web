@@ -9,7 +9,7 @@
 // - Exactly ONE <WsHubProvider> at the App root. It owns the WebSocket
 //   instance and handles auto-reconnect with backoff.
 // - Consumers (useChatStream, usePermissionChannel, App-level global
-//   listener) read from the hub via `useWsHubContext` and attach their
+//   listener) read from the hub via `useWsHub上下文` and attach their
 //   own handlers. Handlers are stored in a ref so adding/removing a
 //   listener never churns the connection.
 // - The hub keeps a local record of "which sessions are we subscribed

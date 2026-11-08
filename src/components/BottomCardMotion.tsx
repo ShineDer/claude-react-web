@@ -22,7 +22,7 @@
 // the clip at exit start); mid-fade it is not worth a timer to shave.
 //
 // Deliberately `useIsPresent`, NOT `usePresence`: the latter REGISTERS this
-// component as an exit participant that must call `safeToRemove` — which it
+// component as an exit participant that must call `safeTo移除` — which it
 // never does, so AnimatePresence would wait forever and the card would never
 // unmount. The inner motion.div owns the exit animation and the removal;
 // here we only READ presence.

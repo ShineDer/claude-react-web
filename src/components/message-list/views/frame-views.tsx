@@ -92,7 +92,7 @@ export function BashMessage({ text, sending, onAbort, searchQuery, activeMatchIn
         </span>
         {exitCode !== null && !pending && (
           <span className={`bash-msg-exit ${ok ? 'ok' : 'err'}`}>
-            {timedOut ? 'timeout' : interrupted ? 'interrupted' : `exit ${exitCode}`}
+            {timedOut ? '超时' : interrupted ? 'interrupted' : `exit ${exitCode}`}
           </span>
         )}
         {pending && (
@@ -103,11 +103,11 @@ export function BashMessage({ text, sending, onAbort, searchQuery, activeMatchIn
                 type="button"
                 className="bash-msg-abort"
                 onClick={onAbort}
-                aria-label="Stop command"
-                title="Stop command (Ctrl+C)"
+                aria-label="停止命令"
+                title="停止命令（Ctrl+C）"
               >
                 <IconSquare size={11} />
-                <span>Stop</span>
+                <span>停止</span>
               </button>
             )}
           </span>
@@ -116,7 +116,7 @@ export function BashMessage({ text, sending, onAbort, searchQuery, activeMatchIn
       {(stdout || stderr || pending) && (
         <div className="bash-msg-body" ref={bodyRef}>
           {pending ? (
-            <span className="bash-msg-pending-text">Running…</span>
+            <span className="bash-msg-pending-text">运行中…</span>
           ) : (
             <>
               {stdout && (
@@ -131,7 +131,7 @@ export function BashMessage({ text, sending, onAbort, searchQuery, activeMatchIn
                   <pre className="bash-msg-pre"><AnsiText text={stderr} searchQuery={searchQuery} activeMatchIdx={stderrActiveIdx} /></pre>
                 </div>
               )}
-              {truncated && <div className="bash-msg-truncated">output truncated</div>}
+              {truncated && <div className="bash-msg-truncated">输出已截断</div>}
             </>
           )}
         </div>
@@ -197,14 +197,14 @@ export function CompactBoundary({ msg }: { msg: SdkMessage }) {
  *    • `system/error` frames whose body matches `/429|rate.?limit/i`
  *    • assistant messages with `error: 'rate_limit'` (hard account-level 429
  *      that the SDK did NOT auto-retry — the auto-retry path surfaces as the
- *      transient `api_retry` retry label in the WorkingBubble instead).
+ *      transient `api_重试` retry label in the WorkingBubble instead).
  *  `title` carries the raw error text for debugging (hover); each caller
  *  decides what that should be (the system path uses the canned copy; the
  *  assistant path uses the extracted body, falling back to the `error` enum). */
 export function RateLimitErrorDivider({ title }: { title: string }) {
   return (
     <div className="msg result error" title={title} aria-label="rate limit error">
-      <span className="result-mark" aria-hidden="true">✕ rate limited</span>
+      <span className="result-mark" aria-hidden="true">✕ 已限流</span>
       <span className="result-meta">too many requests — message saved, send again</span>
     </div>
   )
@@ -220,9 +220,9 @@ export function LocalCommandOutputView({ msg }: { msg: SdkMessage }) {
   const body = typeof msg.content === 'string' ? msg.content : ''
   if (!body) return null
   return (
-    <div className="msg local-command-output" aria-label="command output">
+    <div className="msg local-command-output" aria-label="命令输出">
       <div className="msg-header">
-        <span>command output</span>
+        <span>命令输出</span>
       </div>
       <div className="local-command-output-body">
         <Markdown text={body} />
@@ -255,7 +255,7 @@ export function PermissionDeniedView({ msg }: { msg: SdkMessage }) {
   const reasonParts = [reasonType, reason].filter(Boolean).join(': ')
   return (
     <div className="msg result permission-denied" aria-label="tool call denied">
-      <span className="result-mark" aria-hidden="true">✕ denied</span>
+      <span className="result-mark" aria-hidden="true">✕ 已拒绝</span>
       <span className="result-meta" title={detail ?? undefined}>
         {tool}
         {reasonParts ? ` — ${reasonParts}` : ''}
@@ -448,7 +448,7 @@ function MemoryRecallEntry({ entry }: { entry: { path: string; scope: string; co
     return (
       <li className="memory-recall-entry memory-recall-entry--synthesis">
         <div className="memory-recall-entry-head">
-          <span className="memory-recall-name">Synthesized summary</span>
+          <span className="memory-recall-name">综合摘要</span>
           {scope && <span className={`memory-recall-scope memory-recall-scope--${scope}`}>{scope}</span>}
         </div>
         <div className="memory-recall-source">{synthesisDir}</div>
@@ -507,7 +507,7 @@ export function MemoryRecallView({ msg }: { msg: SdkMessage }) {
   )
 }
 
-/** Display names for `rate_limit_event.rateLimitType`. Unknown values fall
+/** Display names for `rate_limit_event.rateLimit类型`. Unknown values fall
  *  back to the raw string — new SDK enum members should still read OK. */
 const RATE_LIMIT_TYPE_LABELS: Record<string, string> = {
   five_hour: '5-hour window',
@@ -612,7 +612,7 @@ export function CompactSummary({ text }: { text: string }) {
   // template usually starts with boilerplate, then a Summary header.
   const peek = text.slice(0, 140).replace(/\s+/g, ' ').trim()
   return (
-    <div className="msg compact-summary" role="note" aria-label="Conversation recap (context injected by SDK)">
+    <div className="msg compact-summary" role="note" aria-label="会话回顾（由 SDK 注入的上下文）">
       <div className="msg-header">
         <span>recap context · {charCount.toLocaleString()} chars</span>
         <button
@@ -621,7 +621,7 @@ export function CompactSummary({ text }: { text: string }) {
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
         >
-          {expanded ? 'Hide' : 'Show'}
+          {expanded ? '隐藏' : 'Show'}
         </button>
       </div>
       <div className="msg-body">

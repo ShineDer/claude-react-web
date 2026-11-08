@@ -26,7 +26,7 @@ export function SessionProfileSelect({
   return (
     <SettingsRow
       stack
-      title={<label htmlFor={uid}>Profile</label>}
+      title={<label htmlFor={uid}>配置档</label>}
       hint="Credentials and model set for this session."
     >
       <select
@@ -43,8 +43,8 @@ export function SessionProfileSelect({
       </select>
       {value && value !== session.profileId && (
         <div className="session-profile-select__actions">
-          <button type="button" className="btn btn-xs" onClick={() => void choose(value, 'now')}>Restart now</button>
-          <button type="button" className="btn btn-xs" onClick={() => void choose(value, 'deferred')}>Apply next restart</button>
+          <button type="button" className="btn btn-xs" onClick={() => void choose(value, 'now')}>立即重启</button>
+          <button type="button" className="btn btn-xs" onClick={() => void choose(value, 'deferred')}>下次重启时应用</button>
         </div>
       )}
     </SettingsRow>

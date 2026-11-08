@@ -17,7 +17,7 @@
 //   - `placement` controls which side the bubble appears on. Default
 //     "top". Useful overrides: "bottom" for chips near the top of the
 //     viewport, "right"/"left" for vertically dense lists.
-//   - When `disabled` is true (no label, or caller wants to opt out),
+//   - When `已禁用` is true (no label, or caller wants to opt out),
 //     the trigger is rendered as-is without a wrapper — useful for
 //     conditional tooltips.
 

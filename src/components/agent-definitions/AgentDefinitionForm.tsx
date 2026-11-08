@@ -249,10 +249,10 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
         <h4>{editing ? `Edit ${initial.name}` : 'New agent'}</h4>
         <div className="settings-section-head-actions">
           <button className="btn btn-sm" onClick={onCancel} disabled={saving}>
-            Cancel
+            取消
           </button>
           <button className="btn btn-sm btn-primary" onClick={handleSubmit} disabled={saving}>
-            {editing ? 'Save' : 'Create'}
+            {editing ? '保存' : '创建'}
           </button>
         </div>
       </div>
@@ -260,9 +260,9 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
       {error && <div className="settings-card-error">{error}</div>}
 
       <fieldset className="settings-section">
-        <legend>Basic</legend>
+        <legend>基础</legend>
         <label className="settings-field">
-          <span>Name</span>
+          <span>名称</span>
           <input
             type="text"
             value={form.name}
@@ -271,7 +271,7 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
           />
         </label>
         <label className="settings-field">
-          <span>Description</span>
+          <span>描述</span>
           <input
             type="text"
             value={form.description}
@@ -279,7 +279,7 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
           />
         </label>
         <label className="settings-field">
-          <span>Prompt</span>
+          <span>提示词</span>
           <textarea
             rows={5}
             value={form.prompt}
@@ -290,17 +290,17 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
 
       <fieldset className="settings-section">
         <legend>Tools &amp; Capabilities</legend>
-        <TagInput label="Tools" value={form.tools} onChange={(v) => set('tools', v)} />
-        <TagInput label="Disallowed tools" value={form.disallowedTools} onChange={(v) => set('disallowedTools', v)} />
-        <TagInput label="MCP servers" value={form.mcpServers} onChange={(v) => set('mcpServers', v)} />
-        <TagInput label="Skills" value={form.skills} onChange={(v) => set('skills', v)} />
+        <TagInput label="工具" value={form.tools} onChange={(v) => set('tools', v)} />
+        <TagInput label="禁用的工具" value={form.disallowedTools} onChange={(v) => set('disallowedTools', v)} />
+        <TagInput label="MCP 服务器" value={form.mcpServers} onChange={(v) => set('mcpServers', v)} />
+        <TagInput label="技能" value={form.skills} onChange={(v) => set('skills', v)} />
         <label className="settings-field">
-          <span>Model</span>
+          <span>模型</span>
           <input type="text" value={form.model} onChange={(e) => set('model', e.target.value)} />
         </label>
         {typeof form.effort === 'number' ? (
           <label className="settings-field">
-            <span>Effort</span>
+            <span>强度</span>
             <input
               type="number"
               step="any"
@@ -310,9 +310,9 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
           </label>
         ) : (
           <label className="settings-field">
-            <span>Effort</span>
+            <span>强度</span>
             <select value={form.effort} onChange={(e) => set('effort', e.target.value)}>
-              <option value="">Default</option>
+              <option value="">默认</option>
               {EFFORT_OPTIONS.map((o) => (
                 <option key={o} value={o}>{o}</option>
               ))}
@@ -320,9 +320,9 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
           </label>
         )}
         <label className="settings-field">
-          <span>Permission mode</span>
+          <span>权限模式</span>
           <select value={form.permissionMode} onChange={(e) => set('permissionMode', e.target.value)}>
-            <option value="">Default</option>
+            <option value="">默认</option>
             {SDK_AGENT_PERMISSION_MODES.map((o) => (
               <option key={o} value={o}>{o}</option>
             ))}
@@ -331,9 +331,9 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
       </fieldset>
 
       <fieldset className="settings-section">
-        <legend>Runtime</legend>
+        <legend>运行时</legend>
         <label className="settings-field">
-          <span>Max turns</span>
+          <span>最大轮数</span>
           <input
             type="number"
             min={1}
@@ -342,7 +342,7 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
           />
         </label>
         <label className="settings-field settings-field-inline">
-          <span>Background</span>
+          <span>后台</span>
           <input
             type="checkbox"
             checked={form.background}
@@ -360,32 +360,32 @@ export function AgentDefinitionForm({ initial, onSaved, onCancel }: AgentDefinit
           />
         </label>
         <label className="settings-field">
-          <span>Memory</span>
+          <span>记忆</span>
           <select value={form.memory} onChange={(e) => set('memory', e.target.value)}>
-            <option value="">Default</option>
+            <option value="">默认</option>
             {MEMORY_OPTIONS.map((o) => (
               <option key={o} value={o}>{o}</option>
             ))}
           </select>
         </label>
         <label className="settings-field">
-          <span>Initial message</span>
+          <span>初始消息</span>
           <textarea rows={3} value={form.initialPrompt} onChange={(e) => set('initialPrompt', e.target.value)} />
         </label>
       </fieldset>
 
       <details className="settings-section">
-        <summary>Advanced</summary>
+        <summary>高级</summary>
         <label className="settings-field">
-          <span>Observer</span>
+          <span>观察者</span>
           <input type="text" value={form.observer} onChange={(e) => set('observer', e.target.value)} />
         </label>
         <label className="settings-field">
-          <span>Observer message</span>
+          <span>观察者消息</span>
           <input type="text" value={form.observerMessage} onChange={(e) => set('observerMessage', e.target.value)} />
         </label>
         <label className="settings-field">
-          <span>Critical system reminder (experimental)</span>
+          <span>关键系统提醒（实验性）</span>
           <textarea
             rows={3}
             value={form.criticalSystemReminder_EXPERIMENTAL}

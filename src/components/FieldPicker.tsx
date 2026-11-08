@@ -67,7 +67,7 @@ export interface FieldPickerProps {
 }
 
 /** Design maximum for the list, mirrored by the CSS default of
- *  `--field-picker-list-max`. Matches ProjectPicker's cap. */
+ *  `--field-picker-list-最大`. Matches ProjectPicker's cap. */
 const MAX_LIST_H = 240
 
 export function FieldPicker({

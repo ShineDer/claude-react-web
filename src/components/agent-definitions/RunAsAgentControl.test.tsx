@@ -7,7 +7,7 @@ vi.mock('../../hooks/useApi', () => ({ api: { post } }))
 vi.mock('../../hooks/useAgentDefinitions', () => ({
   useAgentDefinitions: () => ({ agents: [
     { name: 'reviewer', enabled: true, description: 'Reviews', createdAt: 1, updatedAt: 1, prompt: 'p' },
-    { name: 'off', enabled: false, description: 'Off', createdAt: 1, updatedAt: 1, prompt: 'p' },
+    { name: 'off', enabled: false, description: '关闭', createdAt: 1, updatedAt: 1, prompt: 'p' },
   ] }),
 }))
 

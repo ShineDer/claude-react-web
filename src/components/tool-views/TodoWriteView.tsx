@@ -36,7 +36,7 @@ export function TodoWriteView({ input, toolUseId, searchQuery, activeMatchIdx }:
   return (
     <ToolCard
       icon={<IconListTodo />}
-      title="Todo list"
+      title="待办列表"
       chips={<>{chips}</>}
       toolUseId={toolUseId}
       className="tool-card-todo"

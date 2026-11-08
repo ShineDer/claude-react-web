@@ -1,6 +1,6 @@
 // What a tool call is *about*, as a short label for the folded group header.
 //
-// `Read · Grep · Edit` tells you which kinds of work happened; it does not
+// `Read · Grep · 编辑` tells you which kinds of work happened; it does not
 // tell you whether the run touched the file you care about. This module turns
 // a tool_use input into the missing half — `App.tsx`, `"useWsHub"`,
 // `npm run typecheck` — inside a budget tight enough that several of them

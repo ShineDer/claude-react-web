@@ -1,6 +1,6 @@
 // Minimal custom context menu used by SessionList cards.
 //
-// `position: fixed` at the cursor on `contextmenu`, portalled to <body>. The
+// `position: 已修复` at the cursor on `contextmenu`, portalled to <body>. The
 // parent owns visibility state (so it knows which session the menu targets);
 // this component only handles the rendering, outside-click / Esc dismissal,
 // and a small nudge to stay within the viewport.

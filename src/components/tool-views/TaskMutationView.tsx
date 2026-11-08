@@ -25,7 +25,7 @@ import type { ToolViewProps } from './shared'
  * reads the folded TaskCreate/TaskUpdate stream from context — so the
  * update card shows the actual task content instead of just `#N`. The
  * `#N` itself comes from the TaskCreate's tool_result text, so for a
- * TaskCreate we parse it from the captured result (`useToolResult`) once
+ * TaskCreate we parse it from the captured result (`useTool结果`) once
  * it lands; for a TaskUpdate it's in the input directly.
  */
 export function TaskMutationView({ input, toolUseId, searchQuery, activeMatchIdx }: ToolViewProps) {
@@ -83,7 +83,7 @@ export function TaskMutationView({ input, toolUseId, searchQuery, activeMatchIdx
           {status}
         </span>
       )}
-      {owner && <span className="task-mutation-owner" title="Owner">@{owner}</span>}
+      {owner && <span className="task-mutation-owner" title="所有者">@{owner}</span>}
     </>
   )
 

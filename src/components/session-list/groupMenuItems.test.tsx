@@ -51,23 +51,23 @@ describe('buildGroupContextMenuItems', () => {
   it('emits the five rows in sidebar order: move pair, separator, rename, delete', () => {
     const { items } = build()
     expect(items.map((i) => i.label)).toEqual([
-      'Move up',
-      'Move down',
+      '上移',
+      '下移',
       '',
-      'Rename group…',
-      'Delete group',
+      '重命名分组…',
+      '删除分组',
     ])
   })
 
   it('renders Delete in the danger style', () => {
     const { items } = build()
-    expect(items.find((i) => i.label === 'Delete group')?.danger).toBe(true)
+    expect(items.find((i) => i.label === '删除分组')?.danger).toBe(true)
   })
 
   it('clicking Move up/down reports the group id and direction', () => {
     const { items, calls } = build()
-    items.find((i) => i.label === 'Move up')!.onClick!()
-    items.find((i) => i.label === 'Move down')!.onClick!()
+    items.find((i) => i.label === '上移')!.onClick!()
+    items.find((i) => i.label === '下移')!.onClick!()
     expect(calls.moves).toEqual([
       ['g1', 'up'],
       ['g1', 'down'],
@@ -76,23 +76,23 @@ describe('buildGroupContextMenuItems', () => {
 
   it('disables Move up at the top edge', () => {
     const { items } = build({ canMoveUp: false })
-    expect(items.find((i) => i.label === 'Move up')?.disabled).toBe(true)
-    expect(items.find((i) => i.label === 'Move down')?.disabled).toBe(false)
+    expect(items.find((i) => i.label === '上移')?.disabled).toBe(true)
+    expect(items.find((i) => i.label === '下移')?.disabled).toBe(false)
   })
 
   it('disables Move down at the bottom edge', () => {
     const { items } = build({ canMoveDown: false })
-    expect(items.find((i) => i.label === 'Move down')?.disabled).toBe(true)
+    expect(items.find((i) => i.label === '下移')?.disabled).toBe(true)
   })
 
   it('Rename opens the prompt pre-filled with the group name; confirming renames', () => {
     const { items, calls } = build()
     expect(calls.prompt).toBeNull()
-    items.find((i) => i.label === 'Rename group…')!.onClick!()
+    items.find((i) => i.label === '重命名分组…')!.onClick!()
     expect(calls.prompt).not.toBeNull()
-    expect(calls.prompt!.title).toBe('Rename group')
+    expect(calls.prompt!.title).toBe('重命名分组')
     expect(calls.prompt!.defaultValue).toBe('My Group')
-    expect(calls.prompt!.placeholder).toBe('Group name')
+    expect(calls.prompt!.placeholder).toBe('分组名称')
     void calls.prompt!.onConfirm('Renamed')
     expect(calls.renamed).toEqual(['g1', 'Renamed'])
   })
@@ -100,10 +100,10 @@ describe('buildGroupContextMenuItems', () => {
   it('Delete opens a destructive confirm; confirming deletes the group', () => {
     const { items, calls } = build()
     expect(calls.confirm).toBeNull()
-    items.find((i) => i.label === 'Delete group')!.onClick!()
+    items.find((i) => i.label === '删除分组')!.onClick!()
     expect(calls.confirm).not.toBeNull()
-    expect(calls.confirm!.title).toBe('Delete group?')
-    expect(calls.confirm!.confirmLabel).toBe('Delete')
+    expect(calls.confirm!.title).toBe('删除分组？')
+    expect(calls.confirm!.confirmLabel).toBe('删除')
     expect(calls.confirm!.destructive).toBe(true)
     void calls.confirm!.onConfirm()
     expect(calls.deleted).toBe('g1')

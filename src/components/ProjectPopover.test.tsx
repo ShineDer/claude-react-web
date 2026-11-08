@@ -85,7 +85,7 @@ describe('ProjectPopover', () => {
     expect(queryByText(/Reveal in Finder/)).toBeNull()
     expect(queryByText(/Open in Terminal/)).toBeNull()
     // Copy path is always available.
-    expect(queryByText(/Copy path/)).toBeTruthy()
+    expect(queryByText(/复制路径/)).toBeTruthy()
   })
 
   it('shows the Finder/Terminal actions for a local browser (capability true)', async () => {
@@ -98,7 +98,7 @@ describe('ProjectPopover', () => {
   it('copies the full path via the clipboard layer', async () => {
     getMock.mockReturnValue(new Promise(() => {}))
     const { getByText } = renderPopover()
-    fireEvent.click(getByText(/Copy path/))
+    fireEvent.click(getByText(/复制路径/))
     await waitFor(() =>
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith('/Users/loop/Codes/claude-react-web'),
     )

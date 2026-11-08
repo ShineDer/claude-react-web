@@ -55,7 +55,7 @@ describe('ContextMenu', () => {
   it('fires onClick then onClose when a real item is clicked', () => {
     const onItem = vi.fn()
     const onClose = vi.fn()
-    const items: ContextMenuItem[] = [{ label: 'Run', onClick: onItem }]
+    const items: ContextMenuItem[] = [{ label: '运行', onClick: onItem }]
     render(
       <ContextMenu x={0} y={0} items={items} onClose={onClose} />,
     )
@@ -65,7 +65,7 @@ describe('ContextMenu', () => {
   })
 
   it('does not steal focus unless autoFocus is set (right-click menus keep the editor focused)', () => {
-    const items: ContextMenuItem[] = [{ label: 'Run', onClick: () => {} }]
+    const items: ContextMenuItem[] = [{ label: '运行', onClick: () => {} }]
     const editor = document.createElement('textarea')
     document.body.append(editor)
     editor.focus()
@@ -77,7 +77,7 @@ describe('ContextMenu', () => {
   it('autoFocus lands on the first enabled item with preventScroll', () => {
     const items: ContextMenuItem[] = [
       { label: 'Skip', disabled: true, onClick: () => {} },
-      { label: 'Run', onClick: () => {} },
+      { label: '运行', onClick: () => {} },
     ]
     render(<ContextMenu x={0} y={0} items={items} onClose={() => {}} autoFocus />)
     const enabled = document.querySelectorAll<HTMLButtonElement>('.ctx-menu-item')[1]
@@ -90,7 +90,7 @@ describe('ContextMenu', () => {
     // AnimatePresence retains the node while exiting and removes it after.
     // The retention assertion (not just the eventual unmount) guards against
     // motion short-circuiting the exit in jsdom and unmounting instantly.
-    const items: ContextMenuItem[] = [{ label: 'Run', onClick: () => {} }]
+    const items: ContextMenuItem[] = [{ label: '运行', onClick: () => {} }]
     function Harness({ open }: { open: boolean }) {
       return (
         <AnimatePresence>
@@ -110,7 +110,7 @@ describe('ContextMenu', () => {
   })
 
   it('portals to <body> so its viewport coordinates are honoured', () => {
-    const items: ContextMenuItem[] = [{ label: 'Run', onClick: () => {} }]
+    const items: ContextMenuItem[] = [{ label: '运行', onClick: () => {} }]
     const { container } = render(<ContextMenu x={10} y={20} items={items} onClose={() => {}} />)
     expectPortaledToBody(container, '.ctx-menu')
   })
@@ -121,7 +121,7 @@ describe('ContextMenu', () => {
     // React now delegates this subtree at <body> instead of at the panel — so
     // it gets a direct assertion rather than riding on the containment guard.
     const onClose = vi.fn()
-    const items: ContextMenuItem[] = [{ label: 'Run', onClick: () => {} }]
+    const items: ContextMenuItem[] = [{ label: '运行', onClick: () => {} }]
     render(<ContextMenu x={10} y={20} items={items} onClose={onClose} />)
 
     fireEvent.mouseDown(document.querySelector('.ctx-menu-item')!)

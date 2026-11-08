@@ -173,10 +173,10 @@ export const GitFileRow: React.MemoExoticComponent<(props: GitFileRowProps) => R
       >
         {fetchStarted && (
           <div className="git-file-diff-wrap">
-            {loading && <div className="git-file-diff-loading">Loading diff...</div>}
+            {loading && <div className="git-file-diff-loading">正在加载差异...</div>}
             {error && <div className="git-file-diff-error">{error}</div>}
             {data && data.isBinary && (
-              <div className="git-file-diff-binary">Binary file - no preview</div>
+              <div className="git-file-diff-binary">二进制文件 - 无法预览</div>
             )}
             {data && !data.isBinary && (
               <DiffView

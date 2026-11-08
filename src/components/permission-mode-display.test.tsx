@@ -20,18 +20,18 @@ describe('permission-mode-display', () => {
     // The two modes used to share an icon AND read as interchangeable
     // ("Don't ask" sounds like "don't bother me" = bypass). Labels must make
     // the polarity obvious without reading a tooltip.
-    expect(PERMISSION_MODE_LABELS.bypassPermissions).toMatch(/allow/i)
-    expect(PERMISSION_MODE_LABELS.dontAsk).toMatch(/lockdown|deny/i)
-    expect(PERMISSION_MODE_LABELS.dontAsk).not.toMatch(/allow/i)
+    expect(PERMISSION_MODE_LABELS.bypassPermissions).toMatch(/允许/)
+    expect(PERMISSION_MODE_LABELS.dontAsk).toMatch(/锁定|拒绝/)
+    expect(PERMISSION_MODE_LABELS.dontAsk).not.toMatch(/允许/)
   })
 
   it('exposes short labels for chip bodies / menus that are not raw enum values', () => {
-    expect(PERMISSION_MODE_SHORT_LABELS.default).toBe('ask')
-    expect(PERMISSION_MODE_SHORT_LABELS.plan).toBe('plan')
-    expect(PERMISSION_MODE_SHORT_LABELS.acceptEdits).toBe('accept edits')
-    expect(PERMISSION_MODE_SHORT_LABELS.bypassPermissions).toBe('bypass')
-    expect(PERMISSION_MODE_SHORT_LABELS.dontAsk).toBe('lockdown')
-    expect(PERMISSION_MODE_SHORT_LABELS.auto).toBe('auto')
+    expect(PERMISSION_MODE_SHORT_LABELS.default).toBe('询问')
+    expect(PERMISSION_MODE_SHORT_LABELS.plan).toBe('计划')
+    expect(PERMISSION_MODE_SHORT_LABELS.acceptEdits).toBe('自动接受')
+    expect(PERMISSION_MODE_SHORT_LABELS.bypassPermissions).toBe('跳过')
+    expect(PERMISSION_MODE_SHORT_LABELS.dontAsk).toBe('锁定')
+    expect(PERMISSION_MODE_SHORT_LABELS.auto).toBe('自动')
     // camelCase enums must never leak as visible chip text (`plan`/`auto`
     // happen to equal their enum and are fine; the developer-looking ones
     // are what misread as strings).
@@ -51,7 +51,7 @@ describe('permission-mode-display', () => {
   })
 
   it('permissionModeLabel falls back to Default (ask) for missing/unknown', () => {
-    expect(permissionModeLabel(undefined)).toBe('Default (ask)')
+    expect(permissionModeLabel(undefined)).toBe('默认（每次询问）')
     expect(permissionModeLabel('nope' as PermissionMode)).toBe('nope')
   })
 
@@ -59,7 +59,7 @@ describe('permission-mode-display', () => {
     // Direct map indexing would yield `undefined` for a mode string the map
     // doesn't know (e.g. a future SDK mode) and the chip body would go blank
     // while the tooltip still showed something.
-    expect(permissionModeShortLabel('dontAsk')).toBe('lockdown')
+    expect(permissionModeShortLabel('dontAsk')).toBe('锁定')
     expect(permissionModeShortLabel('nope' as PermissionMode)).toBe('nope')
   })
 })

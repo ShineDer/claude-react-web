@@ -81,7 +81,7 @@ describe('MsgImage', () => {
 
     fireEvent.keyDown(img, { key: 'Enter' })
     expect(document.body.querySelector('img.lightbox-img')).not.toBeNull()
-    act(() => fireEvent.click(document.body.querySelector('[aria-label="Close"]') as HTMLButtonElement))
+    act(() => fireEvent.click(document.body.querySelector('[aria-label="关闭"]') as HTMLButtonElement))
     // The exit is animated (~180ms): the overlay reports closing immediately.
     expect(document.body.querySelector('.lightbox-overlay')?.getAttribute('data-state')).toBe('closing')
 

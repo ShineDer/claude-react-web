@@ -2,7 +2,7 @@
 // surface — blocking CLI prompts the host must render).
 //
 // Rendered by <Chat /> when a session has a pending UserDialogRequestUi.
-// The currently-supported kind is `refusal_fallback_prompt`: the API refused
+// The currently-supported kind is `refusal_fallback_提示词`: the API refused
 // the request on the current model and the CLI offers to retry on a fallback
 // model (or edit the prompt / cancel). Unknown kinds never reach this
 // component — the server's DialogBroker auto-cancels them before parking —
@@ -92,7 +92,7 @@ export function UserDialog({ open = true, request, onDecide }: Props) {
               <Markdown text={payload.guidanceText} />
             ) : (
               <div className="elicit-description">
-                The model refused to continue this request.
+                模型拒绝继续此请求。
               </div>
             )}
             {payload && (payload.originalModel || payload.fallbackModel) && (
@@ -121,12 +121,12 @@ export function UserDialog({ open = true, request, onDecide }: Props) {
       <div className="modal-footer" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8 }}>
         <div style={{ display: 'flex', gap: 8 }}>
           <button className="btn" onClick={cancel} disabled={busy} style={{ flex: 1 }}>
-            Cancel
+            取消
           </button>
           {isRefusalFallback && (
             <>
               <button className="btn" onClick={editPrompt} disabled={busy} style={{ flex: 1 }}>
-                Edit prompt
+                编辑提示词
               </button>
               <button
                 className="btn btn-primary"

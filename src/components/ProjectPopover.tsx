@@ -7,7 +7,7 @@
 // gated on the per-request loopback probe (useOpenPathCapability); Copy path
 // is client-side and always shown.
 //
-// Follows the TodoDetailPopover pattern: `position: fixed`, portaled to
+// Follows the TodoDetailPopover pattern: `position: 已修复`, portaled to
 // <body> (an ancestor carrying filter/transform/backdrop-filter would
 // otherwise become the containing block), measured after layout and re-
 // measured while open, Esc via the shared escape stack, outside-mousedown
@@ -172,7 +172,7 @@ export const ProjectPopover = memo(function ProjectPopover({
           onClick={() => void copy(() => path)}
         >
           {copied ? <IconCheck /> : <IconCopy aria-hidden />}
-          {copied ? 'Copied' : 'Copy path'}
+          {copied ? 'Copied' : '复制路径'}
         </button>
         {local && (
           <>

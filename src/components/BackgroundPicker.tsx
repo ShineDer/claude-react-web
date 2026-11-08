@@ -266,7 +266,7 @@ export function BackgroundPicker({ setting, onChange }: Props) {
 
   return (
     <div className="appearance-bg">
-      <div className="appearance-mode-row" role="radiogroup" aria-label="Background">
+      <div className="appearance-mode-row" role="radiogroup" aria-label="background">
         <button
           type="button"
           className={`appearance-mode-btn${!isCustom ? ' active' : ''}`}
@@ -274,7 +274,7 @@ export function BackgroundPicker({ setting, onChange }: Props) {
           role="radio"
           aria-checked={!isCustom}
         >
-          <span>None</span>
+          <span>无</span>
         </button>
         {(['image', 'video'] as const).map((kind) => (
           <button
@@ -302,7 +302,7 @@ export function BackgroundPicker({ setting, onChange }: Props) {
               onChange={(e) => { setUrlText(e.target.value); setApplied(false); setError(null) }}
               aria-label={ui.urlLabel}
             />
-            <button type="button" className="btn" onClick={applyUrl}>Use URL</button>
+            <button type="button" className="btn" onClick={applyUrl}>使用 URL</button>
           </div>
           <div className="appearance-bg-upload-row">
             <label className="btn">
@@ -318,7 +318,7 @@ export function BackgroundPicker({ setting, onChange }: Props) {
                 }}
               />
             </label>
-            {applied && <span className="appearance-bg-hint">Applied</span>}
+            {applied && <span className="appearance-bg-hint">已应用</span>}
           </div>
           {error && <p className="appearance-bg-error" role="alert">{error}</p>}
           {prefSrc && (

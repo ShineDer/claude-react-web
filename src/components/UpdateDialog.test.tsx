@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, cleanup, fireEvent, waitFor } from '@testing-library/react'
+import { render, cleanup, fireEvent, waitFor, screen } from '@testing-library/react'
 import { UpdateDialog } from './UpdateDialog'
 import type { UpdateInfo } from '../../shared/update-info'
 
@@ -87,9 +87,9 @@ describe('UpdateDialog', () => {
     expect(getByText(/What's new in 0\.8\.0/)).toBeTruthy()
     expect(getByText('0.8.0')).toBeTruthy()
     expect(getByText('2026-09-10')).toBeTruthy()
-    expect(getByText('Update now')).toBeTruthy()
-    expect(getByText('Copy command')).toBeTruthy()
-    expect(getByText('Later')).toBeTruthy()
+    expect(getByText('立即更新')).toBeTruthy()
+    expect(getByText('复制命令')).toBeTruthy()
+    expect(getByText('稍后')).toBeTruthy()
   })
 
   it('hides Update now for npx installs', () => {
@@ -97,7 +97,7 @@ describe('UpdateDialog', () => {
       <UpdateDialog {...baseProps({ info: baseInfo({ installMethod: 'npx' }) })} />,
     )
     expect(queryByText('Update now')).toBeNull()
-    expect(getByTextSafe(queryByText, 'Copy command')).toBeTruthy()
+    expect(getByTextSafe(queryByText, '复制命令')).toBeTruthy()
   })
   function getByTextSafe(query: (t: string) => HTMLElement | null, t: string) {
     return query(t)
@@ -114,7 +114,7 @@ describe('UpdateDialog', () => {
     }))
     const onClose = vi.fn()
     const { getByText } = render(<UpdateDialog {...baseProps({ onUpdate, onClose })} />)
-    fireEvent.click(getByText('Update now'))
+    fireEvent.click(getByText('立即更新'))
     await waitFor(() => expect(onUpdate).toHaveBeenCalledOnce())
     await waitFor(() => expect(onClose).toHaveBeenCalledOnce())
   })
@@ -125,7 +125,7 @@ describe('UpdateDialog', () => {
     })
     const onClose = vi.fn()
     const { getByText } = render(<UpdateDialog {...baseProps({ onUpdate, onClose })} />)
-    fireEvent.click(getByText('Update now'))
+    fireEvent.click(getByText('立即更新'))
     await waitFor(() => expect(getByText(/npm exploded/)).toBeTruthy())
     expect(onClose).not.toHaveBeenCalled()
   })
@@ -133,7 +133,7 @@ describe('UpdateDialog', () => {
   it('Later calls onClose', () => {
     const onClose = vi.fn()
     const { getByText } = render(<UpdateDialog {...baseProps({ onClose })} />)
-    fireEvent.click(getByText('Later'))
+    fireEvent.click(getByText('稍后'))
     expect(onClose).toHaveBeenCalledOnce()
   })
 
@@ -148,10 +148,10 @@ describe('UpdateDialog', () => {
         })}
       />,
     )
-    expect(getByText(/Version 0\.7\.2 is deprecated/)).toBeTruthy()
+    expect(getByText(/版本 0\.7\.2 已弃用/)).toBeTruthy()
     expect(getByText('Use 0.9 instead.')).toBeTruthy()
     expect(queryByText('Update now')).toBeNull()
-    expect(getByText('Copy command')).toBeTruthy()
+    expect(getByText('复制命令')).toBeTruthy()
   })
 
   // Deprecation with a known newer version: shows Update now.
@@ -164,10 +164,10 @@ describe('UpdateDialog', () => {
         })}
       />,
     )
-    expect(getByText(/Version 0\.7\.2 is deprecated/)).toBeTruthy()
+    expect(getByText(/版本 0\.7\.2 已弃用/)).toBeTruthy()
     expect(getByText('Use 0.9 instead.')).toBeTruthy()
-    expect(getByText('Update now')).toBeTruthy()
-    expect(getByText('Copy command')).toBeTruthy()
+    expect(getByText('立即更新')).toBeTruthy()
+    expect(getByText('复制命令')).toBeTruthy()
   })
 
   it('shows the notes-unavailable note when there are no releases', () => {
@@ -191,9 +191,9 @@ describe('UpdateDialog', () => {
     const { getByText } = render(
       <UpdateDialog {...baseProps({ info: baseInfo({ installMethod: 'npx' }) })} />,
     )
-    fireEvent.click(getByText('Copy command'))
+    fireEvent.click(screen.getByTitle('复制升级命令'))
     expect(writeText).toHaveBeenCalledWith('npx claude-react-web@latest')
-    await waitFor(() => expect(getByText('Copied')).toBeTruthy())
+    await waitFor(() => expect(getByText('已复制')).toBeTruthy())
   })
 
   // ── mode: 'current' — the About tab's "what did the version I run bring" ──
@@ -227,9 +227,9 @@ describe('UpdateDialog', () => {
       <UpdateDialog {...baseProps({ mode: 'current', onClose })} />,
     )
     expect(queryByText('Update now')).toBeNull()
-    expect(queryByText('Copy command')).toBeNull()
-    expect(queryByText('Later')).toBeNull()
-    fireEvent.click(getByText('Close'))
+    expect(queryByText('复制命令')).toBeNull()
+    expect(queryByText('稍后')).toBeNull()
+    fireEvent.click(getByText('关闭'))
     expect(onClose).toHaveBeenCalledOnce()
   })
 

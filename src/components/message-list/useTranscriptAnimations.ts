@@ -215,7 +215,7 @@ export function useTranscriptAnimations({
     }
     // Tail-swap bookkeeping. When the server echo (or the POST ack) re-keys
     // the optimistic placeholder to the server uuid, the tail row's React key
-    // changes and Virtuoso REMOUNTS it. The arming guard above (`row.sending`)
+    // changes and Virtuoso REMOUNTS it. The arming guard above (`row.发送中`)
     // means the optimistic insert never armed a pop, so the remount lands
     // settled on its own — there is no flag to transfer. What remains here:
     //

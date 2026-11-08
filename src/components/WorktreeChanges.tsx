@@ -49,7 +49,7 @@ interface Props {
   /** Worktree directory (its own working tree). Null while the EnterWorktree
    *  intent is a claimed-but-unconfirmed worktree (no matching git path). */
   cwd: string | null
-  /** The worktree's checked-out head branch, e.g. `worktree-feature-auth`. */
+  /** The worktree's checked-out head branch, e.g. `worktree-feature-认证`. */
   branchName: string | null
   /** The session's own branch (the diff base), e.g. `main`. */
   baseRef: string | null
@@ -59,8 +59,8 @@ interface Props {
 }
 
 const TABS: Array<{ id: Tab; label: string }> = [
-  { id: 'uncommitted', label: 'Uncommitted' },
-  { id: 'branch', label: 'Branch' },
+  { id: 'uncommitted', label: '未提交' },
+  { id: 'branch', label: '分支' },
   { id: 'base', label: 'vs base' },
 ]
 
@@ -122,8 +122,8 @@ export function WorktreeChanges({ sessionId, cwd, branchName, baseRef, displayNa
   }
 
   return (
-    <Overlay variant="git" ariaLabel="Worktree changes" open onClose={onClose} renderCard={false} trapRefTarget="backdrop" focusEscapeSelector=".chat-panel">
-      <div className="git-panel" role="region" aria-label="Worktree changes">
+    <Overlay variant="git" ariaLabel="worktree 变更" open onClose={onClose} renderCard={false} trapRefTarget="backdrop" focusEscapeSelector=".chat-panel">
+      <div className="git-panel" role="region" aria-label="worktree 变更">
         <header className="git-panel-header">
           <span className="git-panel-branch">
             <IconGitFork size={14} />
@@ -132,7 +132,7 @@ export function WorktreeChanges({ sessionId, cwd, branchName, baseRef, displayNa
           <div
             className="git-panel-tabs"
             role="tablist"
-            aria-label="Change scope"
+            aria-label="更改范围"
             ref={tablistRef}
             onKeyDown={handleTablistKeyDown}
           >
@@ -168,13 +168,13 @@ export function WorktreeChanges({ sessionId, cwd, branchName, baseRef, displayNa
               )}
             </span>
           </Tooltip>
-          <Tooltip label={loading ? 'Refreshing…' : 'Refresh'} placement="bottom">
-            <button className="git-panel-icon-btn" onClick={refresh} disabled={loading} aria-label="Refresh">
+          <Tooltip label={loading ? 'Refreshing…' : '刷新'} placement="bottom">
+            <button className="git-panel-icon-btn" onClick={refresh} disabled={loading} aria-label="刷新">
               {loading ? <IconLoader size={14} className="git-panel-spin" /> : <IconRefresh size={14} />}
             </button>
           </Tooltip>
-          <Tooltip label="Close" placement="bottom">
-            <button className="git-panel-icon-btn" onClick={onClose} aria-label="Close"><IconX size={14} /></button>
+          <Tooltip label="关闭" placement="bottom">
+            <button className="git-panel-icon-btn" onClick={onClose} aria-label="关闭"><IconX size={14} /></button>
           </Tooltip>
         </header>
 
@@ -195,10 +195,10 @@ export function WorktreeChanges({ sessionId, cwd, branchName, baseRef, displayNa
           ) : error ? (
             <div className="git-panel-error">{error}</div>
           ) : loading ? (
-            <div className="git-panel-empty">Loading…</div>
+            <div className="git-panel-empty">正在加载…</div>
           ) : tab === 'uncommitted' ? (
             uncommittedFiles.length === 0 ? (
-              <div className="git-panel-empty">No uncommitted changes in the worktree.</div>
+              <div className="git-panel-empty">worktree 中无未提交更改。</div>
             ) : (
               <UncommittedList
                 cwd={cwd}
@@ -209,7 +209,7 @@ export function WorktreeChanges({ sessionId, cwd, branchName, baseRef, displayNa
               />
             )
           ) : rangeFiles.length === 0 ? (
-            <div className="git-panel-empty">No file changes in this range.</div>
+            <div className="git-panel-empty">此范围内无文件变更。</div>
           ) : (
             <RangeList
               cwd={cwd}
@@ -378,7 +378,7 @@ function RowShell(props: {
               className="git-action-btn"
               onClick={() => onOpen(path)}
               aria-label={`Open ${path}`}
-              title="Open file"
+              title="打开文件"
             >
               <IconSearch size={13} />
             </button>
@@ -421,7 +421,7 @@ function RowShell(props: {
               className="git-action-btn"
               onClick={() => onOpen(path)}
               aria-label={`Open ${path}`}
-              title="Open file"
+              title="打开文件"
             >
               <IconSearch size={13} />
             </button>
@@ -430,9 +430,9 @@ function RowShell(props: {
       </div>
       {open && (
         <div className="git-file-diff-wrap">
-          {diff.loading && <div className="git-file-diff-loading">Loading…</div>}
+          {diff.loading && <div className="git-file-diff-loading">正在加载…</div>}
           {diff.error && <div className="git-file-diff-error">{diff.error}</div>}
-          {diff.data && diff.data.isBinary && <div className="git-file-diff-binary">(binary file)</div>}
+          {diff.data && diff.data.isBinary && <div className="git-file-diff-binary">（二进制文件）</div>}
           {diff.data && !diff.data.isBinary && (
             <DiffView
               text={diff.data.text}

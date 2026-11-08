@@ -125,7 +125,7 @@ function CrashScreen({ crash, onReload }: { crash: CrashRecord; onReload: () => 
               fontFamily: 'var(--font-head, var(--sans))',
             }}
           >
-            Something went wrong
+            出错了
           </h2>
         </div>
         <p style={{ margin: '0 0 12px', color: 'var(--fg-muted)', fontSize: 'var(--fs-sm)' }}>
@@ -154,7 +154,7 @@ function CrashScreen({ crash, onReload }: { crash: CrashRecord; onReload: () => 
         </pre>
         <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
           <button type="button" onClick={onReload} style={btnStyle}>
-            Reload
+            重新加载
           </button>
           <button type="button" onClick={copyReport} style={btnStyle}>
             {copyState === 'done' ? 'Copied' : copyState === 'failed' ? 'Copy failed' : 'Copy error'}

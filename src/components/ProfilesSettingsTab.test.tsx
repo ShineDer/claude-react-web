@@ -64,14 +64,14 @@ function mockUseProfiles() {
 describe('ProfilesSettingsTab', () => {
   /** The template dialog gates every "+ Add profile" flow. The dialog's own
    *  buttons must be scoped with `within` — the cards behind the modal also
-   *  contain an "Add" button (the model-list row), which an unscoped query
+   *  contain an "添加" button (the model-list row), which an unscoped query
    *  would happily hit and make the test pass for the wrong reason. */
   const openAddDialog = () => {
     fireEvent.click(screen.getByRole('button', { name: '+ Add profile' }))
     return screen.getByRole('dialog', { name: 'Add profile' })
   }
   const confirmAddDialog = () => {
-    fireEvent.click(within(screen.getByRole('dialog', { name: 'Add profile' })).getByRole('button', { name: 'Add' }))
+    fireEvent.click(within(screen.getByRole('dialog', { name: 'Add profile' })).getByRole('button', { name: '添加' }))
   }
 
   it('renders one card per profile with the active badge', () => {
@@ -79,7 +79,7 @@ describe('ProfilesSettingsTab', () => {
     render(<ProfilesSettingsTab />)
     expect(screen.getByText('A')).toBeTruthy()
     expect(screen.getByText('B')).toBeTruthy()
-    expect(screen.getByText('Active')).toBeTruthy()
+    expect(screen.getByText('已启用')).toBeTruthy()
   })
 
   it('expands the active profile by default and folds to the clicked one', () => {
@@ -200,7 +200,7 @@ describe('ProfilesSettingsTab', () => {
       // Drag 'ma' and release back over its own row — order must not change.
       await dragGripTo(grips[0], 10)
       expect(modelOrder(container)).toEqual(['ma', 'mb', 'mc'])
-      fireEvent.click(screen.getByRole('button', { name: /^Save( changes)?$/i }))
+      fireEvent.click(screen.getByRole('button', { name: /^保存(更改)?$/ }))
       await vi.waitFor(() => {
         expect(update).toHaveBeenCalledWith(
           'a',
@@ -220,7 +220,7 @@ describe('ProfilesSettingsTab', () => {
       // (0×0 in jsdom — the stubs land after mount), so collision resolution
       // keys off the drop coordinates against the freshly-measured droppables.
       await dragGripTo(grips[0], 300)
-      const names = [...container.querySelectorAll<HTMLInputElement>('.settings-model-group input[aria-label="Group name"]')]
+      const names = [...container.querySelectorAll<HTMLInputElement>('.settings-model-group input[aria-label="分组名称"]')]
         .map((el) => el.value)
       expect(names).toEqual(['Group 2', 'Group 1'])
     })
@@ -234,7 +234,7 @@ describe('ProfilesSettingsTab', () => {
       expect(modelOrder(container)).toEqual(['mb', 'mc', 'ma'])
       // Unified Save in the modal calls the registered dirty callback, which
       // PUTs the profile. Click the card-level Save that appears when dirty.
-      fireEvent.click(screen.getByRole('button', { name: /^Save( changes)?$/i }))
+      fireEvent.click(screen.getByRole('button', { name: /^保存(更改)?$/ }))
       await vi.waitFor(() => {
         expect(update).toHaveBeenCalledWith(
           'a',
@@ -384,7 +384,7 @@ describe('ProfilesSettingsTab', () => {
         expect(within(screen.getByRole('dialog', { name: 'Add profile' })).getByText('stale error')).toBeTruthy()
       })
       // Cancel, then reopen — the fresh dialog must not carry the old error.
-      fireEvent.click(within(screen.getByRole('dialog', { name: 'Add profile' })).getByRole('button', { name: 'Cancel' }))
+      fireEvent.click(within(screen.getByRole('dialog', { name: 'Add profile' })).getByRole('button', { name: '取消' }))
       const dialog = openAddDialog()
       expect(within(dialog).queryByText('stale error')).toBeNull()
     })
@@ -485,7 +485,7 @@ describe('ProfilesSettingsTab', () => {
       })
       render(<ProfilesSettingsTab />)
       openAddDialog()
-      fireEvent.click(within(screen.getByRole('dialog', { name: 'Add profile' })).getByRole('button', { name: 'Cancel' }))
+      fireEvent.click(within(screen.getByRole('dialog', { name: 'Add profile' })).getByRole('button', { name: '取消' }))
       expect(screen.queryByRole('dialog', { name: 'Add profile' })).toBeNull()
       expect(create).not.toHaveBeenCalled()
     })
@@ -564,7 +564,7 @@ describe('ProfilesSettingsTab', () => {
     it('renders a stored model that is absent from the list, rather than blank', () => {
       mockStored()
       render(<ProfilesSettingsTab />)
-      const select = screen.getByLabelText('Recap Model') as HTMLSelectElement
+      const select = screen.getByLabelText('摘要模型') as HTMLSelectElement
       // Without a matching <option> the select renders blank while still
       // holding a model id — the invisible state that hid this bug.
       expect(select.value).toBe('vendor/unlisted')
@@ -574,8 +574,8 @@ describe('ProfilesSettingsTab', () => {
     it('sends null when (default) is picked, so the server clears the stored model', async () => {
       const update = mockStored()
       render(<ProfilesSettingsTab />)
-      fireEvent.change(screen.getByLabelText('Recap Model'), { target: { value: '' } })
-      fireEvent.click(screen.getByRole('button', { name: /^Save( changes)?$/i }))
+      fireEvent.change(screen.getByLabelText('摘要模型'), { target: { value: '' } })
+      fireEvent.click(screen.getByRole('button', { name: /^保存(更改)?$/ }))
       await vi.waitFor(() => {
         expect(update).toHaveBeenCalledWith('a', expect.objectContaining({ recapModel: null }))
       })
@@ -614,12 +614,12 @@ describe('ProfilesSettingsTab', () => {
     }
 
     /** Row inputs of the Available-Models list, in order. The add-row's
-     *  "New model ID" input and the group card's slot inputs are excluded by
+     *  "新模型 ID" input and the group card's slot inputs are excluded by
      *  the accessible name. */
     const rowInputs = (container: HTMLElement) =>
       [...container.querySelectorAll<HTMLInputElement>('.settings-model-list > .settings-model-row input[aria-label^="Model ID"]')]
 
-    const saveAll = () => fireEvent.click(screen.getByRole('button', { name: /^Save( changes)?$/i }))
+    const saveAll = () => fireEvent.click(screen.getByRole('button', { name: /^保存(更改)?$/ }))
 
     it('renders each model id as an editable input, not a static chip', () => {
       mockEditable()
@@ -689,8 +689,8 @@ describe('ProfilesSettingsTab', () => {
       // recapModel points at 'ma'; commitMessageModel points at 'mb'.
       fireEvent.change(rowInputs(container)[0], { target: { value: 'ma-new' } })
       fireEvent.keyDown(rowInputs(container)[0], { key: 'Enter' })
-      expect((screen.getByLabelText('Recap Model') as HTMLSelectElement).value).toBe('ma-new')
-      expect((screen.getByLabelText('Commit Message Model') as HTMLSelectElement).value).toBe('mb')
+      expect((screen.getByLabelText('摘要模型') as HTMLSelectElement).value).toBe('ma-new')
+      expect((screen.getByLabelText('提交信息模型') as HTMLSelectElement).value).toBe('mb')
       saveAll()
       await vi.waitFor(() => {
         expect(update).toHaveBeenCalledWith('a', expect.objectContaining({
@@ -778,13 +778,13 @@ describe('ProfilesSettingsTab', () => {
     it('ignores Enter on the add-row while an IME composition is being confirmed', () => {
       mockEditable()
       const { container } = render(<ProfilesSettingsTab />)
-      const input = screen.getByLabelText('New model ID')
+      const input = screen.getByLabelText('新模型 ID')
       fireEvent.change(input, { target: { value: '合成中' } })
       const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
       Object.defineProperty(event, 'isComposing', { value: true })
       act(() => { input.dispatchEvent(event) })
       expect(rowInputs(container).map((el) => el.value)).toEqual(['ma', 'mb', 'mc'])
-      expect((screen.getByLabelText('New model ID') as HTMLInputElement).value).toBe('合成中')
+      expect((screen.getByLabelText('新模型 ID') as HTMLInputElement).value).toBe('合成中')
     })
 
     it('commits a pending draft when the card folds (body unmounts without blur)', async () => {
@@ -809,12 +809,12 @@ describe('ProfilesSettingsTab', () => {
       fireEvent.click(screen.getByRole('button', { name: 'B' }))
       // The active card's header button concatenates its name and the Active
       // badge ("A Active") into its accessible name.
-      fireEvent.click(screen.getByRole('button', { name: 'A Active' }))
+      fireEvent.click(screen.getByRole('button', { name: 'A 已启用' }))
       // Committed (trimmed), not still sitting in the input as a draft.
       expect(rowInputs(container)[0].value).toBe('ma-folded')
       // Two cards are mounted — scope the Save to card A.
       fireEvent.click(
-        within(container.querySelector('[data-profile-card="a"]')!).getByRole('button', { name: /^Save( changes)?$/i }),
+        within(container.querySelector('[data-profile-card="a"]')!).getByRole('button', { name: /^保存(更改)?$/ }),
       )
       await vi.waitFor(() => {
         expect(update).toHaveBeenCalledWith('a', expect.objectContaining({ modelList: ['ma-folded', 'mb', 'mc'] }))
@@ -829,7 +829,7 @@ describe('ProfilesSettingsTab', () => {
       fireEvent.change(input, { target: { value: 'mb-new' } })
       const removeBtn = container
         .querySelectorAll('.settings-model-list > .settings-model-row')[1]
-        .querySelector('button[aria-label="Remove"]')!
+        .querySelector('button[aria-label="移除"]')!
       // Browsers blur the input on the button's mousedown (focus moves). If
       // that blur's commit remounts the row (key = the id string), the button
       // dies before mouseup and the click never lands.
@@ -840,7 +840,7 @@ describe('ProfilesSettingsTab', () => {
       // commitMessageModel pointed at 'mb': the rename re-followed it to
       // 'mb-new', and removing the row must unlink that too — not leave the
       // card pointing at a model the list no longer has.
-      expect((screen.getByLabelText('Commit Message Model') as HTMLSelectElement).value).toBe('')
+      expect((screen.getByLabelText('提交信息模型') as HTMLSelectElement).value).toBe('')
       saveAll()
       await vi.waitFor(() => {
         expect(update).toHaveBeenCalledWith('a', expect.objectContaining({
@@ -870,7 +870,7 @@ describe('ProfilesSettingsTab', () => {
       const { container } = render(<ProfilesSettingsTab />)
       // g1.opus === 'mc'; remove the 'mc' row.
       const rows = container.querySelectorAll('.settings-model-list > .settings-model-row')
-      fireEvent.click(rows[2].querySelector('button[aria-label="Remove"]')!)
+      fireEvent.click(rows[2].querySelector('button[aria-label="移除"]')!)
       expect(rowInputs(container).map((el) => el.value)).toEqual(['ma', 'mb'])
       expect((screen.getByLabelText('Opus') as HTMLInputElement).value).toBe('')
       saveAll()

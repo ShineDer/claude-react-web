@@ -107,7 +107,7 @@ export function AppPluginsTab({ saveAllRef }: { saveAllRef?: MutableRefObject<((
 
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Installed</h4>
+          <h4>已安装</h4>
           <span className="settings-group-desc">Local plugin directories installed on this server.</span>
         </div>
         <div className="settings-group-body">
@@ -115,16 +115,16 @@ export function AppPluginsTab({ saveAllRef }: { saveAllRef?: MutableRefObject<((
             <input
               className="input"
               type="text"
-              placeholder="Local plugin directory path…"
+              placeholder="本地插件目录路径…"
               value={installPath}
               onChange={(e) => setInstallPath(e.target.value)}
-              aria-label="Plugin directory path"
+              aria-label="插件目录路径"
             />
-            <button className="btn" onClick={() => setShowDirPicker(true)} disabled={busy} title="Browse">
+            <button className="btn" onClick={() => setShowDirPicker(true)} disabled={busy} title="浏览">
               <IconFolder size={14} /> Browse
             </button>
             <button className="btn btn-primary" disabled={busy || !installPath.trim()} onClick={install}>
-              {busy ? 'Installing…' : 'Install'}
+              {busy ? 'Installing…' : '安装'}
             </button>
           </div>
 
@@ -132,7 +132,7 @@ export function AppPluginsTab({ saveAllRef }: { saveAllRef?: MutableRefObject<((
 
           {showDirPicker && createPortal(
             <DirectoryPicker
-              title="Pick a plugin folder"
+              title="选择插件文件夹"
               selectLabel="Install this folder"
               footerHint="Select a folder that contains crw-plugin.json"
               onPick={(path) => {
@@ -146,7 +146,7 @@ export function AppPluginsTab({ saveAllRef }: { saveAllRef?: MutableRefObject<((
           )}
 
           <ul className="app-plugins-list">
-            {plugins.length === 0 && <li className="app-plugins-empty">No app plugins installed.</li>}
+            {plugins.length === 0 && <li className="app-plugins-empty">未安装应用插件。</li>}
             {plugins.map((p) => (
               <PluginRow
                 key={p.id}
@@ -198,11 +198,11 @@ function PluginRow(props: {
         </button>
         <div className="app-plugins-row-actions">
           {p.enabled ? (
-            <button className="btn" disabled={props.busy} onClick={props.onDisable}>Disable</button>
+            <button className="btn" disabled={props.busy} onClick={props.onDisable}>禁用</button>
           ) : (
-            <button className="btn btn-primary" disabled={props.busy || !p.compatible} onClick={props.onEnable}>Enable</button>
+            <button className="btn btn-primary" disabled={props.busy || !p.compatible} onClick={props.onEnable}>启用</button>
           )}
-          <button className="btn" disabled={props.busy} onClick={() => props.onUninstall(false)}>Uninstall</button>
+          <button className="btn" disabled={props.busy} onClick={() => props.onUninstall(false)}>卸载</button>
         </div>
       </div>
       <div className="app-plugins-meta">
@@ -289,10 +289,10 @@ function ConfigurationEditor({ plugin, modelList, onRegisterDirtySave }: { plugi
     onRegisterDirtySave(regKey, null)
   }, [dirty, regKey, onRegisterDirtySave])
 
-  if (loading) return <div className="app-plugins-config"><h4>Settings</h4><p>Loading…</p></div>
+  if (loading) return <div className="app-plugins-config"><h4>设置</h4><p>正在加载…</p></div>
   return (
     <div className="app-plugins-config">
-      <h4>Settings</h4>
+      <h4>设置</h4>
       {error && <div className="modal-error">{error}</div>}
       <ul>
         {props.map((prop) => (
@@ -305,7 +305,7 @@ function ConfigurationEditor({ plugin, modelList, onRegisterDirtySave }: { plugi
           </li>
         ))}
       </ul>
-      <button className="btn" disabled={saving} onClick={save}>Save settings</button>
+      <button className="btn" disabled={saving} onClick={save}>保存设置</button>
     </div>
   )
 }
@@ -409,7 +409,7 @@ function PermissionsSection({ plugin, onRegisterDirtySave }: { plugin: AppPlugin
 
   return (
     <div className="app-plugins-perms">
-      <h4>Permissions</h4>
+      <h4>权限</h4>
       <ul>
         {declared.map((p) => (
           <li key={p.permission}>
@@ -422,9 +422,9 @@ function PermissionsSection({ plugin, onRegisterDirtySave }: { plugin: AppPlugin
             </label>
           </li>
         ))}
-        {declared.length === 0 && <li>No permissions declared.</li>}
+        {declared.length === 0 && <li>未声明权限。</li>}
       </ul>
-      <button className="btn" disabled={saving} onClick={save}>Save permissions</button>
+      <button className="btn" disabled={saving} onClick={save}>保存权限</button>
       <p className="app-plugins-trust">
         Background plugins run as trusted local programs. Permissions are consent + feature
         flags, not a sandbox — a plugin can still use Node built-ins directly.
@@ -437,9 +437,9 @@ function ContributionsSection({ plugin }: { plugin: AppPluginClientInfo }) {
   const c = plugin.contributions
   return (
     <div className="app-plugins-contribs">
-      <h4>Contributions</h4>
+      <h4>贡献</h4>
       {c.commands.length === 0 && c.contextMenus.length === 0 && c.actions.length === 0 ? (
-        <p>None.</p>
+        <p>无。</p>
       ) : (
         <ul>
           {c.commands.map((cmd) => <li key={cmd.id}>command: <code>{cmd.id}</code> — {cmd.title}</li>)}

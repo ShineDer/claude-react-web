@@ -172,7 +172,7 @@ export const ContextBar = memo(function ContextBar({
 
   const displayPct = draftPct ?? thresholdPct
 
-  // CLI says auto-compact will not fire: show `off` rather than a percentage
+  // CLI says auto-compact will not fire: show `关` rather than a percentage
   // that will never trigger. Drag is already disabled (see `interactive`), so
   // there is no draft to override this.
   const compactStat: number | null | 'off' = autoCompactOff ? 'off' : displayPct
@@ -192,10 +192,10 @@ export const ContextBar = memo(function ContextBar({
     lvl?: 'warn' | 'danger',
   ) => {
     const text =
-      value === 'off' ? 'off' : value != null ? `${Math.round(value)}%` : '—'
+      value === 'off' ? '关' : value != null ? `${Math.round(value)}%` : '—'
     const aria =
       value === 'off'
-        ? `${label} off`
+        ? `${label} 关`
         : value != null
           ? `${label} ${Math.round(value)}%`
           : `${label} —`
@@ -405,12 +405,12 @@ export const ContextBar = memo(function ContextBar({
               ? {
                   role: 'slider',
                   tabIndex: 0,
-                  'aria-label': 'Auto-compact threshold',
+                  'aria-label': '自动压缩阈值',
                   'aria-valuemin': MIN_PCT,
                   'aria-valuemax': MAX_PCT,
                   'aria-valuenow': Math.round(displayPct),
                   'aria-valuetext': `${Math.round(displayPct)}%`,
-                  title: 'Drag to set when auto-compact triggers · double-click to reset to auto',
+                  title: '拖动设置自动压缩触发点 · 双击重置为自动',
                   onKeyDown,
                   onKeyUp: commitKeyboardDraft,
                   onBlur: commitKeyboardDraft,

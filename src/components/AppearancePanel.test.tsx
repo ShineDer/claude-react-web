@@ -22,8 +22,8 @@ function renderPanel(skin: 'default' | 'glow' | 'anthropic' | 'hc' | 'soft-hc') 
 }
 
 async function openPanel() {
-  fireEvent.click(screen.getByRole('button', { name: 'Theme' }))
-  await screen.findByRole('dialog', { name: 'Theme' })
+  fireEvent.click(screen.getByRole('button', { name: '主题' }))
+  await screen.findByRole('dialog', { name: '主题' })
 }
 
 describe('AppearancePanel background section', () => {
@@ -32,18 +32,18 @@ describe('AppearancePanel background section', () => {
   it('shows the Background section for default skin', async () => {
     renderPanel('default')
     await openPanel()
-    expect(screen.getByText('Background')).toBeTruthy()
+    expect(screen.getByText('背景')).toBeTruthy()
   })
   it('shows the Background section for glow skin', async () => {
     renderPanel('glow')
     await openPanel()
-    expect(screen.getByText('Background')).toBeTruthy()
+    expect(screen.getByText('背景')).toBeTruthy()
   })
   it('hides the Background section for hc / anthropic / soft-hc', async () => {
     for (const skin of ['anthropic', 'hc', 'soft-hc'] as const) {
       const { unmount } = renderPanel(skin)
       await openPanel()
-      expect(screen.queryByText('Background')).toBeNull()
+      expect(screen.queryByText('背景')).toBeNull()
       unmount()
     }
   })
@@ -67,7 +67,7 @@ describe('AppearancePanel trigger toggle', () => {
     // open and the button could never close it. (`fireEvent.click` alone cannot
     // catch this: it dispatches no mousedown.)
     renderPanel('default')
-    const trigger = () => screen.getByRole('button', { name: 'Theme' })
+    const trigger = () => screen.getByRole('button', { name: '主题' })
     const fullClick = () => {
       fireEvent.mouseDown(trigger())
       fireEvent.mouseUp(trigger())
@@ -76,7 +76,7 @@ describe('AppearancePanel trigger toggle', () => {
 
     await openPanel()
     fullClick()
-    expect(screen.queryByRole('dialog', { name: 'Theme' })).toBeNull()
+    expect(screen.queryByRole('dialog', { name: '主题' })).toBeNull()
     expect(trigger().getAttribute('aria-expanded')).toBe('false')
   })
 
@@ -84,7 +84,7 @@ describe('AppearancePanel trigger toggle', () => {
     renderPanel('default')
     await openPanel()
     fireEvent.mouseDown(document.body)
-    expect(screen.queryByRole('dialog', { name: 'Theme' })).toBeNull()
+    expect(screen.queryByRole('dialog', { name: '主题' })).toBeNull()
   })
 })
 

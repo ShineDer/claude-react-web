@@ -4,8 +4,8 @@ import { firstPartyOverridesForCreate } from '../../shared/session-info'
 /** Build the "New like this" create form for a source session. Copies the
  *  working context (cwd / model / persona / permission mode / betas)
  *  AND the per-session tool-surface selections — the per-first-party-server
- *  overrides (`firstPartyOverridesForCreate`: a copy with git-tools silently
- *  re-enabled would surprise the user) and the plugin subset (`enabledPlugins`,
+ *  overrides (`firstPartyOverridesFor创建`: a copy with git-tools silently
+ *  re-enabled would surprise the user) and the plugin subset (`enabled插件`,
  *  where `undefined` means ALL enabled — dropping a narrowed subset would
  *  silently widen the copy). Inherits the source's group only. A full source
  *  group drops the group (`undefined` → the copy is created ungrouped): the
@@ -25,7 +25,7 @@ export function buildNewLikeThisForm(
     model: source.model,
     // Deliberately NOT copying `source.modelGroupId`: create() 400s on a
     // deleted model group while the source session itself self-heals on
-    // respawn. Copying the resolved `model` keeps the copy strictly
+    // respawn. Copying the resolved `模型` keeps the copy strictly
     // no-worse than the source; the user can re-pin a group from ChatPanel.
     // (Session-group membership IS copied below — that path drops a full
     // group instead of failing.)

@@ -42,9 +42,9 @@ export function SkillPreviewModal({
         <div className="settings-skill-preview-title">
           <span className="settings-card-name">{ps.name}</span>
           <span className="settings-card-badge">{ps.scope}</span>
-          {!ps.valid && <span className="settings-card-badge warn">invalid</span>}
+          {!ps.valid && <span className="settings-card-badge warn">无效</span>}
         </div>
-        <button className="btn-icon" aria-label="Close" onClick={onClose}>
+        <button className="btn-icon" aria-label="关闭" onClick={onClose}>
           <IconX size={14} />
         </button>
       </div>
@@ -54,7 +54,7 @@ export function SkillPreviewModal({
       )}
       {hasFields && (
         <div className="settings-skill-frontmatter">
-          <div className="settings-skill-frontmatter-title">Frontmatter</div>
+          <div className="settings-skill-frontmatter-title">前置元数据</div>
           <table className="settings-skill-frontmatter-table">
             <tbody>
               {Object.entries(parsed!.frontmatter).map(([key, value]) => (

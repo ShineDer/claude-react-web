@@ -113,7 +113,7 @@ describe('useModelOptions', () => {
   it('falls back to /config when profileId is not provided', async () => {
     vi.mocked(api.get).mockResolvedValue({
       models: ['c1'],
-      modelGroups: [{ id: 'g1', name: 'Default', opus: 'c1', main: 'opus' }],
+      modelGroups: [{ id: 'g1', name: '默认', opus: 'c1', main: 'opus' }],
     })
     const { result } = renderHook(() => useModelOptions('s1', true))
     await waitFor(() => expect(result.current.models.length).toBe(1))
@@ -126,7 +126,7 @@ describe('useModelOptions', () => {
       if (url === '/profiles') {
         return { profiles: [{ id: 'other', modelList: ['ox1'], modelGroups: [] }] }
       }
-      return { models: ['c1', 'c2'], modelGroups: [{ id: 'g1', name: 'Default', opus: 'c1', main: 'opus' }] }
+      return { models: ['c1', 'c2'], modelGroups: [{ id: 'g1', name: '默认', opus: 'c1', main: 'opus' }] }
     })
     const { result } = renderHook(() => useModelOptions('s1', true, 'missing-profile'))
     await waitFor(() => expect(result.current.models.length).toBe(2))

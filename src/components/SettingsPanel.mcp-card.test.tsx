@@ -41,7 +41,7 @@ describe('McpServerCard — failed state', () => {
       screen.getByText('npx --registry=https://pkgs.d.xiaomi.net/artifactory/api/npm/mi-npm/ -y @mi/adt-mcp-conn'),
     ).toBeTruthy()
     expect(screen.getByText(/Run it in a terminal/)).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Copy' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: '复制' })).toBeTruthy()
   })
 
   it('offers the URL for http servers', () => {
@@ -66,7 +66,7 @@ describe('McpServerCard — failed state', () => {
     expect(document.querySelector('.settings-card-error-hint')).toBeNull()
     // The diagnosis block is independent of classification — any failed
     // server with a known config shape still gets a runnable command.
-    expect(screen.getByRole('button', { name: 'Copy' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: '复制' })).toBeTruthy()
   })
 
   it('adds nothing for healthy servers', () => {

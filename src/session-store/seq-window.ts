@@ -137,7 +137,7 @@ function clone(w: WindowState): WindowState {
 }
 
 /** Slot-routed frames: the server seq-assigns every isRenderableSdkMessage
- *  frame, a set WIDER than the client's ordered log. `system/api_retry`
+ *  frame, a set WIDER than the client's ordered log. `system/api_重试`
  *  renders from its transient slot (applyMessage never lets it into
  *  items/messages) and an empty `result` frame is suppressed outright
  *  (toTranscriptItem → null). Both still enter the window map — membership

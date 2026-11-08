@@ -108,7 +108,7 @@ export function ProfileCreateDialog({ profiles, busy = false, error, onConfirm, 
                       {/* The name needs its own span: text-overflow on the flex
                           title row itself has no effect (see git-panel.css). */}
                       <span className="profile-create-option-name">{p.name}</span>
-                      {p.isActive && <StatusBadge tone="accent">Active</StatusBadge>}
+                      {p.isActive && <StatusBadge tone="accent">已启用</StatusBadge>}
                     </span>
                     <span className="profile-create-option-hint truncate">{p.baseUrl}</span>
                   </span>
@@ -120,10 +120,10 @@ export function ProfileCreateDialog({ profiles, busy = false, error, onConfirm, 
       </div>
       <div className="modal-footer">
         <button type="button" className="btn" onClick={onCancel} disabled={busy}>
-          Cancel
+          取消
         </button>
         <button type="button" className="btn btn-primary" onClick={() => { void onConfirm(selected) }} disabled={busy}>
-          {busy ? 'Adding...' : 'Add'}
+          {busy ? 'Adding...' : '添加'}
         </button>
       </div>
     </Overlay>

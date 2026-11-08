@@ -238,13 +238,13 @@ export function ElicitationDialog({ open = true, request, onDecide }: Props) {
               />
               {rawError && <div className="elicit-error" role="alert">{rawError}</div>}
               <button type="button" className="btn btn-sm" onClick={() => setRawMode(false)} disabled={busy}>
-                Back to fields
+                返回字段
               </button>
             </div>
           ) : (
             <div className="elicit-form">
               {fields.length === 0 && (
-                <span className="hint">The server requested a form but sent no field schema.</span>
+                <span className="hint">服务器请求了表单，但未发送字段架构。</span>
               )}
               {fields.map((f) => (
                 <div key={f.name} className="elicit-field">
@@ -274,7 +274,7 @@ export function ElicitationDialog({ open = true, request, onDecide }: Props) {
                       disabled={busy}
                       onChange={(e) => setValues((prev) => ({ ...prev, [f.name]: e.target.value }))}
                     >
-                      <option value="">— select —</option>
+                      <option value="">— 选择 —</option>
                       {f.enumValues.map((v) => (
                         <option key={v} value={v}>{v}</option>
                       ))}
@@ -295,7 +295,7 @@ export function ElicitationDialog({ open = true, request, onDecide }: Props) {
               {fieldError && <div className="elicit-error" role="alert">{fieldError}</div>}
               {fields.length > 0 && (
                 <button type="button" className="btn btn-sm" onClick={() => setRawMode(true)} disabled={busy}>
-                  Advanced — raw JSON
+                  高级——原始 JSON
                 </button>
               )}
             </div>
@@ -306,11 +306,11 @@ export function ElicitationDialog({ open = true, request, onDecide }: Props) {
       <div className="modal-footer" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8 }}>
         <div style={{ display: 'flex', gap: 8 }}>
           <button className="btn" onClick={cancel} disabled={busy} style={{ flex: 1 }}>
-            Cancel
+            取消
           </button>
           {!isUrl && !isForm && (
             <button className="btn" onClick={decline} disabled={busy} style={{ flex: 1 }}>
-              Decline
+              拒绝
             </button>
           )}
           {isUrl ? (
@@ -319,9 +319,9 @@ export function ElicitationDialog({ open = true, request, onDecide }: Props) {
               onClick={acceptUrl}
               disabled={busy}
               style={{ flex: 2 }}
-              title="Confirm that you completed the authorization in the opened tab"
+              title="确认你已在打开的标签页中完成授权"
             >
-              I've completed authorization
+              我已完成授权
             </button>
           ) : isForm ? (
             <button
@@ -330,11 +330,11 @@ export function ElicitationDialog({ open = true, request, onDecide }: Props) {
               disabled={busy}
               style={{ flex: 2 }}
             >
-              Submit
+              提交
             </button>
           ) : (
             <button className="btn btn-primary" onClick={() => submitDecision({ action: 'accept' })} disabled={busy} style={{ flex: 2 }}>
-              Accept
+              接受
             </button>
           )}
         </div>

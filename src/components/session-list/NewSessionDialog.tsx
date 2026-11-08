@@ -11,6 +11,9 @@ import type { McpServerConfigMeta, NewSessionForm, PermissionMode, SessionGroup 
 import { parseTaskBudgetInput } from '../../../shared/session-info'
 import type { ModelGroupConfig } from '../../types/config'
 import { PERMISSION_MODES, EFFORT_LEVELS } from '../../types'
+
+/** Display labels for the effort stops; the stored value stays the raw level. */
+const EFFORT_DISPLAY: Record<string, string> = { low: '低', medium: '中', high: '高', xhigh: '极高', max: '最大' }
 import { useExitPresence } from '../../hooks/useExitPresence'
 import { useAgentDefinitions } from '../../hooks/useAgentDefinitions'
 import { Overlay } from '../Overlay'
@@ -45,7 +48,7 @@ export interface NewSessionDialogProps {
   /** Server-configured model list (from /api/config). Shown first in the
    *  Model FieldPicker menu so the user always has a baseline. */
   serverModels?: string[]
-  /** Model Groups from the same /config snapshot as `serverModels`. Threaded
+  /** Model Groups from the same /config snapshot as `server模型`. Threaded
    *  from App (not fetched here) so the menu never issues its own /config and
    *  the two lists cannot drift. */
   modelGroups?: ModelGroupConfig[]
@@ -59,7 +62,7 @@ export interface NewSessionDialogProps {
   maxGroupSize: number
   /** Global first-party tool defaults (server config map, name → {enabled}).
    *  One checkbox row per entry; the initial checked state is the entry's
-   *  `enabled` value. Omitted / empty map → the cluster is hidden. */
+   *  `已启用` value. Omitted / empty map → the cluster is hidden. */
   firstPartyTools?: Record<string, { enabled: boolean }>
 }
 
@@ -81,10 +84,10 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
   // Opt-in worktree isolation — off by default; only sent when checked.
   const [isolate, setIsolate] = useState(false)
   const [model, setModel] = useState<string>(defaults.model ?? '')
-  /** Model Group pin. Mutually exclusive with a concrete `model` — selecting
+  /** Model Group pin. Mutually exclusive with a concrete `模型` — selecting
    *  one clears the other (ChatPanel's ModelPicker has the same contract). */
   const [modelGroupId, setModelGroupId] = useState('')
-  const [permissionMode, setPermissionMode] = useState<PermissionMode>('default')
+  const [permissionMode, setPermissionMode] = useState<PermissionMode>('auto')
   const [systemPrompt, setSystemPrompt] = useState('')
   const [title, setTitle] = useState('')
   // Seed the group picker with the active group (if any) BUT only when
@@ -99,7 +102,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
   })
   /** Pending inline group creation (the "Create group «name»" row). Mutually
    *  exclusive with `groupId` — picking either clears the other. Submitted as
-   *  `newGroupName`; App mints the group when the create POST lands, so
+   *  `newGroup名称`; App mints the group when the create POST lands, so
    *  cancelling the dialog leaves nothing behind. */
   const [newGroupName, setNewGroupName] = useState('')
   const [showPicker, setShowPicker] = useState(false)
@@ -197,7 +200,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
   const mcpInstallerPresence = useExitPresence(showMcpInstaller)
 
   // First-party tool checkboxes. The state holds ONLY entries diverging from
-  // the global default (`firstPartyDiffs[name] ?? default.enabled` is the
+  // the global default (`firstPartyDiffs[name] ?? default.已启用` is the
   // checked state; toggling back to the default deletes the entry), so submit
   // can pass the map verbatim — absent key = inherit global, per the server's
   // per-server override model.
@@ -280,7 +283,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
         sub: [g.opus, g.sonnet, g.haiku].filter(Boolean).join(' · '),
         // Stamp on every row: FieldPicker shows it on the first VISIBLE row
         // of the section, so a filter that drops row 0 still labels the rest.
-        heading: 'Model Groups',
+        heading: '模型分组',
         selected: activeMg?.id === g.id,
         onSelect: () => {
           setModelGroupId(g.id)
@@ -293,7 +296,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
       // Sub must NOT be a model id — FieldPicker filters on sub too, and a
       // model id here would make "Default" win the Enter key on a search
       // that was meant for that model.
-      label: 'Default',
+      label: '默认',
       sub: 'use server default',
       selected: !activeMg && model === '',
       onSelect: () => {
@@ -309,7 +312,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
       modelRows.push({
         key: extra.key ?? `m:${m}`,
         label: m,
-        heading: 'Models',
+        heading: '模型',
         selected: !activeMg && model === m,
         onSelect: () => {
           setModelGroupId('')
@@ -374,7 +377,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
     const rows: FieldPickerOption[] = [
       {
         key: '',
-        label: 'None (Ungrouped)',
+        label: '无（未分组）',
         selected: !activeGroup && !newGroupName,
         onSelect: () => {
           setGroupId('')
@@ -444,7 +447,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
   const agentOptions: FieldPickerOption[] = [
     {
       key: '',
-      label: 'None',
+      label: '无',
       selected: selectedAgent === '',
       onSelect: () => handleAgentChange(''),
     },
@@ -458,17 +461,17 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
   ]
 
   const effortOptions: FieldPickerOption[] = [
-    { key: '', label: '(default)', selected: effort === '', onSelect: () => setEffort('') },
+    { key: '', label: '（默认）', selected: effort === '', onSelect: () => setEffort('') },
     ...EFFORT_LEVELS.map((e) => ({
       key: e,
-      label: e,
+      label: EFFORT_DISPLAY[e],
       selected: effort === e,
       onSelect: () => setEffort(e),
     })),
   ]
 
   const thinkingOptions: FieldPickerOption[] = [
-    { key: '', label: '(default)', selected: thinkingMode === '', onSelect: () => setThinkingMode('') },
+    { key: '', label: '（默认）', selected: thinkingMode === '', onSelect: () => setThinkingMode('') },
     ...(['adaptive', 'enabled', 'disabled'] as const).map((t) => ({
       key: t,
       label: t,
@@ -635,7 +638,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
       <Overlay
         variant="modal"
         cardClassName="modal-new-session"
-        ariaLabel="New session"
+        ariaLabel="新会话"
         open={open}
         onClose={onCancel}
         // Esc closes the dialog, but not when the directory picker OR the MCP
@@ -646,15 +649,15 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
         canCloseOnEscape={() => !showPicker && !showMcpInstaller}
       >
           <div className="modal-header">
-            <h3>New session</h3>
-            <button className="btn btn-icon-sm" onClick={onCancel} aria-label="Close dialog">
+            <h3>新会话</h3>
+            <button className="btn btn-icon-sm" onClick={onCancel} aria-label="关闭对话框">
               <IconX size={14} />
             </button>
           </div>
 
           <div className="modal-section">
             <div className="settings-field">
-              <label htmlFor={uid + '-project'}>Project</label>
+              <label htmlFor={uid + '-project'}>项目</label>
               <ProjectPicker
                 id={uid + '-project'}
                 value={cwd}
@@ -696,11 +699,11 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
             </div>
 
             <div className="settings-field">
-              <label htmlFor={uid + '-title'}>Title (optional)</label>
+              <label htmlFor={uid + '-title'}>标题（可选）</label>
               <input
                 className="input"
                 id={uid + '-title'}
-                placeholder="My session"
+                placeholder="我的会话"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -711,7 +714,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
               <FieldPicker
                 id={uid + '-agent'}
                 label={selectedAgent}
-                placeholder="None"
+                placeholder="无"
                 menuLabel="Agents"
                 searchLabel="Search agents"
                 searchPlaceholder="Search agents…"
@@ -720,7 +723,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
             </div>
 
             <div className="settings-field">
-              <label htmlFor={uid + '-model'}>Model</label>
+              <label htmlFor={uid + '-model'}>模型</label>
               <FieldPicker
                 id={uid + '-model'}
                 // Empty selection reads as "Default" (the chosen state), with
@@ -738,7 +741,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                 }
                 placeholder={serverModels?.[0] ?? defaults.model ?? 'Default'}
                 menuLabel="Models"
-                searchLabel="Search models"
+                searchLabel="搜索模型"
                 searchPlaceholder="Search or type a model id…"
                 options={modelOptions}
                 customOption={modelCustomOption}
@@ -746,7 +749,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
             </div>
 
             <div className="settings-field">
-              <label htmlFor={uid + '-permission-mode'}>Permission mode</label>
+              <label htmlFor={uid + '-permission-mode'}>权限模式</label>
               <FieldPicker
                 id={uid + '-permission-mode'}
                 label={permissionModeLabel(permissionMode)}
@@ -758,7 +761,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
             </div>
 
             <div className="settings-field">
-              <label htmlFor={uid + '-group'}>Group</label>
+              <label htmlFor={uid + '-group'}>分组</label>
               <FieldPicker
                 id={uid + '-group'}
                 label={newGroupName || activeGroup?.name || ''}
@@ -771,7 +774,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                         }`
                       : undefined
                 }
-                placeholder="None"
+                placeholder="无"
                 menuLabel="Groups"
                 searchLabel="Search groups"
                 searchPlaceholder="Search groups…"
@@ -781,11 +784,11 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
             </div>
 
             <div className="settings-field">
-              <label htmlFor={uid + '-system-prompt'}>System prompt (optional)</label>
+              <label htmlFor={uid + '-system-prompt'}>系统提示词（可选）</label>
               <textarea
                 className="textarea"
                 id={uid + '-system-prompt'}
-                placeholder="You are a helpful assistant..."
+                placeholder="你是一个乐于助人的助手..."
                 value={systemPrompt}
                 onChange={(e) => setSystemPrompt(e.target.value)}
                 rows={3}
@@ -794,27 +797,27 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
 
             <details style={{ marginTop: 8 }}>
               <summary style={{ cursor: 'pointer', fontSize: 'var(--fs-base)', color: 'var(--fg-muted)', userSelect: 'none' }}>
-                Advanced options
+                高级选项
               </summary>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 10 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   <div className="settings-field">
-                    <label htmlFor={uid + '-effort'}>Effort</label>
+                    <label htmlFor={uid + '-effort'}>强度</label>
                     <FieldPicker
                       id={uid + '-effort'}
                       label={effort}
-                      placeholder="(default)"
+                      placeholder="（默认）"
                       menuLabel="Effort levels"
                       searchable={false}
                       options={effortOptions}
                     />
                   </div>
                   <div className="settings-field">
-                    <label htmlFor={uid + '-thinking'}>Thinking</label>
+                    <label htmlFor={uid + '-thinking'}>思考中</label>
                     <FieldPicker
                       id={uid + '-thinking'}
                       label={thinkingMode}
-                      placeholder="(default)"
+                      placeholder="（默认）"
                       menuLabel="Thinking modes"
                       searchable={false}
                       options={thinkingOptions}
@@ -823,7 +826,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                 </div>
                 {thinkingMode === 'enabled' && (
                   <div className="settings-field">
-                    <label htmlFor={uid + '-thinking-budget'}>Thinking budget (tokens)</label>
+                    <label htmlFor={uid + '-thinking-budget'}>思考预算（token）</label>
                     <input
                       className="input"
                       id={uid + '-thinking-budget'}
@@ -836,7 +839,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                 )}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   <div className="settings-field">
-                    <label htmlFor={uid + '-max-turns'}>Max turns</label>
+                    <label htmlFor={uid + '-max-turns'}>最大轮数</label>
                     <input
                       className="input"
                       id={uid + '-max-turns'}
@@ -847,7 +850,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                     />
                   </div>
                   <div className="settings-field">
-                    <label htmlFor={uid + '-max-budget'}>Max budget (USD)</label>
+                    <label htmlFor={uid + '-max-budget'}>最大预算 (USD)</label>
                     <input
                       className="input"
                       id={uid + '-max-budget'}
@@ -871,7 +874,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                   />
                 </div>
                 <div className="settings-field">
-                  <label htmlFor={uid + '-fallback-model'}>Fallback model</label>
+                  <label htmlFor={uid + '-fallback-model'}>备用模型</label>
                   <input
                     className="input"
                     id={uid + '-fallback-model'}
@@ -881,7 +884,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                   />
                 </div>
                 <div className="settings-field">
-                  <label htmlFor={uid + '-additional-dirs'}>Additional directories (comma-separated)</label>
+                  <label htmlFor={uid + '-additional-dirs'}>附加目录（逗号分隔）</label>
                   <input
                     className="input"
                     id={uid + '-additional-dirs'}
@@ -889,30 +892,30 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                     value={additionalDirs}
                     onChange={(e) => setAdditionalDirs(e.target.value)}
                   />
-                  <span className="hint">Extra paths the agent may read/write outside the working directory.</span>
+                  <span className="hint">Agent 可在工作目录之外读取/写入的额外路径。</span>
                 </div>
                 <div className="settings-field">
-                  <label htmlFor={uid + '-allowed-tools'}>Allowed tools (comma-separated)</label>
+                  <label htmlFor={uid + '-allowed-tools'}>允许的工具（逗号分隔）</label>
                   <input
                     className="input"
                     id={uid + '-allowed-tools'}
-                    placeholder="Read, Write, Bash"
+                    placeholder="Read、Write、Bash"
                     value={allowedToolsStr}
                     onChange={(e) => setAllowedToolsStr(e.target.value)}
                   />
                 </div>
                 <div className="settings-field">
-                  <label htmlFor={uid + '-disallowed-tools'}>Disallowed tools (comma-separated)</label>
+                  <label htmlFor={uid + '-disallowed-tools'}>禁用的工具（逗号分隔）</label>
                   <input
                     className="input"
                     id={uid + '-disallowed-tools'}
-                    placeholder="WebFetch, Agent"
+                    placeholder="WebFetch、Agent"
                     value={disallowedToolsStr}
                     onChange={(e) => setDisallowedToolsStr(e.target.value)}
                   />
                 </div>
                 <div className="settings-field">
-                  <label htmlFor={uid + '-tools'}>Tools (comma-separated)</label>
+                  <label htmlFor={uid + '-tools'}>工具（逗号分隔）</label>
                   <input
                     className="input"
                     id={uid + '-tools'}
@@ -920,11 +923,11 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                     value={toolsStr}
                     onChange={(e) => setToolsStr(e.target.value)}
                   />
-                  <span className="hint">Override the built-in tool set. Leave empty to use defaults.</span>
+                  <span className="hint">覆盖内置工具集。留空以使用默认值。</span>
                 </div>
                 <div className="settings-field">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <label style={{ margin: 0 }}>MCP servers</label>
+                    <label style={{ margin: 0 }}>MCP 服务器</label>
                     <button
                       className="btn"
                       style={{ fontSize: 'var(--fs-xs)', padding: '2px 8px' }}
@@ -956,7 +959,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                             {globallyOff && (
                               <span
                                 style={{ fontSize: 'var(--fs-2xs)', color: 'var(--fg-muted)' }}
-                                title="Globally disabled — opt in by checking the box"
+                                title="全局禁用 — 勾选即可启用"
                               >
                                 off
                               </span>
@@ -971,8 +974,8 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                                 setMcpInstallerEdit(srv)
                                 setShowMcpInstaller(true)
                               }}
-                              title="Edit server"
-                              aria-label="Edit server"
+                              title="编辑服务器"
+                              aria-label="编辑服务器"
                             >
                               <IconPencil size={12} />
                             </button>
@@ -989,7 +992,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                 </div>
                 {firstPartyTools && Object.keys(firstPartyTools).length > 0 && (
                   <div className="settings-field" style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 6 }}>
-                    <label style={{ margin: 0 }}>First-party tools</label>
+                    <label style={{ margin: 0 }}>第一方工具</label>
                     <span className="hint" style={{ marginTop: 4, display: 'block' }}>
                       Built-in tools this app injects into the session. Unchecked = not injected.
                     </span>
@@ -1013,9 +1016,9 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                 )}
                 {allPluginKeys.length > 0 && (
                   <div className="settings-field" style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 6 }}>
-                    <label style={{ margin: 0 }}>Plugins</label>
+                    <label style={{ margin: 0 }}>插件</label>
                     <span className="hint" style={{ marginTop: 4, display: 'block' }}>
-                      Plugins can't be added after the session starts — choose them here.
+                      会话开始后无法添加插件 — 在此选择。
                     </span>
                     {allPluginKeys.map((key) => {
                       // Compound key is "<plugin>@<marketplace>"; neither
@@ -1040,7 +1043,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                   </div>
                 )}
                 <div className="settings-field">
-                  <label htmlFor={uid + '-mcp-overrides'}>Session MCP overrides (JSON)</label>
+                  <label htmlFor={uid + '-mcp-overrides'}>会话 MCP 覆盖（JSON）</label>
                   <textarea
                     className="textarea"
                     id={uid + '-mcp-overrides'}
@@ -1052,14 +1055,14 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                   <span className="hint">Additional MCP servers for this session only (merged with selected global servers).</span>
                 </div>
                 <div className="settings-field">
-                  <label>Environment variables</label>
+                  <label>环境变量</label>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                     {envRows.map((row) => (
                       <div key={row.id} style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
                         <input
                           className="input"
                           style={{ flex: 1, fontSize: 'var(--fs-sm)' }}
-                          aria-label="Environment variable key"
+                          aria-label="环境变量名"
                           placeholder="key"
                           value={row.key}
                           onChange={(e) => {
@@ -1070,7 +1073,7 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                         <input
                           className="input"
                           style={{ flex: 1, fontSize: 'var(--fs-sm)' }}
-                          aria-label="Environment variable value"
+                          aria-label="环境变量值"
                           placeholder="value"
                           value={row.value}
                           onChange={(e) => {
@@ -1086,8 +1089,8 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                             const next = envRows.filter((r) => r.id !== row.id)
                             setEnvRows(next)
                           }}
-                          title="Remove variable"
-                          aria-label="Remove variable"
+                          title="移除变量"
+                          aria-label="移除变量"
                         >
                           <IconX size={12} />
                         </button>
@@ -1102,20 +1105,20 @@ export function NewSessionDialog({ open = true, defaults, initialCwd, onSubmit, 
                   >
                     + Add variable
                   </button>
-                  <span className="hint">Custom env vars merged into the subprocess environment.</span>
+                  <span className="hint">合并到子进程环境中的自定义环境变量。</span>
                 </div>
               </div>
             </details>
           </div>
 
           <div className="modal-footer">
-            <span className="hint">Press Esc or click outside to cancel.</span>
+            <span className="hint">按 Esc 或点击外部取消。</span>
             <div className="modal-footer-actions">
               <button className="btn" onClick={onCancel} disabled={submitting}>
-                Cancel
+                取消
               </button>
               <button className="btn btn-primary" onClick={submit} disabled={submitting}>
-                {submitting ? 'Creating…' : 'Create'}
+                {submitting ? '创建中…' : '创建'}
               </button>
             </div>
           </div>

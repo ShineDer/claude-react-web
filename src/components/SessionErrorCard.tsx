@@ -89,7 +89,7 @@ export function SessionBody({ session, onResume, onFork, resuming, stderrTail, w
       <div className="empty-state">
         <div className="empty-state-loading">
           <div className="app-loading-spinner" />
-          <p>Resuming session...</p>
+          <p>正在恢复会话...</p>
         </div>
       </div>
     )
@@ -152,7 +152,7 @@ function ErrorCard({
     <div className="empty-state">
       {state.kind === 'dormant' && (
         <>
-          <h2>Session is dormant</h2>
+          <h2>会话处于休眠状态</h2>
           <p>
             Last resume attempt failed: {errorSentence(state.error)}
             {showResume && ' Use “Resume session” below to try again.'}
@@ -174,7 +174,7 @@ function ErrorCard({
       {workspace && (
         <div className="empty-state-project">
           <ProjectPicker
-            ariaLabel="Project"
+            ariaLabel="项目"
             value={cwd ?? ''}
             recents={workspace.recents}
             onSelect={workspace.onSelect}
@@ -198,7 +198,7 @@ function ErrorCard({
               disabled={fired}
               onClick={fire(onResume!)}
             >
-              {state.kind === 'dormant' ? 'Resume session' : 'Resume'}
+              {state.kind === 'dormant' ? '恢复会话' : '恢复'}
             </button>
           )}
           {showFork && (
@@ -208,7 +208,7 @@ function ErrorCard({
               disabled={fired}
               onClick={fire(onFork!)}
             >
-              Fork from last completed turn
+              从上一个已完成回合分叉
             </button>
           )}
         </div>

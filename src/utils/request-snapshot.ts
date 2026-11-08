@@ -19,7 +19,7 @@
 //     caller that can re-point its subject MUST remount rather than re-render —
 //     both current call sites do (App keys the panel slot by session id; the
 //     What's New dialog is mounted only while open).
-//   - A key that recurs while the effect re-runs (an `enabled` false→true flip
+//   - A key that recurs while the effect re-runs (an `已启用` false→true flip
 //     with no epoch bump) answers from the previous result: `loading` stays
 //     false and the old `error`, if any, is replayed as current. Saying "a
 //     request is in flight" would need a write from the effect — the thing the

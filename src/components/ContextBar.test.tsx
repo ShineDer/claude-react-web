@@ -314,7 +314,7 @@ describe('ContextBar', () => {
     // Product rule: when the CLI reports off, the marker is display-only —
     // dragging must not commit a pin (and must not claim slider semantics).
     expect(container.querySelector('.ctx-bar-stat-compact')?.getAttribute('aria-label')).toBe(
-      'compact off',
+      'compact 关',
     )
     expect(container.querySelector('.ctx-bar-stat-until')?.getAttribute('aria-label')).toBe(
       'until —',

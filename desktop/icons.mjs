@@ -13,6 +13,9 @@
 //   public/icon-192.png      notification icon referenced by public/sw.js
 //                            (replaces the old SVG-masquerading-as-.png
 //                            placeholder, which could never render)
+//   public/icon-512.png      PWA install icon (manifest `512x512`)
+//   public/icon-maskable.png PWA maskable icon — full-bleed artwork, since the
+//                            mask erases anything in the outer 20% safe zone
 //
 // desktop/icons.test.ts pins the outputs' magic bytes, so a placeholder or a
 // missed generation turns the suite red instead of shipping.
@@ -79,7 +82,7 @@ async function writeIfChanged(file, data) {
 
 const masterSvg = await readFile(MASTER)
 const png = new Map()
-const allSizes = new Set([...ICO_SIZES, ...ICNS_SIZES.map(([s]) => s), 192])
+const allSizes = new Set([...ICO_SIZES, ...ICNS_SIZES.map(([s]) => s), 192, 512])
 for (const size of allSizes) {
   png.set(size, await renderPng(masterSvg, size))
 }
@@ -94,4 +97,6 @@ await writeIfChanged(
 )
 await writeIfChanged(join(root, 'desktop', 'build', 'icon.png'), png.get(512))
 await writeIfChanged(join(root, 'public', 'icon-192.png'), png.get(192))
+await writeIfChanged(join(root, 'public', 'icon-512.png'), png.get(512))
+await writeIfChanged(join(root, 'public', 'icon-maskable.png'), png.get(512))
 await writeIfChanged(join(root, 'public', 'favicon.svg'), masterSvg)

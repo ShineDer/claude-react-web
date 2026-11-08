@@ -121,10 +121,10 @@ describe('inputHistoryStore', () => {
 
   it('persists to localStorage and reloads on a fresh store instance', () => {
     const store = createInputHistoryStore('test-persist')
-    store.add('persistent', 's1')
+    store.add('持久', 's1')
     // A new store reading the same key picks up the persisted value.
     const store2 = createInputHistoryStore('test-persist')
-    expect(store2.getSession('s1')).toEqual(['persistent'])
+    expect(store2.getSession('s1')).toEqual(['持久'])
   })
 
   it('migrates legacy string[] data to unattributed entries', () => {

@@ -81,7 +81,7 @@ export function DaemonSection() {
           title="Couldn't load the daemon status"
           hint={<span style={{ color: 'var(--msg-error-fg)' }}>{error ?? 'Unknown error.'}</span>}
         >
-          <button type="button" className="btn" onClick={() => void refresh()}>Retry</button>
+          <button type="button" className="btn" onClick={() => void refresh()}>重试</button>
         </SettingsRow>
       </section>
     )

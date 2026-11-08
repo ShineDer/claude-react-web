@@ -10,7 +10,7 @@ import { formatError } from '../utils/format-error'
  * validates the `ui://` scheme and `text/html` mime, then forwards the
  * CLI-fetched document verbatim. It is UNTRUSTED third-party content: the
  * iframe is sandboxed with `allow-scripts` and deliberately WITHOUT
- * `allow-same-origin`, so the document runs in an opaque origin — scripts
+ * `allow-same-orig输入`, so the document runs in an opaque origin — scripts
  * execute, but the content can never reach this app's DOM, cookies,
  * localStorage or any same-origin API. The UI↔session postMessage channel
  * (`ui_surface_v1`) is intentionally absent at this step: no channel back

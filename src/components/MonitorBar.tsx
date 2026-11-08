@@ -12,7 +12,7 @@
 // The tool_result for a Monitor call returns at START ("Monitor started …"),
 // NOT at completion, so it can't tell us if the monitor is still alive. We
 // rely on two signals that are SAFE (no false "stopped" while it's running):
-//   - A `TaskStop` whose task_id matches  → stopped. This is the clean,
+//   - A `Task停止` whose task_id matches  → stopped. This is the clean,
 //     reliable end signal (TaskStop's input carries {task_id}).
 //   - A `<task-notification>` user injection whose <task-id> matches →
 //     settled. The harness delivers this when the background task ends
@@ -53,7 +53,7 @@ interface MonitorInfo {
   taskId?: string
   description: string
   persistent: boolean
-  /** The Monitor tool's full `command` input — shown in the detail popover
+  /** The Monitor tool's full `命令` input — shown in the detail popover
    *  (the row's label is the description, or the command's first line). */
   command?: string
 }
@@ -212,14 +212,14 @@ export const MonitorBar = memo(function MonitorBar({ messages, clearing, session
           <div
             className={`monitor-bar${clearing ? ' monitor-bar-clearing' : ''}${collapsed ? ' monitor-bar-collapsed' : ''}`}
             role="status"
-            aria-label="Running monitors"
+            aria-label="运行中的监视器"
           >
             <div
               className="monitor-bar-header"
               onMouseEnter={rotor.hoverStart}
               onMouseLeave={rotor.hoverEnd}
             >
-              <span className="monitor-bar-title">Monitors</span>
+              <span className="monitor-bar-title">显示器</span>
               {rotorActive && (
                 <DockRotor
                   slideKey={rotorItem?.key ?? ''}
@@ -279,7 +279,7 @@ export const MonitorBar = memo(function MonitorBar({ messages, clearing, session
                     <span className="monitor-text truncate">
                       <span className="monitor-text-shimmer">{m.description}</span>
                     </span>
-                    {m.persistent && <span className="tool-chip tool-chip-accent">persistent</span>}
+                    {m.persistent && <span className="tool-chip tool-chip-accent">持久</span>}
                   </li>
                 ))}
               </ul>

@@ -44,28 +44,28 @@ export function buildGroupContextMenuItems(opts: {
   const { group, canMoveUp, canMoveDown, onMove, onRename, onDelete, dialogs } = opts
   return [
     {
-      label: 'Move up',
+      label: '上移',
       icon: <IconChevronUp size={14} />,
       disabled: !canMoveUp,
       onClick: () => onMove(group.id, 'up'),
     },
     {
-      label: 'Move down',
+      label: '下移',
       icon: <IconChevronDown size={14} />,
       disabled: !canMoveDown,
       onClick: () => onMove(group.id, 'down'),
     },
     { label: '' }, // separator (ContextMenu trims/merges)
     {
-      label: 'Rename group…',
+      label: '重命名分组…',
       icon: <IconPencil size={14} />,
       onClick: () => {
         dialogs.askPrompt({
-          title: 'Rename group',
+          title: '重命名分组',
           message: <p>Rename &ldquo;{group.name}&rdquo; to a new name.</p>,
           defaultValue: group.name,
-          confirmLabel: 'Rename',
-          placeholder: 'Group name',
+          confirmLabel: '重命名',
+          placeholder: '分组名称',
           onConfirm: async (value) => {
             onRename(group.id, value)
           },
@@ -73,14 +73,14 @@ export function buildGroupContextMenuItems(opts: {
       },
     },
     {
-      label: 'Delete group',
+      label: '删除分组',
       icon: <IconTrash size={14} />,
       danger: true,
       onClick: () => {
         dialogs.askConfirm({
-          title: 'Delete group?',
+          title: '删除分组？',
           message: <p>Delete &ldquo;{group.name}&rdquo;? Sessions in this group will not be deleted.</p>,
-          confirmLabel: 'Delete',
+          confirmLabel: '删除',
           destructive: true,
           onConfirm: async () => {
             onDelete(group.id)

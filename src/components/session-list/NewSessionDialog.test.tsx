@@ -59,9 +59,9 @@ describe('NewSessionDialog plugin picker', () => {
     const { baseElement } = render(<NewSessionDialog {...baseProps} onSubmit={onSubmit} />)
     await waitFor(() => expect(baseElement.textContent).toContain('plugA'))
 
-    // Find and click the "Create" button
+    // Find and click the "创建" button
     const buttons = baseElement.querySelectorAll('button')
-    const createBtn = Array.from(buttons).find((b) => b.textContent?.trim() === 'Create')!
+    const createBtn = Array.from(buttons).find((b) => b.textContent?.trim() === '创建')!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
     const form = onSubmit.mock.calls[0][0] as NewSessionForm
@@ -80,7 +80,7 @@ describe('NewSessionDialog plugin picker', () => {
     fireEvent.click(plugBCheckbox)
 
     const buttons = baseElement.querySelectorAll('button')
-    const createBtn = Array.from(buttons).find((b) => b.textContent?.trim() === 'Create')!
+    const createBtn = Array.from(buttons).find((b) => b.textContent?.trim() === '创建')!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
     const form = onSubmit.mock.calls[0][0] as NewSessionForm
@@ -120,7 +120,7 @@ describe('NewSessionDialog plugin picker', () => {
     fireEvent.click(plugBLabel.querySelector('input[type="checkbox"]')!)
 
     const buttons = baseElement.querySelectorAll('button')
-    const createBtn = Array.from(buttons).find((b) => b.textContent?.trim() === 'Create')!
+    const createBtn = Array.from(buttons).find((b) => b.textContent?.trim() === '创建')!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
     const form = onSubmit.mock.calls[0][0] as NewSessionForm
@@ -153,7 +153,7 @@ describe('NewSessionDialog first-party tools picker', () => {
 
   const clickCreate = async (root: HTMLElement, onSubmit: ReturnType<typeof vi.fn>) => {
     const createBtn = Array.from(root.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Create',
+      (b) => b.textContent?.trim() === '创建',
     )!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
@@ -202,7 +202,7 @@ describe('NewSessionDialog first-party tools picker', () => {
     const onSubmit = vi.fn()
     const { baseElement } = render(<NewSessionDialog {...baseProps} onSubmit={onSubmit} firstPartyTools={{}} />)
     await waitFor(() => expect(baseElement.textContent).not.toContain('plugA'))
-    expect(baseElement.textContent).not.toContain('First-party tools')
+    expect(baseElement.textContent).not.toContain('第一方工具')
     await clickCreate(baseElement, onSubmit)
   })
 })
@@ -219,14 +219,14 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
   })
   afterEach(() => window.localStorage.clear())
 
-  const modelTrigger = () => screen.getByLabelText('Model') as HTMLButtonElement
-  const permTrigger = () => screen.getByLabelText('Permission mode') as HTMLButtonElement
-  const groupTrigger = () => screen.getByLabelText('Group') as HTMLButtonElement
+  const modelTrigger = () => screen.getByLabelText('模型') as HTMLButtonElement
+  const permTrigger = () => screen.getByLabelText('权限模式') as HTMLButtonElement
+  const groupTrigger = () => screen.getByLabelText('分组') as HTMLButtonElement
   const fieldItems = () => Array.from(document.querySelectorAll('.field-picker-item')) as HTMLButtonElement[]
 
   const clickCreate = async (onSubmit: ReturnType<typeof vi.fn>) => {
     const createBtn = Array.from(document.body.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Create',
+      (b) => b.textContent?.trim() === '创建',
     )!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
@@ -262,7 +262,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
     const onSubmit = vi.fn()
     render(<NewSessionDialog {...baseProps} onSubmit={onSubmit} serverModels={['claude-sonnet-4-20250514']} />)
     fireEvent.click(modelTrigger())
-    const search = screen.getByRole('textbox', { name: 'Search models' })
+    const search = screen.getByRole('textbox', { name: '搜索模型' })
     fireEvent.change(search, { target: { value: 'my-proxy-model' } })
     const custom = fieldItems().find((el) => el.textContent?.includes('Use'))!
     expect(custom.textContent).toContain('my-proxy-model')
@@ -281,7 +281,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
       />,
     )
     fireEvent.click(modelTrigger())
-    const search = screen.getByRole('textbox', { name: 'Search models' })
+    const search = screen.getByRole('textbox', { name: '搜索模型' })
     fireEvent.change(search, { target: { value: 'opus' } })
     // Real match first, custom "Use …" last — ModelPicker's order.
     expect(fieldItems()[0].textContent).toContain('claude-opus-4-20250514')
@@ -301,7 +301,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
       />,
     )
     fireEvent.click(modelTrigger())
-    const def = fieldItems().find((el) => el.textContent?.includes('Default'))!
+    const def = fieldItems().find((el) => el.textContent?.includes('默认'))!
     fireEvent.click(def)
     const form = await clickCreate(onSubmit)
     expect(form.model).toBeUndefined()
@@ -331,17 +331,17 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
   it('shows permission modes as human labels with icons, no search box', async () => {
     const onSubmit = vi.fn()
     render(<NewSessionDialog {...baseProps} onSubmit={onSubmit} />)
-    expect(permTrigger().textContent).toContain('Default (ask)')
+    expect(permTrigger().textContent).toContain('自动（分类器判断）')
 
     fireEvent.click(permTrigger())
     expect(document.querySelector('.field-picker-search')).toBeNull()
     const texts = fieldItems().map((el) => el.textContent)
-    expect(texts.some((t) => t?.includes('Plan mode'))).toBe(true)
+    expect(texts.some((t) => t?.includes('计划模式'))).toBe(true)
     // Raw enum values must not be the visible labels.
     expect(texts.some((t) => t?.trim() === 'bypassPermissions')).toBe(false)
-    expect(texts.some((t) => t?.includes('Bypass (allow all)'))).toBe(true)
+    expect(texts.some((t) => t?.includes('跳过权限（全部允许）'))).toBe(true)
 
-    fireEvent.click(fieldItems().find((el) => el.textContent?.includes('Plan mode'))!)
+    fireEvent.click(fieldItems().find((el) => el.textContent?.includes('计划模式'))!)
     const form = await clickCreate(onSubmit)
     expect(form.permissionMode).toBe('plan')
   })
@@ -356,7 +356,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
         maxGroupSize={10}
       />,
     )
-    expect(groupTrigger().textContent).toContain('None')
+    expect(groupTrigger().textContent).toContain('无')
 
     fireEvent.click(groupTrigger())
     expect(fieldItems().some((el) => el.textContent?.includes('Sprint'))).toBe(true)
@@ -444,7 +444,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
     fireEvent.click(fieldItems().find((el) => el.textContent?.includes('Create group'))!)
 
     fireEvent.click(groupTrigger())
-    fireEvent.click(fieldItems().find((el) => el.textContent?.includes('None (Ungrouped)'))!)
+    fireEvent.click(fieldItems().find((el) => el.textContent?.includes('无（未分组）'))!)
 
     const form = await clickCreate(onSubmit)
     expect(form.groupId).toBeUndefined()
@@ -502,7 +502,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
         maxGroupSize={10}
       />,
     )
-    expect(groupTrigger().textContent).toContain('None')
+    expect(groupTrigger().textContent).toContain('无')
     const form = await clickCreate(onSubmit)
     expect(form.groupId).toBeUndefined()
   })
@@ -526,7 +526,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
     )
     fireEvent.click(modelTrigger())
     expect(fieldItems().some((el) => el.textContent?.includes('Balanced'))).toBe(true)
-    expect(document.querySelector('.field-picker-heading')?.textContent).toBe('Model Groups')
+    expect(document.querySelector('.field-picker-heading')?.textContent).toBe('模型分组')
 
     fireEvent.click(fieldItems().find((el) => el.textContent?.includes('Balanced'))!)
     const form = await clickCreate(onSubmit)
@@ -594,11 +594,11 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
     fireEvent.click(fieldItems().find((el) => el.textContent?.includes('reviewer'))!)
 
     // Advanced selects share the same chrome.
-    fireEvent.click(screen.getByLabelText('Effort'))
-    expect(fieldItems().some((el) => el.textContent?.includes('xhigh'))).toBe(true)
-    fireEvent.click(fieldItems().find((el) => el.textContent?.includes('xhigh'))!)
+    fireEvent.click(screen.getByLabelText('强度'))
+    expect(fieldItems().some((el) => el.textContent?.includes('极高'))).toBe(true)
+    fireEvent.click(fieldItems().find((el) => el.textContent?.includes('极高'))!)
 
-    fireEvent.click(screen.getByLabelText('Thinking'))
+    fireEvent.click(screen.getByLabelText('思考中'))
     expect(fieldItems().some((el) => el.textContent?.includes('adaptive'))).toBe(true)
     fireEvent.click(fieldItems().find((el) => el.textContent?.includes('adaptive'))!)
 
@@ -649,7 +649,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
     fireEvent.click(screen.getByLabelText('Agent'))
     fireEvent.click(
       Array.from(document.querySelectorAll('.field-picker-item')).find((el) =>
-        el.textContent?.includes('None'),
+        el.textContent?.includes('无'),
       )!,
     )
 
@@ -657,7 +657,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
     expect(form.agent).toBeUndefined()
     // …and reverted, not leaked into the create payload.
     expect(form.model).toBe(baseProps.defaults.model)
-    expect(form.permissionMode).toBe('default')
+    expect(form.permissionMode).toBe('auto')
   })
 
   it('keeps a manual model pick when the agent is later deselected', async () => {
@@ -706,7 +706,7 @@ describe('NewSessionDialog field pickers (model / permission mode / group)', () 
     fireEvent.click(screen.getByLabelText('Agent'))
     fireEvent.click(
       Array.from(document.querySelectorAll('.field-picker-item')).find((el) =>
-        el.textContent?.includes('None'),
+        el.textContent?.includes('无'),
       )!,
     )
 
@@ -755,7 +755,7 @@ describe('NewSessionDialog worktree isolation', () => {
 
   const clickCreate = async (onSubmit: ReturnType<typeof vi.fn>) => {
     const createBtn = Array.from(document.body.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Create',
+      (b) => b.textContent?.trim() === '创建',
     )!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
@@ -819,7 +819,7 @@ describe('NewSessionDialog project prefill', () => {
     const onSubmit = vi.fn()
     renderDialog({ onSubmit })
     const createBtn = Array.from(document.body.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Create',
+      (b) => b.textContent?.trim() === '创建',
     )!
     fireEvent.click(createBtn)
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
@@ -842,7 +842,7 @@ describe('NewSessionDialog project prefill', () => {
     fireEvent.keyDown(search, { key: 'Escape' })
     expect(document.querySelector('.project-picker-menu')).toBeNull()
     expect(onCancel).not.toHaveBeenCalled()
-    expect(screen.getByText('New session')).toBeTruthy()
+    expect(screen.getByText('新会话')).toBeTruthy()
     // Keyboard close hands focus back to the trigger instead of dropping it on <body>.
     expect(document.activeElement).toBe(trigger)
   })

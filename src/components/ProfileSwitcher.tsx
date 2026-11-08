@@ -110,9 +110,9 @@ export function ProfileSwitcher({ onManageProfiles }: { onManageProfiles?: () =>
             className="profile-switcher__item"
             onClick={() => { setOpen(false); onManageProfiles?.() }}
           >
-            <span className="profile-switcher__item-name truncate">Manage profiles…</span>
+            <span className="profile-switcher__item-name truncate">管理配置档案…</span>
           </button>
-          {profiles.length === 0 && <div className="profile-switcher__empty">No profiles</div>}
+          {profiles.length === 0 && <div className="profile-switcher__empty">无配置</div>}
         </div>
       )}
       {pending && (

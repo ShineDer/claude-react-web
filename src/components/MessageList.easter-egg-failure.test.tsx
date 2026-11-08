@@ -33,7 +33,7 @@ describe('MessageList — easter-egg chunk failure', () => {
     const panelError = vi.fn()
     // App.tsx wraps each ChatPanel in an ErrorBoundary like this one; a
     // rejected game import used to land there and replace the whole panel
-    // with "Something went wrong".
+    // with "出错了".
     const { container } = render(
       <ErrorBoundary onError={panelError}>
         <MessageList items={[]} />
@@ -51,9 +51,9 @@ describe('MessageList — easter-egg chunk failure', () => {
 
     await waitFor(() => expect(container.querySelector('.chat-messages-empty .chat-empty')).not.toBeNull())
     expect(gameImport.attempts).toBe(2)
-    expect(container.textContent).toContain('Start a conversation')
+    expect(container.textContent).toContain('开始对话')
     expect(container.querySelector('.easter-egg-game')).toBeNull()
-    expect(container.textContent).not.toContain('Something went wrong')
+    expect(container.textContent).not.toContain('出错了')
     expect(panelError).not.toHaveBeenCalled()
     consoleError.mockRestore()
   })

@@ -10,7 +10,7 @@ import type { WorkflowRecord } from '../session-store/types'
 // overlay must pass (MessageList's `items.length` empty-state gate never fires
 // for this nested view — `items` is the FULL session transcript — so without
 // an explicit emptyStateContent the right column would fall through to the
-// default "Start a conversation" stack or, with that gate, to blank).
+// default "开始对话" stack or, with that gate, to blank).
 const messageListProps = vi.hoisted(() => ({ last: null as Record<string, unknown> | null }))
 vi.mock('./MessageList', () => ({
   MessageList: (props: Record<string, unknown>) => {
@@ -35,7 +35,7 @@ afterEach(() => {
 
 describe('WorkflowOverlay escape stack', () => {
   it('passes a workflow-specific emptyStateContent, never the new-chat default', () => {
-    // MessageList's default empty state ("Start a conversation") is for a
+    // MessageList's default empty state ("开始对话") is for a
     // transcript with NO DATA. `items` here is the FULL session transcript, so
     // MessageList's `items.length` gate can never fire for this nested view —
     // the overlay has to supply its own empty copy or the right column falls
@@ -45,7 +45,7 @@ describe('WorkflowOverlay escape stack', () => {
     expect(el).toBeTruthy()
     const { container } = render(el!)
     expect(container.textContent).toContain('No workflow output yet')
-    expect(container.textContent).not.toContain('Start a conversation')
+    expect(container.textContent).not.toContain('开始对话')
   })
 
   it('registers in the escape stack while mounted and unregisters on unmount', () => {

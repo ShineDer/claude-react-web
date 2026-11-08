@@ -10,7 +10,7 @@ afterEach(() => {
 
 describe('applyTransparency', () => {
   it('removes the attribute when on — the default look', () => {
-    document.documentElement.setAttribute('data-transparency', 'off')
+    document.documentElement.setAttribute('data-transparency', '关')
     applyTransparency(true)
     expect(document.documentElement.hasAttribute('data-transparency')).toBe(false)
   })

@@ -341,6 +341,15 @@ export function buildApp(opts: AppOptions = {}): { app: Hono; sessionManager: Se
     const indexHtml = existsSync(indexPath) ? readFileSync(indexPath, 'utf8') : null
     // Serve static assets. Hono's serveStatic only matches existing files;
     // we add an SPA fallback so client-side routing works too.
+    // `Service-Worker-Allowed: /` lets /sw.js claim the root scope even when
+    // the app is mounted under a `--base-path` prefix.
+    app.use('/sw.js', async (c, next) => {
+      await next()
+      c.header('Service-Worker-Allowed', '/')
+      // The worker's own file must revalidate, or an update can be pinned by
+      // an intermediary cache.
+      c.header('Cache-Control', 'no-cache')
+    })
     app.use('/*', serveStatic({ root: clientDir }))
     app.get('*', (c) => {
       if (indexHtml) return c.html(indexHtml)

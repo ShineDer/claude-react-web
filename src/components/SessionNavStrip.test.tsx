@@ -326,7 +326,7 @@ describe('SessionNavStrip', () => {
     // Collapsed sidebar + zero sessions must keep a visible create
     // entry point — the strip renders the + alone.
     const { container, onNewSession } = renderStrip([])
-    const plus = screen.getByLabelText('Create')
+    const plus = screen.getByLabelText('创建')
     expect(plus).toBeTruthy()
     expect(container.querySelectorAll('.session-nav-tab')).toHaveLength(0)
     fireEvent.click(plus)

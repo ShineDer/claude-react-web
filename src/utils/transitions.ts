@@ -51,7 +51,7 @@ export function useMotionTransition<T extends { duration: number; ease: readonly
 /**
  * Motion variants for the two-layer overlay pattern (backdrop + card), used by
  * ConfirmDialog / PromptDialog and reusable by the rest of the overlay family.
- * Mirrors the `overlay-backdrop-in/out` + `overlay-panel-in/out` keyframes:
+ * Mirrors the `overlay-backdrop-in/输出` + `overlay-panel-in/输出` keyframes:
  *   backdrop: opacity 0->1 (enter 180ms), 1->0 (exit 120ms)
  *   card:     opacity + scale 0.98 + y 8->0 (enter), 0->4 (exit); exit 180ms
  * `pointerEvents:'none'` on exit disables the backdrop/card while fading.
@@ -310,7 +310,7 @@ export function useBottomCardMotion() {
  * shrinking box never squashes a still-visible bubble), and AnimatePresence
  * owns the unmount after the tweens complete (no timer to race). Mount keeps
  * the region's own enter feel: --motion-distance-lg rise over 180ms; the
- * separate CSS `streaming-region-in` keyframes still animate the max-height
+ * separate CSS `streaming-region-输入` keyframes still animate the max-height
  * grow (chat.css) — motion must NOT own height while streaming, or every 80ms
  * content flush would tween the bubble's height instead of sizing to content.
  * That is also why `initial` carries `height: 'auto'`: with height in BOTH

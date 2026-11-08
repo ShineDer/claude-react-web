@@ -1657,7 +1657,7 @@ export function useTranscriptScroll({
     // Drive the seek with our OWN rAF easing loop instead of Virtuoso's
     // `scrollToIndex({ behavior: 'smooth' })`. Why not the native smooth scroll:
     // mid-scroll row measurements (rows mounting as the viewport pans) fire
-    // `listRefresh`, and Virtuoso's initial-position latch re-issues the
+    // `list刷新`, and Virtuoso's initial-position latch re-issues the
     // scrollToIndex a few frames later with the RECOMPUTED offset — which
     // cancels the in-flight native smooth scroll and yanks the viewport back
     // toward the launch point (measured: a 1044px up-seek from the bottom slid

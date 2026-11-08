@@ -457,7 +457,7 @@ export const SessionNavStrip = memo(function SessionNavStrip({
     <div ref={rootRef} className={`session-nav-strip${exiting ? ' exiting' : ''}`} inert={exiting} role="group" aria-label="All sessions" style={fadeStyle}>
       <CreateMenuButton
         className="session-nav-new btn btn-icon"
-        aria-label="Create"
+        aria-label="创建"
         title="New session or group"
         onNewSession={onNewSession}
         onCreateGroup={onCreateGroup}

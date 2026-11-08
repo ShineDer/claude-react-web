@@ -74,7 +74,7 @@ const SAMPLES: Array<{ name: string; md: string; queries: string[] }> = [
   {
     name: 'headings',
     md: '# Title\n\nbody text\n\n## Sub\n\nmore body',
-    queries: ['Title', 'body', 'Sub'],
+    queries: ['标题', 'body', 'Sub'],
   },
   {
     name: 'fenced code',

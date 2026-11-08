@@ -1,4 +1,4 @@
-/** Shared group-name rules. App's `validateGroupName` owns the FULL check
+/** Shared group-name rules. App's `validateGroup名称` owns the FULL check
  *  (this + the live duplicate scan, which needs the group list); the New
  *  Session dialog's inline "Create group …" offer pre-checks the PURE rules
  *  so it never offers a row that submit would deterministically reject. */

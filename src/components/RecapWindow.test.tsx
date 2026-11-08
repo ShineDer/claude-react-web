@@ -20,7 +20,7 @@ function readyRecap(): SessionRecap {
       assistantTurns: 2,
       totalCostUsd: 0.01,
       durationMs: 1000,
-      toolsUsed: ['Edit'],
+      toolsUsed: ['编辑'],
     },
     generatedAt: 1,
   }
@@ -50,7 +50,7 @@ describe('RecapWindow', () => {
     // Error + handler: button sits left of the close button and fires onRetry.
     const err = render(<RecapWindow recap={errorRecap()} onRetry={onRetry} onClose={() => {}} />)
     const retry = err.getByRole('button', { name: 'Retry recap' })
-    const close = err.getByRole('button', { name: 'Close recap' })
+    const close = err.getByRole('button', { name: '关闭回顾' })
     expect(retry.compareDocumentPosition(close) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     retry.click()
     expect(onRetry).toHaveBeenCalledTimes(1)

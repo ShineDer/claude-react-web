@@ -20,7 +20,7 @@ export interface SwipeToCloseOptions {
  *
  * Stateless across renders — the in-flight gesture lives in a ref, so a parent
  * re-render mid-swipe doesn't drop the gesture. No-ops entirely when
- * `enabled` is false.
+ * `已启用` is false.
  */
 export function useSwipeToClose({
   onClose,

@@ -41,7 +41,7 @@ describe('WorkingBubble api_retry label', () => {
     // The phase label keeps its own slot beside the pill — it's stale during
     // the backoff window, but preserves the "what was in flight" context.
     const label = container.querySelector('.working-bar-label')
-    expect(label?.textContent).toContain('Thinking')
+    expect(label?.textContent).toContain('思考中')
   })
 
   it('marks the bar with the working-bar-retry state class while retrying', () => {
@@ -109,13 +109,13 @@ describe('WorkingBubble api_retry label', () => {
       <WorkingBubble active apiRetry={retryMsg()} recapping />,
     )
     expect(container.querySelector('.working-retry-pill')).toBeTruthy()
-    expect(container.querySelector('.working-bar-label')?.textContent).toContain('Recap')
+    expect(container.querySelector('.working-bar-label')?.textContent).toContain('回顾中')
   })
 
   it('without an api_retry frame the phase label renders as before', () => {
     const { container } = render(<WorkingBubble active activePhase="thinking" />)
     const label = container.querySelector('.working-bar-label')
-    expect(label?.textContent).toContain('Thinking')
+    expect(label?.textContent).toContain('思考中')
     expect(container.querySelector('.working-bar')?.className).not.toContain('working-bar-retry')
   })
 

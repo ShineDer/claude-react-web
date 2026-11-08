@@ -63,7 +63,7 @@ import {
 } from '../shared/auto-compact.js'
 import { findProfile, profileDefaultModel, resolveActiveProfile } from './profiles.js'
 import { auxFallbackModel, fallbackAliasesFor, resolveConfiguredModelId, resolveGroup } from './model-groups.js'
-import { isSdkForwardedMode } from './permission-modes.js'
+import { resolveSdkForwardMode } from './permission-modes.js'
 import { createAsyncSubscription } from './async-subscription.js'
 import {
   pump as pumpSession,
@@ -4679,6 +4679,25 @@ export class SessionManager {
 
   async setModel(id: string, model?: string): Promise<SessionInfo> {
     return this.opLock.run(id, async () => {
+      // A dormant session has no Query to steer, but it does have a persisted
+      // model pin that the next spawn reads — so the picker works there too,
+      // mirroring `rename`. Without this the UI's model chip 404s for every
+      // session that isn't currently running.
+      if (!this.sessions.get(id)) {
+        if (!this.store) throw new HttpError(404, `session ${id} not found`)
+        const meta = this.store.get(id)
+        if (!meta) throw new HttpError(404, `session ${id} not found`)
+        if (meta.terminated) throw new HttpError(410, `session ${id} is terminated`)
+        // Field-scoped patch (not a wholesale upsert): `modelGroupId: undefined`
+        // would be dropped by the JSON layer, which is what we want — a single
+        // model clears the group pin, matching the live branch.
+        const nextMeta = this.store.patch(id, {
+          model,
+          modelGroupId: undefined,
+          lastActivityAt: Date.now(),
+        })!
+        return this.infoFromMeta(nextMeta)
+      }
       const s = this.requireLive(id)
       const wasGroup = !!s.modelGroupId
       // Resolve the control method OUTSIDE the retry: a provider without
@@ -4725,6 +4744,24 @@ export class SessionManager {
    *  next respawn — an SDK runtime limitation, not a bug (spec §7). */
   async setModelGroup(id: string, groupId: string): Promise<SessionInfo> {
     return this.opLock.run(id, async () => {
+      // Dormant branch, same contract as setModel: resolve the group against
+      // the profile this session resolves to and persist the pin, so the next
+      // spawn runs it. No Query to steer, so the tier env vars land on resume.
+      if (!this.sessions.get(id)) {
+        const meta = this.store?.get(id)
+        if (!meta) throw new HttpError(404, `session ${id} not found`)
+        if (meta.terminated) throw new HttpError(410, `session ${id} is terminated`)
+        const profile = effectiveProfileFor(meta.profileId)
+        const group = profile.modelGroups.find((g) => g.id === groupId)
+        if (!group) throw new HttpError(400, `model group ${groupId} not found`)
+        const r = resolveGroup(group, (m) => resolveConfiguredModel(m, profile.modelList))
+        const nextMeta = this.store!.patch(id, {
+          model: r.main,
+          modelGroupId: groupId,
+          lastActivityAt: Date.now(),
+        })!
+        return this.infoFromMeta(nextMeta)
+      }
       const s = this.requireLive(id)
       const profile = effectiveProfileFor(s.profileId)
       const group = profile.modelGroups.find((g) => g.id === groupId)
@@ -4975,7 +5012,7 @@ export class SessionManager {
     // and the spawn path must stay in the same set.
     // Any SDK error is swallowed: local state already took effect, so the
     // switch never fails.
-    const forwarded: PermissionMode = isSdkForwardedMode(mode) ? mode : 'default'
+    const forwarded: PermissionMode = resolveSdkForwardMode(mode)
     // Lazy resolution keeps the sync 501/capability throw inside the awaited
     // try below, so a provider without this method still can't fail the switch.
     const setSdkMode = () =>

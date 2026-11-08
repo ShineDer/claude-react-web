@@ -68,7 +68,7 @@ export class ErrorBoundary extends Component<Props, State> {
           color: 'var(--fg)',
           background: 'var(--bg)',
         }}>
-          <h2 style={{ margin: 0 }}>Something went wrong</h2>
+          <h2 style={{ margin: 0 }}>出错了</h2>
           <p style={{ color: 'var(--fg-muted)', maxWidth: 480 }}>
             A rendering error occurred. This is likely a bug. Try switching
             sessions or reloading the page.
@@ -90,7 +90,7 @@ export class ErrorBoundary extends Component<Props, State> {
             className="btn btn-primary"
             onClick={() => this.setState({ error: null })}
           >
-            Try again
+            重试
           </button>
         </div>
       )

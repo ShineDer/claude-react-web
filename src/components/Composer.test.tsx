@@ -760,7 +760,7 @@ describe('Composer pasted-text references', () => {
     expect(setInput).toHaveBeenCalledWith('one\ntwo')
   })
 
-  // The remaining 8 tests (Backspace/Delete/ArrowLeft/ArrowRight/double-click
+  // The remaining 8 tests (Backspace/删除/ArrowLeft/ArrowRight/double-click
   // on reference chips) tested textarea-specific offset bookkeeping that
   // usePastedTextEditing.handleRefKeyDown / widenToRef performed. With the
   // rich editor, chips are real DOM elements — the browser's native caret and
@@ -770,7 +770,7 @@ describe('Composer pasted-text references', () => {
   // is outstanding, not done. Do not treat them as already covered.
 })
 
-describe('Composer context-menu Cut/Copy/Paste/Select-all', () => {
+describe('Composer context-menu Cut/复制/粘贴/Select-all', () => {
   // jsdom has no navigator.clipboard — mock it for the context-menu tests.
   let origClipboard: typeof navigator.clipboard
   beforeEach(() => {
@@ -868,7 +868,7 @@ describe('Composer context-menu Cut/Copy/Paste/Select-all', () => {
     const { container } = render(<Harness initial="hello" />)
     rightClick(container, 3, 3)
     await new Promise((r) => requestAnimationFrame(r))
-    clickMenuItem('Paste')
+    clickMenuItem('粘贴')
     await waitFor(() => expect(getEditorValue(getEditor(container))).toBe('helXYZlo'))
   })
 
@@ -877,7 +877,7 @@ describe('Composer context-menu Cut/Copy/Paste/Select-all', () => {
     const { container } = render(<Harness initial="hello" />)
     rightClick(container, 1, 4)
     await new Promise((r) => requestAnimationFrame(r))
-    clickMenuItem('Paste')
+    clickMenuItem('粘贴')
     await waitFor(() => expect(getEditorValue(getEditor(container))).toBe('hXXo'))
   })
 
@@ -887,7 +887,7 @@ describe('Composer context-menu Cut/Copy/Paste/Select-all', () => {
     const { container } = render(<Harness initial="hello" />)
     rightClick(container, 1, 4)
     await new Promise((r) => requestAnimationFrame(r))
-    clickMenuItem('Cut')
+    clickMenuItem('剪切')
     await waitFor(() => expect(getEditorValue(getEditor(container))).toBe('ho'))
     expect(written).toEqual(['ell'])
   })
@@ -898,7 +898,7 @@ describe('Composer context-menu Cut/Copy/Paste/Select-all', () => {
     const { container } = render(<Harness initial="hello" />)
     rightClick(container, 1, 4)
     await new Promise((r) => requestAnimationFrame(r))
-    clickMenuItem('Copy')
+    clickMenuItem('复制')
     const editor = getEditor(container)
     expect(getEditorValue(editor)).toBe('hello')
     expect(written).toEqual(['ell'])

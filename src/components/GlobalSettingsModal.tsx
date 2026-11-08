@@ -196,7 +196,7 @@ export function GlobalSettingsModal({
   const [mcpImportFile, setMcpImportFile] = useState<File | null>(null)
   const mcpImportInputRef = useRef<HTMLInputElement>(null)
   // Global first-party tool defaults (MCP tab). Staged like every other
-  // field: edited locally, persisted as the structured `firstPartyTools`
+  // field: edited locally, persisted as the structured `firstParty工具`
   // key by the unified Save (the server derives the legacy `appToolsGit`
   // boolean from it at load — only the structured form is ever written).
   const [firstPartyTools, setFirstPartyTools] = useState<Record<string, { enabled: boolean }>>({})
@@ -274,7 +274,7 @@ export function GlobalSettingsModal({
   }, [refreshMcp])
 
   /** Stage a first-party default toggle. Local only — persisted by the
-   *  unified Save as the structured `firstPartyTools` key. */
+   *  unified Save as the structured `firstParty工具` key. */
   const toggleFirstPartyDefault = (name: string, enabled: boolean) => {
     setFirstPartyTools((prev) => ({ ...prev, [name]: { enabled } }))
   }
@@ -358,36 +358,36 @@ export function GlobalSettingsModal({
   const tabGroups: SettingsNavGroup<Tab>[] = [
     {
       key: 'general',
-      label: 'General',
+      label: '通用',
       tabs: [
-        { key: 'profiles', label: 'Profiles' },
-        { key: 'server', label: 'Server' },
-        { key: 'appearance', label: 'Appearance' },
+        { key: 'profiles', label: '配置档' },
+        { key: 'server', label: '服务器' },
+        { key: 'appearance', label: '外观' },
       ],
     },
     {
       key: 'extensions',
       label: 'Extensions',
       tabs: [
-        { key: 'skills', label: 'Skills' },
-        { key: 'mcp', label: 'MCP Servers' },
-        { key: 'marketplace', label: 'Marketplace' },
-        { key: 'app-plugins', label: 'App Plugins' },
+        { key: 'skills', label: '技能' },
+        { key: 'mcp', label: 'MCP 服务器' },
+        { key: 'marketplace', label: '市场' },
+        { key: 'app-plugins', label: '应用插件' },
       ],
     },
     {
       key: 'system',
-      label: 'System',
+      label: '系统',
       tabs: [
         // Logs and About lead the group so a System pill click (the normal
         // path here) lands on a free render — "Open on phone" last, since
         // mounting ShareTab fires GET /access-info plus the lazy qrcode
         // chunk nobody asked for.
-        { key: 'logs', label: 'Logs' },
-        { key: 'about', label: 'About' },
+        { key: 'logs', label: '日志' },
+        { key: 'about', label: '关于' },
         // "Open on phone" shares a LAN URL — meaningless on the desktop build,
         // which has no reachable HTTP origin.
-        ...(caps.lanSharing ? [{ key: 'share' as const, label: 'Open on phone' }] : []),
+        ...(caps.lanSharing ? [{ key: 'share' as const, label: '在手机上打开' }] : []),
       ],
     },
   ]
@@ -428,7 +428,7 @@ export function GlobalSettingsModal({
   return (
     <Overlay
       variant="globalSettings"
-      ariaLabel="Settings"
+      ariaLabel="设置"
       open={open}
       onClose={onClose}
       // The card carries `inert` while closed (it stays mounted through the
@@ -436,8 +436,8 @@ export function GlobalSettingsModal({
       inertOnExit
     >
         <div className="modal-header">
-          <h3>Settings</h3>
-          <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="Close"><IconX size={14} /></button>
+          <h3>设置</h3>
+          <button className="btn" onClick={onClose} style={{ padding: '2px 10px' }} aria-label="关闭"><IconX size={14} /></button>
         </div>
 
         {/* Tab bar — two-level nav (group pills over leaf tabs). */}
@@ -452,7 +452,7 @@ export function GlobalSettingsModal({
               per tab gives a clean retry on tab change. */}
           <ErrorBoundary resetKey={tab}>
           {loading ? (
-            <div style={{ padding: 40, textAlign: 'center', color: 'var(--fg-muted)' }}>Loading...</div>
+            <div style={{ padding: 40, textAlign: 'center', color: 'var(--fg-muted)' }}>正在加载...</div>
           ) : (
             <>
               {tab === 'profiles' && (
@@ -563,11 +563,11 @@ export function GlobalSettingsModal({
         </div>
 
         <div className="modal-footer">
-          <span className="hint">Changes are saved to config.json</span>
+          <span className="hint">更改已保存到 config.json</span>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className="btn" onClick={onClose}>Cancel</button>
+            <button className="btn" onClick={onClose}>取消</button>
             <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? '保存中...' : '保存'}
             </button>
           </div>
         </div>
@@ -659,11 +659,11 @@ function ServerTab({
     <div className="settings-stack">
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Limits</h4>
-          <span className="settings-group-desc">Server-wide caps applied to every session.</span>
+          <h4>限制</h4>
+          <span className="settings-group-desc">应用于每个会话的服务器级上限。</span>
         </div>
         <SettingsRow
-          title="Max upload size"
+          title="最大上传大小"
           hint="Largest uploaded file accepted (backgrounds, session files). Pasted images are capped separately. 0 = no override (server default 500 MB)."
         >
           <Stepper
@@ -676,11 +676,11 @@ function ServerTab({
           />
         </SettingsRow>
         <SettingsRow
-          title="History cap"
+          title="历史记录上限"
           hint="Messages kept in memory per session. Server default 500."
         >
           <Stepper
-            ariaLabel="History cap"
+            ariaLabel="历史记录上限"
             value={historyCap}
             min={1}
             step={100}
@@ -688,7 +688,7 @@ function ServerTab({
           />
         </SettingsRow>
         <SettingsRow
-          title="Working-stuck timeout"
+          title="卡死超时"
           hint={workingStuckMs > 0
             ? `Auto-interrupt a session that stays mid-turn without output for ~${stuckMin} min. 0 = disabled.`
             : 'Auto-interrupt is off (0).'}
@@ -703,11 +703,11 @@ function ServerTab({
           />
         </SettingsRow>
         <SettingsRow
-          title="Max group panels"
+          title="分组面板上限"
           hint="Max sessions per group. Opening a group fans out that many side-by-side panels."
         >
           <Segmented
-            ariaLabel="Max group panels"
+            ariaLabel="分组面板上限"
             value={maxGroupPanels}
             options={[2, 3, 4, 5]}
             onChange={onMaxGroupPanelsChange}
@@ -717,14 +717,14 @@ function ServerTab({
 
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Permissions</h4>
+          <h4>权限</h4>
           <span className="settings-group-desc">
             Relaxes the sensitive-path safety check that still prompts in
             acceptEdits and bypassPermissions modes.
           </span>
         </div>
         <SettingsRow
-          title="Allow editing sensitive paths in auto-approve modes"
+          title="在自动批准模式下允许编辑敏感路径"
           hint={<>When on, acceptEdits and bypassPermissions also auto-approve edits
             and commands targeting <code>.git/</code>, <code>.claude/</code>,{' '}
             <code>.vscode/</code>, <code>.idea/</code>, and shell/git config
@@ -733,7 +733,7 @@ function ServerTab({
             prompt regardless.</>}
         >
           <Switch
-            label="Allow editing sensitive paths in auto-approve modes"
+            label="在自动批准模式下允许编辑敏感路径"
             checked={allowSensitivePathEdits}
             onChange={onAllowSensitivePathEditsChange}
           />
@@ -805,7 +805,7 @@ function AppearanceTab({
     <div className="settings-stack">
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Display defaults</h4>
+          <h4>显示默认值</h4>
           <span className="settings-group-desc">
             Defaults for every session. The pinned header / recap / tool-group /
             message-header rows are overridable per session (session Settings →
@@ -814,21 +814,21 @@ function AppearanceTab({
           </span>
         </div>
         <SettingsRow
-          title="Show pinned “current question” header"
+          title="显示固定的“当前问题”标题"
           hint="Pins the user message of the turn in view at the top of the chat when it scrolls out of sight."
         >
           <Switch
-            label="Show pinned “current question” header"
+            label="显示固定的“当前问题”标题"
             checked={showPinnedUserMessage}
             onChange={onShowPinnedUserMessageChange}
           />
         </SettingsRow>
         <SettingsRow
-          title="Auto-generate session recap"
+          title="自动生成会话摘要"
           hint="Automatically produces a session summary after the conversation has been idle. Manual recap (Alt+R) still works when this is off."
         >
           <Switch
-            label="Auto-generate session recap"
+            label="自动生成会话摘要"
             checked={autoRecap}
             onChange={onAutoRecapChange}
           />
@@ -859,11 +859,11 @@ function AppearanceTab({
           </SettingsRow>
         )}
         <SettingsRow
-          title="Show message card headers"
+          title="显示消息卡片标题"
           hint="Shows the assistant/you label, timestamp, and sending status row on each message card. When off, message cards render as bare content."
         >
           <Switch
-            label="Show message card headers"
+            label="显示消息卡片标题"
             checked={showMessageHeaders}
             onChange={onShowMessageHeadersChange}
           />
@@ -879,11 +879,11 @@ function AppearanceTab({
           />
         </SettingsRow>
         <SettingsRow
-          title="Transcript spacing"
+          title="记录间距"
           hint="Vertical rhythm between message rows, folded tool groups, and the floating task/monitor cards. Applies globally to every session."
         >
           <Segmented
-            ariaLabel="Transcript spacing"
+            ariaLabel="记录间距"
             value={rowGap}
             options={ROW_GAP_PRESETS}
             onChange={onRowGapChange}
@@ -891,11 +891,11 @@ function AppearanceTab({
           />
         </SettingsRow>
         <SettingsRow
-          title="Message text density"
+          title="消息文字密度"
           hint="White-space and line-height inside each message card: prose rhythm, paragraph/heading spacing, code-block gaps, and card padding. Sibling of transcript spacing (which controls the gap between cards). Applies globally to every session."
         >
           <Segmented
-            ariaLabel="Message text density"
+            ariaLabel="消息文字密度"
             value={textSpacing}
             options={TEXT_SPACING_PRESETS}
             onChange={onTextSpacingChange}
@@ -903,11 +903,11 @@ function AppearanceTab({
           />
         </SettingsRow>
         <SettingsRow
-          title="Font size"
+          title="字号"
           hint="Scales the whole app's typography — message text, sidebar, buttons, panel headers, code blocks — in lockstep. Does not change text spacing (that's the two settings above). Applies globally to every session."
         >
           <Segmented
-            ariaLabel="Font size"
+            ariaLabel="字号"
             value={fontSize}
             options={FONT_SIZE_PRESETS}
             onChange={onFontSizeChange}
@@ -1204,15 +1204,15 @@ function SkillsTab({
   }
 
   const loadModeOptions: Array<{ mode: SkillLoadMode; title: string; desc: string }> = [
-    { mode: 'default', title: 'SDK default', desc: 'Leave skill discovery to the SDK.' },
-    { mode: 'all', title: 'Enable all discovered skills', desc: 'Load every filesystem skill the SDK can discover.' },
-    { mode: 'allowlist', title: 'Enable selected skills only', desc: 'Load only the checked skill names.' },
+    { mode: 'default', title: 'SDK 默认', desc: 'Leave skill discovery to the SDK.' },
+    { mode: 'all', title: '启用所有已发现的技能', desc: 'Load every filesystem skill the SDK can discover.' },
+    { mode: 'allowlist', title: '仅启用所选技能', desc: 'Load only the checked skill names.' },
   ]
 
   return (
     <div className="settings-stack">
       <div className="settings-tab-head">
-        <h4>Skills</h4>
+        <h4>技能</h4>
         <div className="settings-skill-stats">
           <span><strong>{skills.length}</strong> total</span>
           <span><strong>{projectSkills.length}</strong> project</span>
@@ -1223,7 +1223,7 @@ function SkillsTab({
 
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Session Skill Loading</h4>
+          <h4>会话技能加载</h4>
           <span className="settings-group-desc">Applies when a session starts. File edits hot-reload active sessions when the SDK supports it.</span>
         </div>
         <div className="settings-group-body">
@@ -1240,7 +1240,7 @@ function SkillsTab({
           </div>
           {skillLoadMode === 'allowlist' && (
             <div className="settings-skill-allowlist">
-              {skillNames.length === 0 && <EmptyState icon={<IconSparkles size={16} />} title="No skills discovered yet" />}
+              {skillNames.length === 0 && <EmptyState icon={<IconSparkles size={16} />} title="尚未发现技能" />}
               {skillNames.map((name) => (
                 <label key={name} className={`settings-skill-check${enabledSkills.includes(name) ? ' active' : ''}`}>
                   <input type="checkbox" checked={enabledSkills.includes(name)} onChange={() => toggleEnabled(name)} />
@@ -1274,7 +1274,7 @@ function SkillsTab({
               <button className="btn" onClick={() => void checkUpdates()} disabled={checkingUpdates}>
                 {checkingUpdates ? 'Checking…' : 'Check for updates'}
               </button>
-              <button className="btn" onClick={() => void refresh()} disabled={loading}><IconRefresh size={14} /> {loading ? 'Refreshing…' : 'Refresh'}</button>
+              <button className="btn" onClick={() => void refresh()} disabled={loading}><IconRefresh size={14} /> {loading ? 'Refreshing…' : '刷新'}</button>
             </div>
           </div>
           <span className="settings-group-desc">
@@ -1286,7 +1286,7 @@ function SkillsTab({
           {error && <div className="settings-error">{error}</div>}
           <div className="settings-skill-grid">
             <div className="settings-skill-list">
-              {skills.length === 0 && <EmptyState icon={<IconSparkles size={16} />} title="Create or import a project/user skill to get started" />}
+              {skills.length === 0 && <EmptyState icon={<IconSparkles size={16} />} title="创建或导入项目/用户技能以开始" />}
               {skills.map((skill) => {
                 const key = `${skill.scope}:${skill.name}`
                 const status = updateStatus[key]
@@ -1305,7 +1305,7 @@ function SkillsTab({
                           {projectName}
                         </span>
                       )}
-                      {!skill.valid && <span className="settings-card-badge warn">invalid</span>}
+                      {!skill.valid && <span className="settings-card-badge warn">无效</span>}
                       <span className="settings-skill-desc">{skill.description || skill.errors[0] || 'No description'}</span>
                       <span className="settings-skill-path-mini">{skill.relativePath || skill.path}</span>
                     </button>
@@ -1321,7 +1321,7 @@ function SkillsTab({
                               disabled={updatingSkills.has(key)}
                               onClick={() => void updateSkill(skill)}
                             >
-                              {updatingSkills.has(key) ? 'Updating…' : 'Update'}
+                              {updatingSkills.has(key) ? 'Updating…' : '更新'}
                             </button>
                           </>
                         )}
@@ -1395,8 +1395,8 @@ function McpTab({
           {servers.length} server{servers.length !== 1 ? 's' : ''} configured
         </span>
         <div className="settings-section-head-actions">
-          <button className="btn" onClick={onImport}>Import</button>
-          <button className="btn" onClick={onExport}>Export</button>
+          <button className="btn" onClick={onImport}>导入</button>
+          <button className="btn" onClick={onExport}>导出</button>
           <button className="btn" onClick={onAdd}>+ Add Server</button>
         </div>
       </div>
@@ -1409,7 +1409,7 @@ function McpTab({
           {servers.length === 0 && (
             <EmptyState
               icon={<IconTerminal size={16} />}
-              title="No MCP servers configured"
+              title="未配置 MCP 服务器"
               body='Click "Add Server" to get started.'
             />
           )}
@@ -1421,7 +1421,7 @@ function McpTab({
       {firstPartyEntries.length > 0 && (
         <section className="settings-group">
           <div className="settings-group-head">
-            <h4>First-party tools</h4>
+            <h4>第一方工具</h4>
             <span className="settings-group-desc">
               Global default for new sessions. Open sessions without a per-session
               override keep their current state — use the panel toggle for instant
@@ -1463,18 +1463,18 @@ function FirstPartyCard({ info, enabled, onToggle }: {
         <span className="settings-card-name">
           {info.name}
         </span>
-        <span className="settings-card-badge built-in">built-in</span>
+        <span className="settings-card-badge built-in">内置</span>
         {info.tools.length > 0 && (
           <span className="settings-card-meta">{info.tools.length} tool{info.tools.length !== 1 ? 's' : ''}</span>
         )}
         <div className="settings-mcp-actions">
           <button className="btn" onClick={() => setToolsOpen(!toolsOpen)} disabled={info.tools.length === 0}>
-            List tools
+            列出工具
           </button>
           <button
             className="btn settings-first-party-toggle"
             onClick={() => onToggle(info.name, !enabled)}
-            title={enabled ? 'Disable' : 'Enable'}
+            title={enabled ? '禁用' : '启用'}
           >
             {enabled ? 'ON' : 'OFF'}
           </button>
@@ -1506,7 +1506,7 @@ function McpCard({
 
   const isRemote = server.type !== 'stdio'
   const currentTools = testResult?.tools ?? []
-  const status = testResult?.status ?? (server.enabled === false ? 'disabled' : server.oauthAuthorized ? 'authorized' : 'idle')
+  const status = testResult?.status ?? (server.enabled === false ? '已禁用' : server.oauthAuthorized ? 'authorized' : 'idle')
   const statusColor = status === 'connected'
     ? 'var(--ok)'
     : status === 'needs-auth'
@@ -1604,7 +1604,7 @@ function McpCard({
         <span className="settings-card-badge">
           {server.type}
         </span>
-        {server.oauthAuthorized && <span className="settings-card-badge global">auth</span>}
+        {server.oauthAuthorized && <span className="settings-card-badge global">认证</span>}
         {testResult?.toolCount != null && (
           <span className="settings-card-meta">{testResult.toolCount} tool{testResult.toolCount !== 1 ? 's' : ''}</span>
         )}
@@ -1613,7 +1613,7 @@ function McpCard({
             {testing ? 'Testing...' : 'Test'}
           </button>
           <button className="btn" onClick={() => void listTools()} disabled={testing || authBusy}>
-            List tools
+            列出工具
           </button>
           {isRemote && (
             <button className="btn" onClick={() => void startAuth()} disabled={testing || authBusy}>
@@ -1622,22 +1622,22 @@ function McpCard({
           )}
           {isRemote && server.oauthAuthorized && (
             <button className="btn btn-danger" onClick={() => void clearAuth()} disabled={testing || authBusy}>
-              Clear auth
+              清除认证
             </button>
           )}
           <button
             className="btn"
             onClick={() => onToggle(server.name, server.enabled === false)}
-            title={server.enabled !== false ? 'Disable' : 'Enable'}
+            title={server.enabled !== false ? '禁用' : '启用'}
           >
             {server.enabled !== false ? 'ON' : 'OFF'}
           </button>
           <button className="btn" onClick={() => onEdit(server)}>
-            Edit
+            编辑
           </button>
           {!confirmDelete ? (
             <button className="btn btn-danger" onClick={() => setConfirmDelete(true)}>
-              Del
+              删除
             </button>
           ) : (
             <div className="settings-mcp-confirm">
@@ -1645,9 +1645,9 @@ function McpCard({
                 className="btn btn-danger"
                 onClick={() => { onDelete(server.name); setConfirmDelete(false) }}
               >
-                Confirm
+                确认
               </button>
-              <button className="btn" onClick={() => setConfirmDelete(false)} aria-label="Cancel">
+              <button className="btn" onClick={() => setConfirmDelete(false)} aria-label="取消">
                 <IconX size={12} />
               </button>
             </div>
@@ -1754,7 +1754,7 @@ function LogsTab() {
   }, [fileLogEnabled])
 
   if (!config) {
-    return <div style={{ padding: 16, color: 'var(--fg-muted)' }}>Loading log config...</div>
+    return <div style={{ padding: 16, color: 'var(--fg-muted)' }}>正在加载日志配置...</div>
   }
 
   const onScopesBlur = () => {
@@ -1776,12 +1776,12 @@ function LogsTab() {
           <span className="settings-group-desc">
             Level / scope changes apply immediately but are <strong>not
             persisted</strong>. A restart reverts to the boot-time values
-            (LOG_LEVEL / LOG_SCOPES env vars, default <code>info</code> / all).
+            (LOG_LEVEL / LOG_SCOPES env vars, default <code>信息</code> / all).
           </span>
         </div>
         <div className="settings-group-body">
           <Field
-            label="Level"
+            label="级别"
             hint="Threshold — only messages at this level or higher get printed. Affects all scopes."
           >
             <select
@@ -1797,7 +1797,7 @@ function LogsTab() {
           </Field>
 
           <Field
-            label="Scope filter"
+            label="范围筛选"
             hint='Comma-separated scope names (e.g. "broker,pump"). Leave empty to allow all scopes. Use "*" to be explicit. Only listed scopes log at all when set.'
           >
             <input
@@ -1830,7 +1830,7 @@ function LogsTab() {
           </span>
         </div>
         <div className="settings-group-body">
-          <Field label="Log to file">
+          <Field label="记录到文件">
             <button
               className="btn"
               style={{ padding: '4px 16px', fontSize: 'var(--fs-sm)' }}
@@ -1889,7 +1889,7 @@ function AboutTab({
    *  saved value. */
   onRefresh?: (registryOverride?: string) => void
   /** Pending value of `updateCheckRegistry` — saved when the modal's
-   *  Save button fires `handleSave`. Empty string means "disable". */
+   *  Save button fires `handle保存`. Empty string means "disable". */
   registry: string
   onRegistryChange: (v: string) => void
   updating: boolean
@@ -1923,7 +1923,7 @@ function AboutTab({
   // the server itself was unreachable.
   const displayError = info?.error ?? error
   // Suppress the "Update now" nag once the on-disk `installed` version
-  // already satisfies `latest` (in-app update applied, restart pending) —
+  // already satisfies `最新` (in-app update applied, restart pending) —
   // mirrors the nag's suppression rule via `isUpdateNagNeeded`.
   // `restartPending` below then carries the
   // "restart to apply" message, so the two states don't contradict.
@@ -1931,7 +1931,7 @@ function AboutTab({
   const disabled = !!info?.disabled
   // The on-disk package was upgraded but the running process is still the old
   // build (in-app update applied, restart pending). Uses the same version
-  // comparison as the server's `updateApplied` so the two ends agree — a
+  // comparison as the server's `update已应用` so the two ends agree — a
   // strict "installed is newer than running", NOT a bare inequality (which
   // would also fire on a downgrade and mislabel it "newer version").
   const restartPending =
@@ -2038,7 +2038,7 @@ function AboutTab({
           <span className="settings-group-desc">Running build and detected tool versions.</span>
         </div>
         <div className="settings-group-body">
-      <Field label="Project">
+      <Field label="项目">
         <div style={{ fontSize: 'var(--fs-base)' }}>claude-react-web</div>
       </Field>
       {/* The URL is the server's — derived from package.json's `repository`, so it
@@ -2046,7 +2046,7 @@ function AboutTab({
           A build-time constant here would be a second source of truth that
           diverges on a fork; the row waits for the first snapshot instead. */}
       {info?.repoUrl && (
-        <Field label="Source" hint="Source code, issues, and releases.">
+        <Field label="来源" hint="Source code, issues, and releases.">
           <a
             href={info.repoUrl}
             target="_blank"
@@ -2058,7 +2058,7 @@ function AboutTab({
         </Field>
       )}
       <Field
-        label="Running version"
+        label="运行版本"
         hint={
           info?.deprecated
             ? typeof info.deprecated === 'string'
@@ -2116,7 +2116,7 @@ function AboutTab({
         )}
       {restartPending && (
         <Field
-          label="Installed on disk"
+          label="已安装到磁盘"
           hint="A newer version was installed but the running server is still the old one."
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -2192,8 +2192,8 @@ function AboutTab({
         </div>
         <div className="settings-group-body">
       <Field
-        label="Update registry"
-        hint="npm registry probed for the `latest` dist-tag. Leave empty to disable update checks. Changes take effect after Save."
+        label="更新注册表"
+        hint="npm registry probed for the `最新` dist-tag. Leave empty to disable update checks. Changes take effect after Save."
       >
         <input
           className="input"
@@ -2204,7 +2204,7 @@ function AboutTab({
           spellCheck={false}
         />
       </Field>
-      <Field label="Latest version" hint={`Last checked: ${checkedAtLabel}`}>
+      <Field label="最新版本" hint={`Last checked: ${checkedAtLabel}`}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 'var(--fs-base)', fontFamily: 'var(--mono)' }}>
             {disabled
@@ -2236,7 +2236,7 @@ function AboutTab({
       </Field>
       {hasUpdate && info && (
         <Field
-          label="Upgrade command"
+          label="升级命令"
           hint={`If you installed globally, use \`${buildUpgradeCommand(info.packageName, info.registry, true)}\`.`}
         >
           <div style={{ fontFamily: 'var(--mono)', fontSize: 'var(--fs-sm)' }}>
@@ -2260,8 +2260,8 @@ function AboutTab({
           // Probe the CURRENTLY-TYPED registry, not the saved value — the
           // user may be editing the field and wants to validate the new URL
           // before committing it with Save. We no longer gate on the saved
-          // `disabled` snapshot; instead we gate on the live input being
-          // empty (probing an empty registry just yields `disabled` again).
+          // `已禁用` snapshot; instead we gate on the live input being
+          // empty (probing an empty registry just yields `已禁用` again).
           onClick={() => onRefresh?.(registry)}
           disabled={refreshing || !onRefresh || !registry.trim() || updating}
           title={!registry.trim() ? 'Enter a registry URL above first.' : undefined}
@@ -2273,7 +2273,7 @@ function AboutTab({
             className="btn btn-primary"
             onClick={() => void runUpdate()}
             disabled={updating || refreshing}
-            title="Run `npm i -g <package>@latest` on the server, then restart to apply."
+            title="在服务器上运行 `npm i -g <package>@最新`，然后重启以应用。"
           >
             {updating ? 'Updating...' : 'Update now'}
           </button>
@@ -2300,9 +2300,9 @@ function AboutTab({
           style={{ width: '100%', justifyContent: 'space-between' }}
           onClick={() => setSwitcherOpen((v) => !v)}
           aria-expanded={switcherOpen}
-          title="Install or roll back to a specific published version."
+          title="安装或回滚到指定的已发布版本。"
         >
-          <span>Switch version</span>
+          <span>切换版本</span>
           <IconChevronDown
             size={14}
             style={{ transition: 'transform 0.15s', transform: switcherOpen ? 'rotate(180deg)' : 'none' }}
@@ -2320,7 +2320,7 @@ function AboutTab({
             ) : (
               <>
                 <Field
-                  label="Published versions"
+                  label="已发布版本"
                   hint={
                     versions?.checkedAt
                       ? `Last checked: ${formatRelativeFromMs(versions.checkedAt)}`
@@ -2336,7 +2336,7 @@ function AboutTab({
                       style={{ flex: 1 }}
                     >
                       {versionsLoading && !versions?.versions.length && (
-                        <option value="">Loading...</option>
+                        <option value="">正在加载...</option>
                       )}
                       {versions?.versions.map((v) => {
                         const isCurrent = v === info?.current
@@ -2371,7 +2371,7 @@ function AboutTab({
                         className="btn"
                         onClick={() => onFetchVersions(true)}
                         disabled={versionsLoading}
-                        title="Force a fresh fetch of the published-versions list."
+                        title="强制重新获取已发布版本列表。"
                       >
                         <IconRefresh size={14} />
                       </button>
@@ -2382,7 +2382,7 @@ function AboutTab({
                   className="btn btn-primary"
                   onClick={() => void runInstallVersion()}
                   disabled={!canInstallVersion}
-                  title="Install the selected version, then restart to apply."
+                  title="安装所选版本，然后重启以生效。"
                 >
                   {updating ? 'Installing...' : `Install ${effectivePicked || ''}`.trim()}
                 </button>

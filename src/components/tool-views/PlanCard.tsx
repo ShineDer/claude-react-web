@@ -19,7 +19,7 @@ import { IconClipboardList } from '../icons/ToolIcons'
  * is unreadable for that. `allowedPrompts` (the prompt-permission
  * rules the SDK proposes when approving) gets a small chip row.
  *
- * Only `ExitPlanMode` (the plan PROPOSAL) routes here. `EnterPlanMode` is a
+ * Only `ExitPlan模式` (the plan PROPOSAL) routes here. `EnterPlan模式` is a
  * separate, semantically-opposite tool and renders as EnterPlanModeMarker.
  *
  * Wrapped in <details> so long plans (the common case) collapse by
@@ -76,7 +76,7 @@ export const PlanCard = memo(function PlanCard({
           <span className="plan-card-icon" aria-hidden>
             <IconClipboardList size={14} />
           </span>
-          <span className="plan-card-title">Plan proposal</span>
+          <span className="plan-card-title">计划提案</span>
           <span className={`plan-card-status ${status}`} title={statusTitle}>
             {statusLabel}
           </span>
@@ -90,7 +90,7 @@ export const PlanCard = memo(function PlanCard({
                 onReopenPlan(toolUseId)
               }}
             >
-              Review plan
+              查看计划
             </button>
           )}
         </div>
@@ -108,7 +108,7 @@ export const PlanCard = memo(function PlanCard({
       {allowedPrompts.length > 0 && (
         <div className="plan-card-allowed">
           <div className="plan-card-allowed-label">
-            On approval, allow:
+            批准后，允许：
           </div>
           <ul className="plan-card-allowed-list">
             {allowedPrompts.map((p, i) => (

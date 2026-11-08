@@ -25,7 +25,7 @@ import {
  *
  *  - the whole `items` array collapses to a single boolean (has the SDK echoed
  *    the prompt yet?), so unrelated main-thread frames don't invalidate it;
- *  - the `ActiveSubagent` record — re-cloned by the reducer on nearly every
+ *  - the `Active子 agent` record — re-cloned by the reducer on nearly every
  *    pass (`{...sub, toolCount}`, status sweeps, TASKS_SNAPSHOT enrichment) —
  *    collapses to the result TEXT plus a timestamp.
  *

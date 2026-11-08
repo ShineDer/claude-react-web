@@ -151,8 +151,8 @@ export function toTranscriptItem(
   cachedPlainText?: string | null,
 ): TranscriptItem | null {
   if (msg.type === 'stream_event') return null
-  // `api_retry` is a TRANSIENT rate-limit-retry indicator routed to
-  // `mirror.apiRetry` (see reducer applyMessage) — it never becomes a
+  // `api_重试` is a TRANSIENT rate-limit-retry indicator routed to
+  // `mirror.api重试` (see reducer applyMessage) — it never becomes a
   // TranscriptItem, keeping items/messages/IDB append-only.
   if (msg.type === 'system' && msg.subtype === 'api_retry') return null
   // `thinking_tokens` is the same kind of transient progress signal: a live
@@ -354,8 +354,8 @@ function leadingUserText(msg: SdkMessage): string | null {
 
 /** Matches the CLI's local-command log markup: the leading text block of a
  *  user-role message that is NOT human input but a recorded slash-command
- *  invocation / output. Claude Code writes these for commands like `/model`
- *  (which `setModel` triggers under the hood) as:
+ *  invocation / output. Claude Code writes these for commands like `/模型`
+ *  (which `set模型` triggers under the hood) as:
  *    <command-name>/model</command-name> <command-message>model</command-message> <command-args>…</command-args>
  *    <local-command-stdout>Set model to …</local-command-stdout>
  *    <local-command-caveat>Caveat: …</local-command-caveat>   (isMeta — already dropped server-side)
@@ -365,7 +365,7 @@ function leadingUserText(msg: SdkMessage): string | null {
 const LOCAL_COMMAND_LOG_RE = /^\s*<(command-name|local-command-stdout|local-command-caveat)\b/i
 
 /** True when a top-level `user` message is a CLI local-command log entry
- *  (e.g. the `/model` slash command that `setModel` triggers), not real human
+ *  (e.g. the `/模型` slash command that `set模型` triggers), not real human
  *  input. The pump already drops these from the live stream (they read as
  *  top-level user text); this is the single render-side gate that also hides
  *  the copies that arrive via disk replay, where history-reader keeps them
@@ -455,7 +455,7 @@ export function userMessageOriginKind(msg: SdkMessage): string | undefined {
  *    4. SDK `isSynthetic: true`      → not human.
  *    5. content sniff `<task-notification>` → harness result injection.
  *    6. content sniff `<command-name>`/`<local-command-stdout>` → CLI
- *      slash-command log (e.g. `/model`), not human input.
+ *      slash-command log (e.g. `/模型`), not human input.
  *    7. fallback → human. Preserves behaviour for SDK versions that don't
  *      stamp origin/isSynthetic on real human input (0.3.x), so the only
  *      messages redirected away from "you" are ones the SDK explicitly
@@ -534,7 +534,7 @@ export function autoTitleDescription(text: string, full: string): string {
  *  the parent turn has ended but work is still in flight. `runningCount` is the
  *  authoritative task-store count of running background tasks (already filtered
  *  to non-terminal, non-ambient, non-skipTranscript — see Chat.tsx);
- *  `hasTranscriptBackground` covers the transcript-derived pending/background
+ *  `hasTranscript后台` covers the transcript-derived pending/background
  *  subagent chips. Either one keeps the bubble alive. Gated on `!terminated`: a
  *  dead session will never receive a completion signal, so an eternal Waiting
  *  would be a dead state. */
@@ -556,7 +556,7 @@ export function computeWaiting(args: {
  *  frame, so a crashed/killed subprocess that never emits one would otherwise
  *  leave it non-null and stick the WorkingBubble on a dead session; and the
  *  bridge outlives termination by up to its 30s safety net, which would keep
- *  `turnActive` true — and the bubble in its ACTIVE state — on a dead session.
+ *  `turn已启用` true — and the bubble in its ACTIVE state — on a dead session.
  *  Gating the whole predicate makes "no turnActive on a terminated session"
  *  true BY CONSTRUCTION, rather than depending on the bridge's own clearing
  *  effect landing first. */
@@ -602,9 +602,9 @@ export function countTaskActivity(tasks: Iterable<TaskRecordUi>): { all: number;
  *  panel and the side drawer cannot disagree about which statuses count.
  *
  *  Accepts both `pending` (the normal post-turn-end form: the sweep ran) AND
- *  `background` (the form after a server-restart replay, where the CLI
+ *  `后台` (the form after a server-restart replay, where the CLI
  *  transcript carries no `result` frame for the sweep to fire on, so the record
- *  would otherwise stay `background` and the Waiting state would be lost on a
+ *  would otherwise stay `后台` and the Waiting state would be lost on a
  *  page refresh). */
 export function hasTranscriptBackground(activeSubagents: readonly ActiveSubagent[] | undefined): boolean {
   return activeSubagents?.some((a) => a.status === 'pending' || a.status === 'background') ?? false
@@ -667,9 +667,9 @@ export interface ToolArg {
  *  This is the single definition of "which field is the target". Two very
  *  different renderings consume it — SubagentCard's child rows via
  *  `subagentChildArgSummary` (80 chars, last two path segments) and
- *  ToolGroupCard's folded header via `toolTargetLabel` (28 chars, basename
+ *  ToolGroupCard's folded header via `toolTarget标签` (28 chars, basename
  *  only, per-tool quoting) — and they must not drift on WHICH field they
- *  read, only on how they shorten it. `description` precedes `prompt` to
+ *  read, only on how they shorten it. `description` precedes `提示词` to
  *  match the label ladder in getSubagentStarts, so a nested Agent row and its
  *  own card read the same string instead of diverging. */
 export function pickToolArg(input: unknown): ToolArg | null {
@@ -727,7 +727,7 @@ export function subagentChildArgSummary(input: unknown): string {
  *
  *  Returns `{ parentId, children }`; `parentId` is the message's own
  *  `parent_tool_use_id` (the subagent id), empty when the frame isn't a
- *  subagent child. Each child seeds a `running` SubagentChildCall; the reducer
+ *  subagent child. Each child seeds a `运行中` SubagentChildCall; the reducer
  *  flips it on the matching tool_result. */
 export function getSubagentChildStarts(
   msg: SdkMessage,

@@ -28,7 +28,7 @@ export function DiagnosticsPanel({ sessionId }: { sessionId: string }) {
     return (
       <div className="settings-stack">
         <div>
-          <span className="settings-note">Loading diagnostics…</span>
+          <span className="settings-note">正在加载诊断…</span>
           <Skeleton rows={2} />
         </div>
       </div>
@@ -47,18 +47,18 @@ export function DiagnosticsPanel({ sessionId }: { sessionId: string }) {
   return (
     <div className="settings-stack">
       <div className="settings-tab-head">
-        <h4>Diagnostics</h4>
-        <button className="btn btn-sm" onClick={() => void refresh()}>Refresh</button>
+        <h4>诊断</h4>
+        <button className="btn btn-sm" onClick={() => void refresh()}>刷新</button>
       </div>
 
       <section className="settings-group">
           <div className="settings-group-head">
-            <h4>CLI debugging</h4>
-            <span className="settings-group-desc">Verbose logging from the CLI subprocess backing this session.</span>
+            <h4>CLI 调试</h4>
+            <span className="settings-group-desc">来自支撑此会话的 CLI 子进程的详细日志。</span>
           </div>
           <SettingsRow
             stack
-            title="CLI debug logging"
+            title="CLI 调试日志"
             hint={<>Toggles debug output for this session. Applies on the next session start.</>}
           >
             <select
@@ -70,16 +70,16 @@ export function DiagnosticsPanel({ sessionId }: { sessionId: string }) {
               }}
               disabled={saving}>
               <option value="">Global ({data?.cliDebug.global ? 'on' : 'off'})</option>
-              <option value="on">On</option>
-              <option value="off">Off</option>
+              <option value="on">开</option>
+              <option value="off">关闭</option>
             </select>
           </SettingsRow>
         </section>
 
         <section className="settings-group">
           <div className="settings-group-head">
-            <h4>Process output</h4>
-            <span className="settings-group-desc">Live stderr recently captured from the CLI subprocess.</span>
+            <h4>进程输出</h4>
+            <span className="settings-group-desc">最近从 CLI 子进程捕获的实时 stderr。</span>
           </div>
           <SettingsRow stack title="stderr tail" hint={`${stderrLines.length} lines captured`}>
             <pre className="diag-stderr">
@@ -91,10 +91,10 @@ export function DiagnosticsPanel({ sessionId }: { sessionId: string }) {
         {data?.debugLog.exists && (
           <section className="settings-group">
             <div className="settings-group-head">
-              <h4>Debug log</h4>
-              <span className="settings-group-desc">On-disk log file written for this session.</span>
+              <h4>调试日志</h4>
+              <span className="settings-group-desc">已为此会话写入磁盘日志文件。</span>
             </div>
-            <SettingsRow stack title="Log path">
+            <SettingsRow stack title="日志路径">
               <code className="settings-note">{data.debugLog.path}</code>
               <span className="settings-note"> ({data.debugLog.size} bytes)</span>
             </SettingsRow>

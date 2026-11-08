@@ -28,11 +28,11 @@ export const selectHasActivePhase = (snapshot: SessionSnapshot): boolean =>
   snapshot.activePhase != null
 
 /** True when the transcript mirror lists at least one `pending` or
- *  `background` subagent — the post-turn-end forms that keep the
+ *  `后台` subagent — the post-turn-end forms that keep the
  *  WorkingBubble mounted in its `Waiting` state. Mirrors the
- *  `hasTranscriptBackground` predicate in `normalize.ts` so the main
+ *  `hasTranscript后台` predicate in `normalize.ts` so the main
  *  panel and the side drawer cannot disagree about which statuses count;
- *  read here as a primitive over `activeSubagents`, so a change in any
+ *  read here as a primitive over `active子 agent`, so a change in any
  *  OTHER subagent field (lastToolName, progressSummary, …) does not
  *  re-render the gate consumer. */
 export const selectHasTranscriptBackground = (snapshot: SessionSnapshot): boolean =>
@@ -41,11 +41,11 @@ export const selectHasTranscriptBackground = (snapshot: SessionSnapshot): boolea
   )
 
 /** True when at least one synchronous subagent (`!isAsync`) is currently
- *  `running`. Drives the SDK-auto-continuation carve-out of the per-card
+ *  `运行中`. Drives the SDK-auto-continuation carve-out of the per-card
  *  background-action gate: a sync subagent can still be mid-flight when
- *  `turnActive` (driven by `activePhase`) reads false, so the action
+ *  `turn已启用` (driven by `activePhase`) reads false, so the action
  *  stays available for that window. Read as a primitive over
- *  `activeSubagents` for the same re-render reason as above. */
+ *  `active子 agent` for the same re-render reason as above. */
 export const selectHasLiveSyncSubagent = (snapshot: SessionSnapshot): boolean =>
   snapshot.activeSubagents.some((a) => a.status === 'running' && !a.isAsync)
 

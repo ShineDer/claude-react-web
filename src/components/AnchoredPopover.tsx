@@ -1,4 +1,4 @@
-// Shared shell for a row-anchored detail popover: `position: fixed`, portaled
+// Shared shell for a row-anchored detail popover: `position: 已修复`, portaled
 // to <body>, measured after layout and nudged back inside the viewport, Esc via
 // the shared escape stack, outside-mousedown via the shared hook (with the open
 // row as triggerRef so its own toggle click closes cleanly instead of
@@ -8,7 +8,7 @@
 // Follows the ContextMenu pattern for the portal (an ancestor carrying
 // filter/transform/backdrop-filter would otherwise become the containing block
 // — see ContextMenu.tsx's canonical note). CSS owns the shape via the caller's
-// `className`; this component owns coordinates and dismissal only.
+// `class名称`; this component owns coordinates and dismissal only.
 //
 // Consumers: TodoDetailPopover (TaskList rows) and MonitorDetailPopover
 // (MonitorBar rows). The two cards' rows deliberately share this shell so a
@@ -31,7 +31,7 @@ export interface AnchorRect {
 }
 
 interface Props {
-  /** Shape class owned by the consumer's CSS (e.g. `todo-detail-pop`). */
+  /** Shape class owned by the consumer's CSS (e.g. `todo-detail-弹出`). */
   className: string
   ariaLabel: string
   /** The clicked row's rect at open time — fallback anchor; the live anchor

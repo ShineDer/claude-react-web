@@ -94,7 +94,7 @@ export const SubagentCard = memo(function SubagentCard({ toolUseId, fallbackLabe
         title={ctx ? `Open subagent details — ${label}` : 'Subagent details unavailable'}
       >
         <span className="subagent-card-marker" aria-hidden><IconChevronRight size={12} /></span>
-        <span className="subagent-card-title">Subagent</span>
+        <span className="subagent-card-title">子 agent</span>
         <span className="subagent-card-label">{label}</span>
         <span className="subagent-card-meta">
           <span className="subagent-card-status" aria-label={status}>
@@ -219,7 +219,7 @@ const SubagentChildList = memo(function SubagentChildList({
   // GridClipEnter.
   //
   // Keyed on `calls` (the moment a tool_use lands), NOT on settle: a row
-  // now mounts as `running` and stays mounted through the status flip, so
+  // now mounts as `运行中` and stays mounted through the status flip, so
   // the entrance must fire once at first appearance. Seeding during the
   // first render — not in the post-commit effect — keeps scroll-back
   // remounts from replaying the reveal (GridClipEnter seeds `revealing`
@@ -246,7 +246,7 @@ const SubagentChildList = memo(function SubagentChildList({
   // Only a LIVE record may advertise in-flight work. The reducer's turn-end
   // sweep settles running child calls on the sync-orphan path, but three other
   // transitions to a terminal status (dismiss, the pending-timeout sweep,
-  // task-notification completion) can leave a `running` row behind — without
+  // task-notification completion) can leave a `运行中` row behind — without
   // this guard a finished subagent rendered pulsing dots and an accent
   // "· running" count forever. The stranded row stays visible (so the tool
   // isn't hidden) but its pulse is suppressed via `pulse={showLive}`.
@@ -255,7 +255,7 @@ const SubagentChildList = memo(function SubagentChildList({
   const summary = (
     <span className="subagent-children-summary">
       <span className="subagent-children-marker" aria-hidden><IconChevronRight size={11} /></span>
-      <span className="subagent-children-label">tool calls</span>
+      <span className="subagent-children-label">工具调用</span>
       <span className={`subagent-children-count${showLive ? ' subagent-children-count-live' : ''}`}>
         {doneCount}/{calls.length}{showLive ? ' · running' : ''}
       </span>
@@ -301,7 +301,7 @@ const SubagentChildRow = memo(function SubagentChildRow({
   call: SubagentChildCall
   entering: boolean
   /** Whether a running row should animate its pulse. False on a settled
-   *  parent record so a stranded `running` child doesn't pulse forever. */
+   *  parent record so a stranded `运行中` child doesn't pulse forever. */
   pulse: boolean
 }) {
   const [expanded, setExpanded] = useState(false)

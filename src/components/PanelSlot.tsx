@@ -13,7 +13,7 @@
  *  `/clear`'s visual transition is driven elsewhere: the cleared panel blurs
  *  via the `clearing` prop (view-only, from `clearingIds` state — does NOT
  *  gate the data swap), and the fresh session Y plays `.entering` on mount.
- *  See `handleClear` / `swapSession` in App.tsx. */
+ *  See `handle清除` / `swap会话` in App.tsx. */
 
 import { memo } from 'react'
 import type { ReactNode } from 'react'

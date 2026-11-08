@@ -87,7 +87,7 @@ describe('ProfileCreateDialog', () => {
   it('confirms with the preselected active profile id without any interaction', () => {
     const props = baseProps()
     const { getByText } = render(<ProfileCreateDialog {...props} />)
-    fireEvent.click(getByText('Add'))
+    fireEvent.click(getByText('添加'))
     expect(props.onConfirm).toHaveBeenCalledWith('default')
   })
 
@@ -95,11 +95,11 @@ describe('ProfileCreateDialog', () => {
     const props = baseProps()
     const { getByLabelText, getByText } = render(<ProfileCreateDialog {...props} />)
     fireEvent.click(getByLabelText(/Blank/))
-    fireEvent.click(getByText('Add'))
+    fireEvent.click(getByText('添加'))
     expect(props.onConfirm).toHaveBeenCalledWith('blank')
 
     fireEvent.click(getByLabelText(/Second/))
-    fireEvent.click(getByText('Add'))
+    fireEvent.click(getByText('添加'))
     expect(props.onConfirm).toHaveBeenCalledWith('p_two')
   })
 
@@ -108,7 +108,7 @@ describe('ProfileCreateDialog', () => {
     const { getByText } = render(<ProfileCreateDialog {...props} />)
     fireEvent.keyDown(document.body, { key: 'Escape' })
     expect(props.onCancel).toHaveBeenCalledOnce()
-    fireEvent.click(getByText('Cancel'))
+    fireEvent.click(getByText('取消'))
     expect(props.onCancel).toHaveBeenCalledTimes(2)
     expect(props.onConfirm).not.toHaveBeenCalled()
   })
@@ -131,7 +131,7 @@ describe('ProfileCreateDialog', () => {
     expect((getByLabelText(/^Blanky/) as HTMLInputElement).checked).toBe(false)
     // Confirming still sends the Blank keyword — the only thing 'blank'
     // can mean.
-    fireEvent.click(getByText('Add'))
+    fireEvent.click(getByText('添加'))
     expect(props.onConfirm).toHaveBeenCalledWith('blank')
   })
 
@@ -158,7 +158,7 @@ describe('ProfileCreateDialog', () => {
     const props = baseProps()
     const { getByText, getByLabelText, getByRole } = render(<ProfileCreateDialog {...props} busy />)
     expect((getByText('Adding...') as HTMLButtonElement).disabled).toBe(true)
-    expect((getByText('Cancel') as HTMLButtonElement).disabled).toBe(true)
+    expect((getByText('取消') as HTMLButtonElement).disabled).toBe(true)
     expect((getByLabelText(/Blank/) as HTMLInputElement).disabled).toBe(true)
     // Escape must not cancel while the create is in flight.
     fireEvent.keyDown(document.body, { key: 'Escape' })

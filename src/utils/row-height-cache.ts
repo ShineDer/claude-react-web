@@ -35,7 +35,7 @@
  * dependent, and a height measured in one width context can seed another
  * (forked sessions share uuids; a panel resize leaves stale heights). That
  * staleness is accepted: estimates only seed, the real measurement replaces
- * them at mount, and with `skipAnimationFrameInResizeObserver` that
+ * them at mount, and with `skipAnimationFrameInResize观察者` that
  * correction lands before paint — invisible. A width-keyed cache would buy
  * nothing but fragmentation.
  */

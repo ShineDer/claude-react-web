@@ -118,7 +118,7 @@ export function RunAsAgentControl({ sessionId, onClose }: Props) {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn" onClick={close} disabled={busy}>
-          Cancel
+          取消
         </button>
         <button
           type="button"

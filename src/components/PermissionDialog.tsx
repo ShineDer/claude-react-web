@@ -131,9 +131,9 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
   // `auto` is intentionally not offered — it can't function on this backend
   // (see PERMISSION_MODES in types.ts).
   const PLAN_APPROVE_OPTIONS: Array<{ mode: PlanTargetMode; label: string; title: string }> = [
-    { mode: 'acceptEdits', label: 'Approve & auto-accept edits', title: 'Approve and auto-accept file edits; other tools still prompt' },
-    { mode: 'default', label: 'Approve & review each', title: 'Approve and review each action as it comes' },
-    { mode: 'bypassPermissions', label: 'Approve & bypass', title: 'Approve and skip all permission prompts (use with care)' },
+    { mode: 'acceptEdits', label: '批准并自动接受编辑', title: '批准并自动接受文件编辑；其他工具仍会提示' },
+    { mode: 'default', label: '批准并逐项审阅', title: '逐个批准并审阅每个操作' },
+    { mode: 'bypassPermissions', label: '批准并跳过', title: '批准并跳过所有权限提示（谨慎使用）' },
   ]
   const orderedPlanOptions = [...PLAN_APPROVE_OPTIONS].sort(
     (a, b) => Number(b.mode === currentMode) - Number(a.mode === currentMode),
@@ -178,7 +178,7 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
         {onMinimize && (
           <button
             className="btn-icon"
-            aria-label="Minimize"
+            aria-label="最小化"
             disabled={busy}
             onClick={onMinimize}
           >
@@ -203,7 +203,7 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
             </div>
             {planAllowedPrompts.length > 0 && (
               <div className="plan-card-allowed">
-                <div className="plan-card-allowed-label">On approval, allow:</div>
+                <div className="plan-card-allowed-label">批准后，允许：</div>
                 <ul className="plan-card-allowed-list">
                   {planAllowedPrompts.map((p, i) => (
                     <li key={i} className="plan-card-allowed-item">
@@ -267,7 +267,7 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
                       style={{ flex: 1 }}
                       title={opt.title}
                     >
-                      {opt.label}{matchesCurrent ? ' (current)' : ''}
+                      {opt.label}{matchesCurrent ? '（当前）' : ''}
                     </button>
                   )
                 })}
@@ -275,12 +275,12 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
             ))}
             <textarea
               className="perm-feedback-input"
-              placeholder="Tell Claude what to change"
+              placeholder="告诉 Claude 要改什么"
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               disabled={busy}
               rows={2}
-              aria-label="Plan feedback"
+              aria-label="计划反馈"
             />
             <div style={{ display: 'flex', gap: 8 }}>
               <button
@@ -288,18 +288,18 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
                 onClick={() => click({ behavior: 'deny', message: `Plan denied by user. Feedback: ${feedback.trim()}` })}
                 disabled={busy || feedback.trim().length === 0}
                 style={{ flex: 1 }}
-                title="Send this feedback to Claude — it keeps planning in this turn"
+                title="将此反馈发送给 Claude — 它会在本轮继续规划"
               >
-                Send feedback
+                发送反馈
               </button>
               <button
                 className="btn btn-danger"
                 onClick={() => click({ behavior: 'deny', message: PLAN_STOP_MESSAGE, interrupt: true })}
                 disabled={busy}
                 style={{ flex: 1 }}
-                title="Stop this turn and return to the input box"
+                title="停止本轮并返回输入框"
               >
-                Stop & take over
+                停止并接管
               </button>
             </div>
             <span className="hint" style={{ textAlign: 'center' }}>
@@ -322,7 +322,7 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
                 disabled={busy}
                 style={{ flex: 1 }}
               >
-                Allow once
+                允许一次
               </button>
               {hasSuggestions && (
                 <button
@@ -330,9 +330,9 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
                   onClick={() => click({ behavior: 'allow', persistForSession: true })}
                   disabled={busy}
                   style={{ flex: 1 }}
-                  title="Apply the SDK's suggested allow rule for the rest of this session"
+                  title="在本会话剩余时间内应用 SDK 建议的允许规则"
                 >
-                  Allow for session
+                  本次会话允许
                 </button>
               )}
               <button
@@ -342,7 +342,7 @@ export const PermissionDialog = memo(function PermissionDialog({ open = true, re
                 disabled={busy}
                 style={{ flex: 1 }}
               >
-                Deny
+                拒绝
               </button>
             </div>
             <span className="hint" style={{ textAlign: 'center' }}>

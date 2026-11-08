@@ -39,7 +39,7 @@ describe('DiagnosticsPanel', () => {
     hookLoading = true
     hookData = null
     const { container } = render(<DiagnosticsPanel sessionId="s1" />)
-    expect(container.textContent).toContain('Loading diagnostics')
+    expect(container.textContent).toContain('正在加载诊断')
   })
 
   it('shows error state when error and no data', () => {
@@ -76,7 +76,7 @@ describe('DiagnosticsPanel', () => {
 
   it('clicking Refresh calls refresh', () => {
     const { container } = render(<DiagnosticsPanel sessionId="s1" />)
-    const btn = [...container.querySelectorAll('button')].find((b) => b.textContent === 'Refresh')!
+    const btn = [...container.querySelectorAll('button')].find((b) => b.textContent === '刷新')!
     fireEvent.click(btn)
     expect(mockRefresh).toHaveBeenCalled()
   })

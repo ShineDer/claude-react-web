@@ -13,7 +13,7 @@ afterEach(() => cleanup())
 describe('ResetConfigDialog', () => {
   it('renders the three groups and is closed when open=false', () => {
     render(<ResetConfigDialog open={false} onClose={() => {}} />)
-    expect(screen.queryByRole('dialog', { name: 'Clear configuration & data' })).toBeNull()
+    expect(screen.queryByRole('dialog', { name: '清除配置与数据' })).toBeNull()
   })
 
   it('toggles server items and clears them on confirm', async () => {
@@ -23,9 +23,9 @@ describe('ResetConfigDialog', () => {
     // Keep the dialog mounted after close so we can assert the toast.
     const onClose = vi.fn()
     render(<ResetConfigDialog open onClose={onClose} />)
-    fireEvent.click(screen.getByLabelText(/snippets/i))
+    fireEvent.click(screen.getByLabelText(/片段/))
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /clear selected/i }))
+      fireEvent.click(screen.getByRole('button', { name: /清除已选/ }))
     })
     expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('/api/config/reset'), expect.anything())
     expect(onClose).toHaveBeenCalled()
@@ -39,12 +39,12 @@ describe('ResetConfigDialog', () => {
     render(<ResetConfigDialog open onClose={onClose} />)
     fireEvent.click(screen.getByLabelText(/sessions/i))
     // First click does NOT fire the request — enters confirm gate.
-    fireEvent.click(screen.getByRole('button', { name: /clear selected/i }))
+    fireEvent.click(screen.getByRole('button', { name: /清除已选/ }))
     expect(fetchMock).not.toHaveBeenCalled()
     // Type 'reset' + confirm.
-    fireEvent.change(screen.getByPlaceholderText(/reset/i), { target: { value: 'reset' } })
+    fireEvent.change(screen.getByPlaceholderText(/输入 reset/), { target: { value: 'reset' } })
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /confirm/i }))
+      fireEvent.click(screen.getByRole('button', { name: /确认/ }))
     })
     expect(fetchMock).toHaveBeenCalled()
     expect(onClose).toHaveBeenCalled()
@@ -52,7 +52,7 @@ describe('ResetConfigDialog', () => {
 
   it('browser-data parent is tri-state over its three children', () => {
     render(<ResetConfigDialog open onClose={() => {}} />)
-    const parent = screen.getByRole('checkbox', { name: /browser data/i }) as HTMLInputElement
+    const parent = screen.getByRole('checkbox', { name: /浏览器数据/ }) as HTMLInputElement
     const inputHistory = screen.getByRole('checkbox', { name: /input history/i }) as HTMLInputElement
     // Check parent → all children checked.
     fireEvent.click(parent)
@@ -67,9 +67,9 @@ describe('ResetConfigDialog', () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Network down'))
     const onClose = vi.fn()
     render(<ResetConfigDialog open onClose={onClose} />)
-    fireEvent.click(screen.getByLabelText(/snippets/i))
+    fireEvent.click(screen.getByLabelText(/片段/))
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /clear selected/i }))
+      fireEvent.click(screen.getByRole('button', { name: /清除已选/ }))
     })
     // The POST was attempted...
     expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('/api/config/reset'), expect.anything())

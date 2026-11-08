@@ -43,7 +43,7 @@ export const OlderHistoryFloat = memo(function OlderHistoryFloat({
             className="chat-older-float-retry"
             onClick={() => { void onRetry() }}
           >
-            Retry
+            重试
           </button>
         </span>
       ) : null}
@@ -90,7 +90,7 @@ const StreamCodeSegment = memo(function StreamCodeSegment({
  *  child MessageList mounts under `.chat-bottom-stack`. Owns the mount
  *  rise-in and the staggered exit (fade/sink first, then the measured-height
  *  collapse — useStreamingRegionMotion), replacing the old manual presence
- *  machine + CSS `streaming-region-out` keyframes + delayed-unmount timer.
+ *  machine + CSS `streaming-region-输出` keyframes + delayed-unmount timer.
  *
  * `useIsPresent`, read INSIDE the presence child, drives `aria-hidden`: the
  * exiting bubble is no longer a live region (the old machine's `exiting`
@@ -166,7 +166,7 @@ export const StreamingFooter = memo(function StreamingFooter({
 
   // Liquid-glass refraction — overlay-only. The filter samples the transcript
   // BEHIND the bubble; an in-flow row has nothing behind it, so glass is
-  // meaningless there and `enabled` keeps the hook dormant. Bezel/radius are
+  // meaningless there and `已启用` keeps the hook dormant. Bezel/radius are
   // tuned to the streaming bubble's CSS: border-radius 8px, and a ~16px
   // refractive rim that keeps the text area optically clear while the edges
   // bend the transcript behind them. supported is false off-Chromium and in

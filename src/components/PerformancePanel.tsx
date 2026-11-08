@@ -60,7 +60,7 @@ function HistTable({
       <table className="perf-table">
       <thead>
         <tr>
-          <th>series</th><th>count</th><th>p50</th><th>p95</th><th>p99</th><th>max</th>
+          <th>系列</th><th>计数</th><th>p50</th><th>p95</th><th>p99</th><th>最大</th>
         </tr>
       </thead>
       <tbody>
@@ -68,7 +68,7 @@ function HistTable({
           <HistRow key={name} name={name} h={h} c={c} history={history} />
         ))}
         {entries.length === 0 && (
-          <tr><td colSpan={6} className="perf-empty">no data yet</td></tr>
+          <tr><td colSpan={6} className="perf-empty">暂无数据</td></tr>
         )}
       </tbody>
       </table>
@@ -93,7 +93,7 @@ function HistRow({
       <tr>
         <td className="perf-name">{name}</td>
         <td>{c}</td>
-        <td colSpan={4} className="perf-empty">counter</td>
+        <td colSpan={4} className="perf-empty">计数器</td>
       </tr>
     )
   }
@@ -160,7 +160,7 @@ export function PerformancePanel() {
     return (
       <div className="settings-stack">
         <div>
-          <span className="settings-note">Loading metrics…</span>
+          <span className="settings-note">正在加载指标…</span>
           <Skeleton rows={2} />
         </div>
       </div>
@@ -183,20 +183,20 @@ export function PerformancePanel() {
   return (
     <div className="settings-stack">
       <div className="settings-tab-head">
-        <h4>Performance</h4>
+        <h4>性能</h4>
         <div className="perf-controls">
           <label className="perf-auto">
             <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} />
             auto (5s)
           </label>
-          <button className="btn btn-sm" onClick={() => void refresh()}>Refresh</button>
+          <button className="btn btn-sm" onClick={() => void refresh()}>刷新</button>
         </div>
       </div>
 
       <section className="settings-group">
           <div className="settings-group-head">
-            <h4>Overview</h4>
-            <span className="settings-group-desc">Uptime and live gauges (since process start).</span>
+            <h4>概览</h4>
+            <span className="settings-group-desc">运行时间与实时指标（自进程启动起）。</span>
           </div>
           <div className="perf-gauges">
             <span>uptime <b>{fmtUptime(data.uptimeSec)}</b></span>
@@ -208,7 +208,7 @@ export function PerformancePanel() {
 
         <section className="settings-group">
           <div className="settings-group-head">
-            <h4>Event loop</h4>
+            <h4>事件循环</h4>
             <span className="settings-group-desc">Blocked-loop window maxima, one row per 5s probe window. A healthy loop sits near the probe's 20ms resolution.</span>
           </div>
           <HistTable entries={eventLoop} history={history} />
@@ -217,7 +217,7 @@ export function PerformancePanel() {
         <section className="settings-group">
           <div className="settings-group-head">
             <h4>WebSocket</h4>
-            <span className="settings-group-desc">Fanout cost, pump cadence, replay size/time, frame volume.</span>
+            <span className="settings-group-desc">分发开销、节奏、回放大小/时长、帧数量。</span>
           </div>
           <HistTable entries={ws} history={history} />
         </section>
@@ -225,14 +225,14 @@ export function PerformancePanel() {
         <section className="settings-group">
           <div className="settings-group-head">
             <h4>HTTP</h4>
-            <span className="settings-group-desc">Per-route request durations, sorted by p95.</span>
+            <span className="settings-group-desc">各路由请求时长，按 p95 排序。</span>
           </div>
           <HistTable entries={http} history={history} />
         </section>
 
         <section className="settings-group">
           <div className="settings-group-head">
-            <h4>Sessions</h4>
+            <h4>会话</h4>
             <span className="settings-group-desc">Spawn-to-init, interrupt, SDK control round-trips, classifier and recap/commit API calls.</span>
           </div>
           <HistTable entries={sessions} history={history} />

@@ -85,7 +85,7 @@ export interface UseGitStatusReturn extends BaseFetchState<GitStatusResponse> {
 }
 
 /** Fetch /api/git/status for the given cwd. The hook is a no-op when
- *  `cwd` is undefined (no session cwd configured) or when `enabled` is
+ *  `cwd` is undefined (no session cwd configured) or when `已启用` is
  *  false (e.g. session not yet running). The returned `refresh()` is
  *  stable and bumps an internal counter so callers can imperatively
  *  re-fetch (e.g. from a "⟳" button).
@@ -259,7 +259,7 @@ export interface UseGitRangeDiffReturn extends BaseFetchState<GitRangeDiffRespon
 
 /** Fetch the per-file change list between two refs (`/git/diff-range`).
  *  Used by the Worktree-changes view to show what an isolated worktree
- *  branch did. Lazy via `enabled`, like useGitDiff — only fetched once
+ *  branch did. Lazy via `已启用`, like useGitDiff — only fetched once
  *  the branch-range tab is actually opened. */
 export function useGitRangeDiff(
   cwd: string | undefined,
@@ -392,7 +392,7 @@ export interface UseGitLogReturn extends BaseFetchState<GitCommit[]> {
   refresh: () => void
 }
 
-/** Fetch the most recent N commits. Like useGitDiff, the lazy `enabled`
+/** Fetch the most recent N commits. Like useGitDiff, the lazy `已启用`
  *  flag exists so we don't spend a `git log` call unless the user has
  *  the Recent commits section open. */
 export function useGitLog(
@@ -450,7 +450,7 @@ export interface UseGitCommitFilesReturn extends BaseFetchState<GitCommitRespons
 }
 
 /** Fetch one commit plus the files it changed (`/git/commit`). Lazy via
- *  `enabled`, like useGitDiff — only fetched once the caller actually
+ *  `已启用`, like useGitDiff — only fetched once the caller actually
  *  wants the commit's detail (e.g. a log row is expanded). */
 export function useGitCommitFiles(
   cwd: string | undefined,
@@ -572,7 +572,7 @@ export function useGitCommitDiffFile(
   return { data, loading, error, refresh }
 }
 
-/** `useGitCommitFiles` with a caller-owned cache. `cache` maps hash →
+/** `useGitCommitFiles` with a caller-owned cache. `缓存` maps hash →
  *  response so collapsing an accordion row (or unmounting) and
  *  re-expanding never refetches a commit we already have. The fetch is
  *  skipped entirely on a cache hit; the write-through happens once the

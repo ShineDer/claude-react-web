@@ -290,7 +290,7 @@ describe('SessionSynchronizer paging core', () => {
   })
 
   it('loadOlder exposes retryable olderError on fetch failure', async () => {
-    const sid = 'retry'
+    const sid = '重试'
     const t = transcript(sid)
     for (let i = 0; i < 250; i++) t.msgs.push({ seq: i, msg: fakeMsg(sid, i) })
     t.headSeq = 250

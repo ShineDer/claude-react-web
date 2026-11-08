@@ -151,7 +151,7 @@ export const RecapWindow = memo(function RecapWindow({ recap, clearing, onClose,
       ref={windowRef}
       className={`recap-window${clearing ? ' recap-window-clearing' : ''}`}
       role="dialog"
-      aria-label="Session recap"
+      aria-label="会话回顾"
       initial={card.initial}
       animate={card.animate}
       // Normal close fades + folds the height away (useTopCardMotion) so the
@@ -170,7 +170,7 @@ export const RecapWindow = memo(function RecapWindow({ recap, clearing, onClose,
           ) : (
             <IconSparkles size={14} />
           )}
-          {recap.status === 'error' ? 'Recap unavailable' : 'Session recap'}
+          {recap.status === 'error' ? 'Recap unavailable' : '会话回顾'}
         </span>
         {/* Actions cluster hugs the right edge (header is space-between):
             retry sits directly beside close instead of floating mid-header. */}
@@ -190,7 +190,7 @@ export const RecapWindow = memo(function RecapWindow({ recap, clearing, onClose,
             type="button"
             className="recap-window-close"
             onClick={onClose}
-            aria-label="Close recap"
+            aria-label="关闭回顾"
           >
             <IconX size={14} />
           </button>
@@ -213,7 +213,7 @@ export const RecapWindow = memo(function RecapWindow({ recap, clearing, onClose,
           {recap.status === 'pending' ? (
             <div className="recap-msg-loading-body">
               <span className="recap-msg-loading-bar" aria-hidden />
-              <span>Catching you up on this session…</span>
+              <span>正在为你同步本次会话…</span>
             </div>
           ) : recap.status === 'error' ? (
             <div className="recap-window-error">{recap.error ?? 'Unknown error'}</div>

@@ -4,7 +4,7 @@
 //   - `permission`: what the browser last told us (granted / denied /
 //     default / unsupported). We read Notification.permission on load and
 //     update it after requestPermission().
-//   - `enabled`: a localStorage-backed user preference. Even if the browser
+//   - `已启用`: a localStorage-backed user preference. Even if the browser
 //     has granted permission, we won't notify until the user flips this on.
 //     Bell button → enable → (if needed) requestPermission → persist.
 //
@@ -105,7 +105,7 @@ export function useNotifications(options?: UseNotificationsOptions): UseNotifica
 
   // Monotonic per-tag generation for SW-shown notifications, bumped every
   // time a show is requested under that tag via the SW path. closeByTag()
-  // captures the generation before its async `getNotifications` await and
+  // captures the generation before its async `get通知` await and
   // aborts the SW closes if it moved — otherwise a notification that
   // reused the tag mid-flight would be dismissed along with the one the
   // caller actually wanted gone. Only the SW path bumps it: a plain
@@ -119,7 +119,7 @@ export function useNotifications(options?: UseNotificationsOptions): UseNotifica
   // On mount, reconcile the localStorage flag with the actual browser
   // permission. If the user enabled notifications last session but the
   // browser permission was revoked in the meantime (e.g. Chrome settings
-  // on Windows), flip `enabled` off so the bell UI is accurate and
+  // on Windows), flip `已启用` off so the bell UI is accurate and
   // `notify()` short-circuits instead of silently doing nothing.
   // (The lazy initializer above already seeds `permission` from
   // currentPermission(), so we only do the reconciliation step here.)
@@ -157,7 +157,7 @@ export function useNotifications(options?: UseNotificationsOptions): UseNotifica
       }
       if (typeof Notification === 'undefined') {
         // No-op on environments that lack the API (old browsers / some
-        // webviews). Leave `enabled` false so the UI can show a tooltip.
+        // webviews). Leave `已启用` false so the UI can show a tooltip.
         setPermission('unsupported')
         return
       }

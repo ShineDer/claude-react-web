@@ -138,7 +138,7 @@ export function EffortSlider({ anchor, levels, current, disabled, onSelect, onCl
       className="effort-slider"
       style={{ left: pos.x, top: pos.y }}
       role="dialog"
-      aria-label="Select effort level"
+      aria-label="选择投入级别"
       // Pop in/out from the anchor — mirrors ctx-menu-in/ctx-menu-out
       // (scale 0.98 + small y nudge). pointerEvents:'none' on exit replaces
       // the old [data-state="closing"]{pointer-events:none} rule. Animate
@@ -160,7 +160,7 @@ export function EffortSlider({ anchor, levels, current, disabled, onSelect, onCl
       }}
     >
       <div className="effort-slider-head">
-        <span className="effort-slider-title">Effort</span>
+        <span className="effort-slider-title">强度</span>
         <span className="effort-slider-value">{previewLevel}</span>
       </div>
       <input
@@ -173,7 +173,7 @@ export function EffortSlider({ anchor, levels, current, disabled, onSelect, onCl
         step={0.01}
         value={value}
         disabled={disabled}
-        aria-label="Effort level"
+        aria-label="强度等级"
         aria-valuetext={previewLevel}
         onChange={(e) => {
           // Grabbing the thumb mid-snap cancels the in-flight animation so

@@ -84,7 +84,7 @@ export function FullDiffViewer({ open, onClose, name, fetchText }: Props) {
     >
       <div className="modal-header">
         <h3 className="file-viewer-title" title={name}>{name}</h3>
-        <button className="btn btn-icon-sm" onClick={onClose} aria-label="Close"><IconX /></button>
+        <button className="btn btn-icon-sm" onClick={onClose} aria-label="关闭"><IconX /></button>
       </div>
       <div className="modal-section file-viewer-body">
         {error && <div className="field-error">{error}</div>}

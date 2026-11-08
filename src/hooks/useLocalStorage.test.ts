@@ -26,7 +26,7 @@ describe('useLocalStorage', () => {
   })
 
   it('supports functional update', () => {
-    const { result } = renderHook(() => useLocalStorage('count', 0))
+    const { result } = renderHook(() => useLocalStorage('计数', 0))
     act(() => result.current[1]((prev) => prev + 1))
     expect(result.current[0]).toBe(1)
     act(() => result.current[1]((prev) => prev + 1))
@@ -58,7 +58,7 @@ describe('useLocalStorage', () => {
 
   it('falls back to initial on null localStorage value', () => {
     // getItem returns null when key doesn't exist — treated as missing.
-    const { result } = renderHook(() => useLocalStorage('missing', 42))
+    const { result } = renderHook(() => useLocalStorage('缺失', 42))
     expect(result.current[0]).toBe(42)
   })
 
@@ -120,8 +120,8 @@ describe('useLocalStorage', () => {
   })
 
   it('still syncs when functional updates are used', () => {
-    const a = renderHook(() => useLocalStorage<number>('counter', 0))
-    const b = renderHook(() => useLocalStorage<number>('counter', 0))
+    const a = renderHook(() => useLocalStorage<number>('计数器', 0))
+    const b = renderHook(() => useLocalStorage<number>('计数器', 0))
 
     act(() => a.result.current[1]((prev) => prev + 1))
     act(() => a.result.current[1]((prev) => prev + 1))

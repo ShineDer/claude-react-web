@@ -163,7 +163,7 @@ export function ShareTab() {
               <code>{selectedUrl}</code>
             </div>
             <button type="button" className="btn" onClick={handleCopy}>
-              Copy
+              复制
             </button>
           </div>
 
@@ -174,7 +174,7 @@ export function ShareTab() {
         </>
       )}
 
-      {!error && !info && <p className="share-tab-hint">Loading…</p>}
+      {!error && !info && <p className="share-tab-hint">正在加载…</p>}
         </div>
       </section>
     </div>

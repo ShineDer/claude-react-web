@@ -403,7 +403,7 @@ describe('getActiveWorktree', () => {
   it('returns null for an empty or non-worktree transcript', () => {
     expect(getActiveWorktree([])).toBeNull()
     expect(getActiveWorktree([
-      asstTools([{ type: 'tool_use', id: 'e1', name: 'Edit', input: { file_path: 'a.txt' } }]),
+      asstTools([{ type: 'tool_use', id: 'e1', name: '编辑', input: { file_path: 'a.txt' } }]),
       userMsgBlocks('ok'),
     ])).toBeNull()
   })

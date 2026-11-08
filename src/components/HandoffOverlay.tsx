@@ -1,7 +1,7 @@
 import { ElapsedTimer } from './ElapsedTimer'
 
 /** Center-of-transcript "Handing off…" pill, mounted by Chat only while a
- *  `/handoff` POST is in flight (App-owned `handoffing` state threaded
+ *  `/hand关` POST is in flight (App-owned `handoffing` state threaded
  *  through ChatPanel). The summarize leg can run tens of seconds, so the
  *  wait needs a visible, moving signal beyond the shared clearing blur —
  *  the elapsed counter ticks every second and stays legible (and honest)

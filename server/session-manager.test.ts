@@ -2735,6 +2735,42 @@ describe('SessionManager', () => {
     expect(sm.get(info.id).model).toBe('new-model')
   })
 
+  it('setModel() works on a dormant session by persisting the pin', async () => {
+    const info = await sm.create({ model: 'old' })
+    await sm.unload(info.id)
+    // No Query to steer — the picker must still stick, and the next spawn
+    // reads the patched meta.
+    const updated = await sm.setModel(info.id, 'chosen-while-asleep')
+    expect(updated.model).toBe('chosen-while-asleep')
+    expect(updated.running).toBe(false)
+    expect(store.get(info.id)?.model).toBe('chosen-while-asleep')
+    expect(mockHandles[0].setModel).not.toHaveBeenCalledWith('chosen-while-asleep')
+  })
+
+  it('setModel() on a dormant session clears a stale model-group pin', async () => {
+    const PIN_GROUP = {
+      id: 'g_pin', name: 'Pin',
+      opus: 'anthropic/claude-opus-4-20250514',
+      sonnet: 'anthropic/claude-sonnet-4-20250514',
+      haiku: 'claude-haiku-3-5-20241022',
+      main: 'opus' as const,
+    }
+    __setConfigForTest({ modelGroups: [PIN_GROUP] })
+    const info = await sm.create({ cwd: '/tmp', modelGroupId: 'g_pin' } as Parameters<SessionManager['create']>[0])
+    await sm.unload(info.id)
+    await sm.setModel(info.id, 'plain-model')
+    expect(store.get(info.id)?.model).toBe('plain-model')
+    expect(store.get(info.id)?.modelGroupId).toBeUndefined()
+  })
+
+  it('setModel() 404s for an unknown id and 410s for a terminated one', async () => {
+    await expect(sm.setModel('nope', 'x')).rejects.toThrow(/not found/)
+    const info = await sm.create({ model: 'old' })
+    await sm.unload(info.id)
+    store.patch(info.id, { terminated: true })
+    await expect(sm.setModel(info.id, 'x')).rejects.toThrow(/terminated/)
+  })
+
   it('setModel() retries once when the CLI cannot confirm the model', async () => {
     const info = await sm.create({ model: 'gw/old' })
     mockHandles[0].setModel.mockRejectedValueOnce(
@@ -4882,12 +4918,15 @@ describe('SessionManager', () => {
   // omission as "leave it to Claude Code" (see SDK_FORWARDED_PERMISSION_MODES
   // in server/permission-modes.ts); the broker's enforcement depends on the
   // CLI actually being in default mode.
-  it('spawn forwards only SDK-forwarded modes (plan/auto) to the SDK options; other modes pin default', async () => {
+  it('spawn forwards plan/auto to the SDK options; an unset mode and broker modes resolve to auto/default', async () => {
     await sm.create({ permissionMode: 'acceptEdits' })
     expect(mockHandles[0].options.permissionMode).toBe('default')
 
+    // No mode requested (and an explicit 'default') start on the CLI's native
+    // classifier — a bare settings.json defaultMode cannot express it because
+    // forwarding an explicit 'default' overrides the CLI's own lookup.
     await sm.create({})
-    expect(mockHandles[1].options.permissionMode).toBe('default')
+    expect(mockHandles[1].options.permissionMode).toBe('auto')
 
     await sm.create({ permissionMode: 'plan' })
     expect(mockHandles[2].options.permissionMode).toBe('plan')

@@ -106,30 +106,30 @@ describe('GlobalSettingsModal Skills unified add card', () => {
 
   it('heads the section "Add skill" and offers three source chips', async () => {
     await openSkillsTab({})
-    expect(screen.getByRole('heading', { name: 'Add skill' })).toBeTruthy()
-    expect(addCard().getByRole('button', { name: 'Search catalog' })).toBeTruthy()
-    expect(addCard().getByRole('button', { name: 'Repository' })).toBeTruthy()
-    expect(addCard().getByRole('button', { name: 'Folder' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: '添加技能' })).toBeTruthy()
+    expect(addCard().getByRole('button', { name: '搜索目录' })).toBeTruthy()
+    expect(addCard().getByRole('button', { name: '仓库' })).toBeTruthy()
+    expect(addCard().getByRole('button', { name: '文件夹' })).toBeTruthy()
     // The two old section cards are gone as separate sections.
-    expect(screen.queryByRole('heading', { name: 'Browse skills' })).toBeNull()
-    expect(screen.queryByRole('heading', { name: 'Install from folder' })).toBeNull()
+    expect(screen.queryByRole('heading', { name: '浏览技能' })).toBeNull()
+    expect(screen.queryByRole('heading', { name: '从文件夹安装' })).toBeNull()
   })
 
   it('source chips switch the body', async () => {
     await openSkillsTab({})
     // Default: catalog search.
     expect(addCard().getByLabelText('Search skills')).toBeTruthy()
-    expect(addCard().queryByLabelText('Repository source')).toBeNull()
+    expect(addCard().queryByLabelText('仓库来源')).toBeNull()
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Repository' }))
-    expect(addCard().getByLabelText('Repository source')).toBeTruthy()
+    fireEvent.click(addCard().getByRole('button', { name: '仓库' }))
+    expect(addCard().getByLabelText('仓库来源')).toBeTruthy()
     expect(addCard().queryByLabelText('Search skills')).toBeNull()
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
     expect(addCard().getByRole('button', { name: 'Choose local folder' })).toBeTruthy()
-    expect(addCard().getByLabelText('Server path to skill folder')).toBeTruthy()
+    expect(addCard().getByLabelText('技能文件夹的服务器路径')).toBeTruthy()
     expect(addCard().queryByLabelText('Search skills')).toBeNull()
-    expect(addCard().queryByLabelText('Repository source')).toBeNull()
+    expect(addCard().queryByLabelText('仓库来源')).toBeNull()
   })
 
   it('renders search results with Install and Open repo', async () => {
@@ -142,8 +142,8 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     expect(searchGets()[0]![0]).toBe('/skills/search?q=react')
     expect(addCard().getByText('org/repo')).toBeTruthy()
     expect(addCard().getByText((1234).toLocaleString())).toBeTruthy()
-    expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy()
-    expect(addCard().getByRole('button', { name: 'Open repo' })).toBeTruthy()
+    expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy()
+    expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy()
   })
 
   it('flips a row to Installed after a successful install', async () => {
@@ -164,12 +164,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } }, [catalogHit()])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy())
     const listsBefore = listGets().length
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
-    await waitFor(() => expect(addCard().getByText('✓ Installed')).toBeTruthy())
-    expect(addCard().queryByRole('button', { name: 'Install' })).toBeNull()
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
+    await waitFor(() => expect(addCard().getByText('✓ 已安装')).toBeTruthy())
+    expect(addCard().queryByRole('button', { name: '安装' })).toBeNull()
 
     // onInstalled → SkillsTab.refresh(), observable as a second list fetch.
     await waitFor(() => expect(listGets().length).toBeGreaterThan(listsBefore))
@@ -199,13 +199,13 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } }, [catalogHit()])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
-    await waitFor(() => expect(addCard().getByText('✓ Installed')).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
+    await waitFor(() => expect(addCard().getByText('✓ 已安装')).toBeTruthy())
 
-    fireEvent.click(addCard().getByRole('button', { name: 'User' }))
-    await waitFor(() => expect(addCard().queryByText('✓ Installed')).toBeNull())
-    expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy()
+    fireEvent.click(addCard().getByRole('button', { name: '用户' }))
+    await waitFor(() => expect(addCard().queryByText('✓ 已安装')).toBeNull())
+    expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy()
   })
 
   it('shows an inline error when the skill is not found in the repo', async () => {
@@ -221,12 +221,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input } = await openSkillsTab({}, [catalogHit()])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy())
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
-    await waitFor(() => expect(addCard().getByText('Not found in org/repo')).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
+    await waitFor(() => expect(addCard().getByText('在 org/repo 中找不到')).toBeTruthy())
     // Open repo stays the way into the repo — never disabled by a failed match.
-    expect((addCard().getByRole('button', { name: 'Open repo' }) as HTMLButtonElement).disabled).toBe(false)
+    expect((addCard().getByRole('button', { name: '打开仓库' }) as HTMLButtonElement).disabled).toBe(false)
     // Only the preview went out; a miss never reaches /install.
     expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/preview', { source: 'org/repo' }, { timeoutMs: 60_000 })
     expect(vi.mocked(api.post)).not.toHaveBeenCalledWith('/skills/remote/install', expect.anything(), expect.anything())
@@ -236,12 +236,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     stubTwoSkillPreview()
     const { input } = await openSkillsTab({}, [catalogHit()])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repo' })).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repo' }))
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     // Repository tab is active, the source is prefilled, and the checklist
     // loads inline — no modal.
-    expect((addCard().getByLabelText('Repository source') as HTMLInputElement).value).toBe('org/repo')
+    expect((addCard().getByLabelText('仓库来源') as HTMLInputElement).value).toBe('org/repo')
     expect(document.querySelector('.settings-skill-picker')).toBeNull()
     await waitFor(() => expect(addCard().getByText('Does alpha things')).toBeTruthy())
     expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/preview', { source: 'org/repo' }, { timeoutMs: 60_000 })
@@ -252,23 +252,23 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     const { input } = await openSkillsTab({})
     fireEvent.change(input, { target: { value: 'vercel-labs/agent-skills' } })
     // Parsed from the raw query — not gated on the debounced search.
-    const openRepo = addCard().getByRole('button', { name: 'Open repository' }) as HTMLButtonElement
+    const openRepo = addCard().getByRole('button', { name: '打开仓库' }) as HTMLButtonElement
     expect(openRepo.disabled).toBe(false)
 
     fireEvent.click(openRepo)
-    expect((addCard().getByLabelText('Repository source') as HTMLInputElement).value).toBe('vercel-labs/agent-skills')
-    await waitFor(() => expect(addCard().getByRole('checkbox', { name: /Select All/ })).toBeTruthy())
+    expect((addCard().getByLabelText('仓库来源') as HTMLInputElement).value).toBe('vercel-labs/agent-skills')
+    await waitFor(() => expect(addCard().getByRole('checkbox', { name: /全选/ })).toBeTruthy())
   })
 
   it('lists the repository skills inline with descriptions and Select All', async () => {
     stubTwoSkillPreview()
     const { input } = await openSkillsTab({})
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
 
-    await waitFor(() => expect(addCard().getByText('org/repo · 2 skills found')).toBeTruthy())
-    expect(addCard().getByRole('checkbox', { name: /Select All/ })).toBeTruthy()
+    await waitFor(() => expect(addCard().getByText('org/repo · 2 个技能')).toBeTruthy())
+    expect(addCard().getByRole('checkbox', { name: /全选/ })).toBeTruthy()
     expect(addCard().getByText('Does alpha things')).toBeTruthy()
     expect(addCard().getByText('Does beta things')).toBeTruthy()
     // The list renders inline in the card, not in the retired modal.
@@ -282,20 +282,20 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     }))
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     // Footer button tracks the selection size and is disabled at zero.
-    const zeroBtn = addCard().getByRole('button', { name: 'Install selected (0)' }) as HTMLButtonElement
+    const zeroBtn = addCard().getByRole('button', { name: '安装选中 (0)' }) as HTMLButtonElement
     expect(zeroBtn.disabled).toBe(true)
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
 
     // Per-row status (full text on hover) + install summary.
     await waitFor(() => expect(addCard().getByText('✓')).toBeTruthy())
     expect(addCard().getByText('Missing SKILL.md').getAttribute('title')).toBe('Missing SKILL.md')
-    expect(addCard().getByText('1 installed · 1 failed')).toBeTruthy()
+    expect(addCard().getByText('1 已安装 · 1 失败')).toBeTruthy()
     expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/install', {
       source: 'org/repo',
       scope: 'project',
@@ -317,37 +317,37 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     }))
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
     fireEvent.click(addCard().getByRole('checkbox', { name: /beta-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (2)' }))
-    await waitFor(() => expect(addCard().getByText('1 installed · 1 failed')).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (2)' }))
+    await waitFor(() => expect(addCard().getByText('1 已安装 · 1 失败')).toBeTruthy())
 
     // Succeeded cleared, failed kept so one click retries the failure.
     expect((addCard().getByRole('checkbox', { name: /alpha-skill/ }) as HTMLInputElement).checked).toBe(false)
     expect((addCard().getByRole('checkbox', { name: /beta-skill/ }) as HTMLInputElement).checked).toBe(true)
-    expect(addCard().getByRole('button', { name: 'Install selected (1)' })).toBeTruthy()
+    expect(addCard().getByRole('button', { name: '安装选中 (1)' })).toBeTruthy()
   })
 
   it('filters the inline list and Select All toggles only visible rows', async () => {
     stubTwoSkillPreview()
     const { input } = await openSkillsTab({})
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
-    await waitFor(() => expect(addCard().getByRole('checkbox', { name: /Select All/ })).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
+    await waitFor(() => expect(addCard().getByRole('checkbox', { name: /全选/ })).toBeTruthy())
 
-    fireEvent.change(addCard().getByRole('textbox', { name: 'Filter skills' }), { target: { value: 'alpha' } })
+    fireEvent.change(addCard().getByRole('textbox', { name: '筛选技能' }), { target: { value: 'alpha' } })
     expect(addCard().queryByText('beta-skill')).toBeNull()
     // Subtitle still reports the full found count, not the filtered one.
-    expect(addCard().getByText('org/repo · 2 skills found')).toBeTruthy()
+    expect(addCard().getByText('org/repo · 2 个技能')).toBeTruthy()
 
-    fireEvent.click(addCard().getByRole('checkbox', { name: /Select All/ }))
+    fireEvent.click(addCard().getByRole('checkbox', { name: /全选/ }))
     // The filtered-out row must stay unselected.
-    fireEvent.change(addCard().getByRole('textbox', { name: 'Filter skills' }), { target: { value: '' } })
+    fireEvent.change(addCard().getByRole('textbox', { name: '筛选技能' }), { target: { value: '' } })
     expect((addCard().getByRole('checkbox', { name: /alpha-skill/ }) as HTMLInputElement).checked).toBe(true)
     expect((addCard().getByRole('checkbox', { name: /beta-skill/ }) as HTMLInputElement).checked).toBe(false)
   })
@@ -361,20 +361,20 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     }))
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
     await waitFor(() => expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/install', expect.objectContaining({ scope: 'project' }), { timeoutMs: 60_000 }))
 
     // Flip the shared footer toggle to User before installing again. The
     // first install succeeded, so its row dropped out of the selection.
     vi.mocked(api.post).mockClear()
-    fireEvent.click(addCard().getByRole('button', { name: 'User' }))
+    fireEvent.click(addCard().getByRole('button', { name: '用户' }))
     fireEvent.click(addCard().getByRole('checkbox', { name: /beta-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
     await waitFor(() => expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/install', expect.objectContaining({
       scope: 'user',
       cwd: undefined,
@@ -395,10 +395,10 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } }, [catalogHit()])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy())
     const listsBefore = listGets().length
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
     await waitFor(() => expect(addCard().getByText('boom')).toBeTruthy())
     await waitFor(() => expect(listGets().length).toBeGreaterThan(listsBefore))
   })
@@ -406,11 +406,11 @@ describe('GlobalSettingsModal Skills unified add card', () => {
   it('a failed folder install still refreshes the installed list', async () => {
     vi.mocked(api.post).mockRejectedValue(new Error('boom'))
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
-    fireEvent.change(addCard().getByLabelText('Server path to skill folder'), { target: { value: '/srv/skills/helper' } })
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
+    fireEvent.change(addCard().getByLabelText('技能文件夹的服务器路径'), { target: { value: '/srv/skills/helper' } })
     const listsBefore = listGets().length
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
     await waitFor(() => expect(addCard().getByText('boom')).toBeTruthy())
     await waitFor(() => expect(listGets().length).toBeGreaterThan(listsBefore))
   })
@@ -434,11 +434,11 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input } = await openSkillsTab({})
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByText('blip')).toBeTruthy())
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByText('Does alpha things')).toBeTruthy())
     const previews = vi.mocked(api.post).mock.calls.filter(([p]) => p === '/skills/remote/preview')
     expect(previews).toHaveLength(2)
@@ -460,12 +460,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
       catalogHit({ id: 'hit-2', skillId: 'other-helper', name: 'other-helper' }),
     ])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getAllByRole('button', { name: 'Install' })).toHaveLength(2))
+    await waitFor(() => expect(addCard().getAllByRole('button', { name: '安装' })).toHaveLength(2))
 
-    fireEvent.click(addCard().getAllByRole('button', { name: 'Install' })[0]!)
-    await waitFor(() => expect(addCard().getByText('Installing…')).toBeTruthy())
+    fireEvent.click(addCard().getAllByRole('button', { name: '安装' })[0]!)
+    await waitFor(() => expect(addCard().getByText('安装中…')).toBeTruthy())
     const buttons = addCard().getAllByRole('button') as HTMLButtonElement[]
-    const sibling = buttons.find((b) => b.textContent === 'Install')
+    const sibling = buttons.find((b) => b.textContent === '安装')
     expect(sibling, 'sibling row Install').toBeTruthy()
     expect(sibling!.disabled).toBe(true)
   })
@@ -476,9 +476,9 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     window.localStorage.setItem('claude-react-web:recent-cwds', JSON.stringify(['/seed/repo']))
     vi.mocked(api.post).mockRejectedValue(new Error('boom'))
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
-    fireEvent.change(addCard().getByLabelText('Server path to skill folder'), { target: { value: '/srv/skills/helper' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
+    fireEvent.change(addCard().getByLabelText('技能文件夹的服务器路径'), { target: { value: '/srv/skills/helper' } })
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
     await waitFor(() => expect(addCard().getByText('boom')).toBeTruthy())
 
     expect(JSON.parse(window.localStorage.getItem('claude-react-web:recent-cwds') ?? '[]')).toEqual(['/seed/repo'])
@@ -498,13 +498,13 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     }))
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(screen.getByLabelText('Search skills'), { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
-    await waitFor(() => expect(addCard().getByText('0 installed · 2 failed')).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
+    await waitFor(() => expect(addCard().getByText('0 已安装 · 2 失败')).toBeTruthy())
 
     expect(JSON.parse(window.localStorage.getItem('claude-react-web:recent-cwds') ?? '[]')).toEqual(['/seed/repo'])
     window.localStorage.removeItem('claude-react-web:recent-cwds')
@@ -525,17 +525,17 @@ describe('GlobalSettingsModal Skills unified add card', () => {
       catalogHit({ id: 'hit-2', skillId: 'other-helper', name: 'other-helper' }),
     ])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getAllByRole('button', { name: 'Install' })).toHaveLength(2))
+    await waitFor(() => expect(addCard().getAllByRole('button', { name: '安装' })).toHaveLength(2))
 
-    fireEvent.click(addCard().getAllByRole('button', { name: 'Install' })[0]!)
-    await waitFor(() => expect(addCard().getByText('Installing…')).toBeTruthy())
+    fireEvent.click(addCard().getAllByRole('button', { name: '安装' })[0]!)
+    await waitFor(() => expect(addCard().getByText('安装中…')).toBeTruthy())
 
     // Footer controls claim to affect the in-flight install — disable them.
-    expect((addCard().getByRole('button', { name: 'User' }) as HTMLButtonElement).disabled).toBe(true)
+    expect((addCard().getByRole('button', { name: '用户' }) as HTMLButtonElement).disabled).toBe(true)
     expect((screen.getByLabelText(/^Target project/) as HTMLButtonElement).disabled).toBe(true)
     expect((addCard().getByLabelText('Replace existing') as HTMLInputElement).disabled).toBe(true)
     // And no repo switch may land mid-install (results would cross lists).
-    expect((addCard().getAllByRole('button', { name: 'Open repo' })[1] as HTMLButtonElement).disabled).toBe(true)
+    expect((addCard().getAllByRole('button', { name: '打开仓库' })[1] as HTMLButtonElement).disabled).toBe(true)
   })
 
   it('blocks opening another repository while a batch install is in flight', async () => {
@@ -550,15 +550,15 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
-    await waitFor(() => expect(addCard().getByText('Installing…')).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
+    await waitFor(() => expect(addCard().getByText('安装中…')).toBeTruthy())
 
-    expect((addCard().getByRole('button', { name: 'Open repository' }) as HTMLButtonElement).disabled).toBe(true)
+    expect((addCard().getByRole('button', { name: '打开仓库' }) as HTMLButtonElement).disabled).toBe(true)
   })
 
   it('Select All does not re-select rows that already succeeded', async () => {
@@ -568,20 +568,20 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     }))
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
     await waitFor(() => expect(addCard().getByText('✓')).toBeTruthy())
 
     // Select All must not drag the succeeded row back into the selection —
     // re-POSTing it would 409 and paint red over a correct install.
-    fireEvent.click(addCard().getByRole('checkbox', { name: /Select All/ }))
+    fireEvent.click(addCard().getByRole('checkbox', { name: /全选/ }))
     expect((addCard().getByRole('checkbox', { name: /alpha-skill/ }) as HTMLInputElement).checked).toBe(false)
     expect((addCard().getByRole('checkbox', { name: /beta-skill/ }) as HTMLInputElement).checked).toBe(true)
-    expect(addCard().getByRole('button', { name: 'Install selected (1)' })).toBeTruthy()
+    expect(addCard().getByRole('button', { name: '安装选中 (1)' })).toBeTruthy()
   })
 
   it('a drop is only handled on the Folder body', async () => {
@@ -600,7 +600,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     fireEvent(searchBody, searchDrop)
     expect(searchDrop.defaultPrevented, 'search-tab drop must not reach the import handler').toBe(false)
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
     const folderBody = document.querySelector('.settings-skill-folder-body')!
     const folderDrop = createEvent.drop(folderBody, { dataTransfer: { items: [], files: [newFile()] } })
     fireEvent(folderBody, folderDrop)
@@ -611,12 +611,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
   it('folder import errors do not bleed across tabs', async () => {
     vi.mocked(api.post).mockRejectedValue(new Error('boom'))
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
-    fireEvent.change(addCard().getByLabelText('Server path to skill folder'), { target: { value: '/srv/skills/helper' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
+    fireEvent.change(addCard().getByLabelText('技能文件夹的服务器路径'), { target: { value: '/srv/skills/helper' } })
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
     await waitFor(() => expect(addCard().getByText('boom')).toBeTruthy())
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Search catalog' }))
+    fireEvent.click(addCard().getByRole('button', { name: '搜索目录' }))
     expect(addCard().queryByText('boom')).toBeNull()
   })
 
@@ -639,13 +639,13 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     window.localStorage.setItem('claude-react-web:recent-cwds', JSON.stringify(['/other/repo']))
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } }, [catalogHit()])
     fireEvent.change(input, { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
-    await waitFor(() => expect(addCard().getByText('✓ Installed')).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
+    await waitFor(() => expect(addCard().getByText('✓ 已安装')).toBeTruthy())
 
     await chooseTargetProject('/other')
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy())
-    expect(addCard().queryByText('✓ Installed')).toBeNull()
+    await waitFor(() => expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy())
+    expect(addCard().queryByText('✓ 已安装')).toBeNull()
     window.localStorage.removeItem('claude-react-web:recent-cwds')
   })
 
@@ -663,14 +663,14 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
-    await waitFor(() => expect(addCard().getByText('Installing…')).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
+    await waitFor(() => expect(addCard().getByText('安装中…')).toBeTruthy())
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
     const folderBody = document.querySelector('.settings-skill-folder-body')!
     const folderDrop = createEvent.drop(folderBody, {
       dataTransfer: { items: [], files: [new File(['x'], 'SKILL.md', { type: 'text/markdown' })] },
@@ -690,7 +690,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
       importedFiles: 1,
     })
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
     const folderBody = document.querySelector('.settings-skill-folder-body')!
     const entry = {
       isFile: true,
@@ -701,7 +701,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     }
     const dataTransfer = { items: [{ webkitGetAsEntry: () => entry }], files: [] }
     fireEvent.drop(folderBody, { dataTransfer })
-    await waitFor(() => expect((addCard().getByRole('button', { name: 'User' }) as HTMLButtonElement).disabled).toBe(true))
+    await waitFor(() => expect((addCard().getByRole('button', { name: '用户' }) as HTMLButtonElement).disabled).toBe(true))
   })
 
   it('a drop whose files cannot be read shows an error', async () => {
@@ -710,7 +710,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
       importedFiles: 1,
     })
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
     const folderBody = document.querySelector('.settings-skill-folder-body')!
     // First a successful import, so a success notice is on screen…
     fireEvent.drop(folderBody, { dataTransfer: { items: [], files: [new File(['x'], 'SKILL.md', { type: 'text/markdown' })] } })
@@ -745,12 +745,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     // Install from the catalog via Open repository — the inline list must use
     // the card's effective cwd, not the server default.
     fireEvent.change(screen.getByLabelText('Search skills'), { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
     await waitFor(() => expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/install', expect.objectContaining({ cwd: '/other/repo', scope: 'project' }), { timeoutMs: 60_000 }))
 
     // Success delivers onInstalled — the card must remember the project the
@@ -778,16 +778,16 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     // Exactly one control in the whole card — not one per old section.
     expect(addCard().getAllByLabelText('Replace existing')).toHaveLength(1)
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
     expect(addCard().getAllByLabelText('Replace existing')).toHaveLength(1)
 
     // Back to the search tab (a fresh input — bodies unmount on switch) and
     // install from a row with the shared checkbox ticked.
-    fireEvent.click(addCard().getByRole('button', { name: 'Search catalog' }))
+    fireEvent.click(addCard().getByRole('button', { name: '搜索目录' }))
     fireEvent.change(addCard().getByLabelText('Search skills'), { target: { value: 'react' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy())
+    await waitFor(() => expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy())
     fireEvent.click(addCard().getByLabelText('Replace existing'))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
     await waitFor(() => expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/remote/install', expect.objectContaining({ overwrite: true }), { timeoutMs: 60_000 }))
   })
 
@@ -812,7 +812,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
 
   it('disables the target selector in user scope', async () => {
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'User' }))
+    fireEvent.click(addCard().getByRole('button', { name: '用户' }))
     const trigger = screen.getByLabelText(/^Target project/) as HTMLButtonElement
     expect(trigger.disabled).toBe(true)
     // Hint disappears — user scope has no per-project target.
@@ -853,7 +853,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     // Wait out the picker's initial directory listing so no in-flight
     // loadList can clobber the draft we are about to type.
     const dialog = screen.getByText('Pick a project').closest('.modal') as HTMLElement
-    await waitFor(() => expect(within(dialog).queryByText('Loading...')).toBeNull())
+    await waitFor(() => expect(within(dialog).queryByText('正在加载...')).toBeNull())
 
     // Pick a different directory via the picker's manual-path affordance.
     const draftInput = within(dialog).getByRole('textbox') as HTMLInputElement
@@ -890,10 +890,10 @@ describe('GlobalSettingsModal Skills unified add card', () => {
 
     fireEvent.change(screen.getByLabelText('Search skills'), { target: { value: 'react' } })
     await waitFor(() => expect(addCard().getByText('react-helper')).toBeTruthy())
-    expect((addCard().getByRole('button', { name: 'Install' }) as HTMLButtonElement).disabled).toBe(true)
+    expect((addCard().getByRole('button', { name: '安装' }) as HTMLButtonElement).disabled).toBe(true)
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
-    expect((addCard().getByRole('button', { name: 'Install' }) as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
+    expect((addCard().getByRole('button', { name: '安装' }) as HTMLButtonElement).disabled).toBe(true)
   })
 
   it('installs stay blocked until the target existence check resolves', async () => {
@@ -908,10 +908,10 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     fireEvent.change(screen.getByLabelText('Search skills'), { target: { value: 'react' } })
     await waitFor(() => expect(addCard().getByText('react-helper')).toBeTruthy())
-    expect((addCard().getByRole('button', { name: 'Install' }) as HTMLButtonElement).disabled).toBe(true)
+    expect((addCard().getByRole('button', { name: '安装' }) as HTMLButtonElement).disabled).toBe(true)
 
     resolveCheck({ cwd: '/work/proj', resolvedFromFile: false })
-    await waitFor(() => expect((addCard().getByRole('button', { name: 'Install' }) as HTMLButtonElement).disabled).toBe(false))
+    await waitFor(() => expect((addCard().getByRole('button', { name: '安装' }) as HTMLButtonElement).disabled).toBe(false))
   })
 
   it('recreating the target directory unblocks installs on window focus', async () => {
@@ -949,19 +949,19 @@ describe('GlobalSettingsModal Skills unified add card', () => {
       return base(url)
     })
     fireEvent.change(screen.getByLabelText('Search skills'), { target: { value: 'react' } })
-    await waitFor(() => expect((addCard().getByRole('button', { name: 'Install' }) as HTMLButtonElement).disabled).toBe(false))
+    await waitFor(() => expect((addCard().getByRole('button', { name: '安装' }) as HTMLButtonElement).disabled).toBe(false))
 
     fireEvent(window, new Event('focus'))
-    expect((addCard().getByRole('button', { name: 'Install' }) as HTMLButtonElement).disabled).toBe(true)
+    expect((addCard().getByRole('button', { name: '安装' }) as HTMLButtonElement).disabled).toBe(true)
     deferred!({ cwd: '/work/proj', resolvedFromFile: false })
-    await waitFor(() => expect((addCard().getByRole('button', { name: 'Install' }) as HTMLButtonElement).disabled).toBe(false))
+    await waitFor(() => expect((addCard().getByRole('button', { name: '安装' }) as HTMLButtonElement).disabled).toBe(false))
   })
 
   it('user scope skips target-directory validation', async () => {
     // The project cwd is irrelevant to user installs — no resolve-cwd calls
     // (and no focus revalidation) while user scope is active.
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'User' }))
+    fireEvent.click(addCard().getByRole('button', { name: '用户' }))
     vi.mocked(api.get).mockClear()
     fireEvent(window, new Event('focus'))
     await new Promise((r) => setTimeout(r, 0))
@@ -971,23 +971,23 @@ describe('GlobalSettingsModal Skills unified add card', () => {
   it('hides the footer install button in the search tab and shows it per tab', async () => {
     await openSkillsTab({})
     // Search tab: installs live on the result rows, no footer primary button.
-    expect(addCard().queryByRole('button', { name: 'Install selected (0)' })).toBeNull()
+    expect(addCard().queryByRole('button', { name: '安装选中 (0)' })).toBeNull()
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Repository' }))
-    const batchBtn = addCard().getByRole('button', { name: 'Install selected (0)' }) as HTMLButtonElement
+    fireEvent.click(addCard().getByRole('button', { name: '仓库' }))
+    const batchBtn = addCard().getByRole('button', { name: '安装选中 (0)' }) as HTMLButtonElement
     expect(batchBtn.disabled).toBe(true)
 
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
-    expect(addCard().getByRole('button', { name: 'Install' })).toBeTruthy()
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
+    expect(addCard().getByRole('button', { name: '安装' })).toBeTruthy()
   })
 
   it('offers import name only on the Folder tab', async () => {
     await openSkillsTab({})
-    expect(addCard().queryByLabelText('Import name')).toBeNull()
-    fireEvent.click(addCard().getByRole('button', { name: 'Repository' }))
-    expect(addCard().queryByLabelText('Import name')).toBeNull()
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
-    expect(addCard().getByLabelText('Import name')).toBeTruthy()
+    expect(addCard().queryByLabelText('导入名称')).toBeNull()
+    fireEvent.click(addCard().getByRole('button', { name: '仓库' }))
+    expect(addCard().queryByLabelText('导入名称')).toBeNull()
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
+    expect(addCard().getByLabelText('导入名称')).toBeTruthy()
   })
 
   it('server-path install POSTs the folder import with name and overwrite', async () => {
@@ -996,12 +996,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
       importedFiles: 3,
     })
     await openSkillsTab({ defaults: { cwd: '/work/proj' } })
-    fireEvent.click(addCard().getByRole('button', { name: 'Folder' }))
+    fireEvent.click(addCard().getByRole('button', { name: '文件夹' }))
 
-    fireEvent.change(addCard().getByLabelText('Server path to skill folder'), { target: { value: '/srv/skills/helper' } })
-    fireEvent.change(addCard().getByLabelText('Import name'), { target: { value: 'my-helper' } })
+    fireEvent.change(addCard().getByLabelText('技能文件夹的服务器路径'), { target: { value: '/srv/skills/helper' } })
+    fireEvent.change(addCard().getByLabelText('导入名称'), { target: { value: 'my-helper' } })
     fireEvent.click(addCard().getByLabelText('Replace existing'))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装' }))
 
     await waitFor(() => expect(vi.mocked(api.post)).toHaveBeenCalledWith('/skills/import/path', {
       scope: 'project',
@@ -1033,12 +1033,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input, view } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
     // Close the whole settings modal while the POST is still pending…
     view.unmount()
     // …then let it land: the list must refresh even though the UI is gone.
@@ -1064,12 +1064,12 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     })
     const { input, view } = await openSkillsTab({ defaults: { cwd: '/work/proj' } })
     fireEvent.change(input, { target: { value: 'org/repo' } })
-    await waitFor(() => expect(addCard().getByRole('button', { name: 'Open repository' })).toBeTruthy())
-    fireEvent.click(addCard().getByRole('button', { name: 'Open repository' }))
+    await waitFor(() => expect(addCard().getByRole('button', { name: '打开仓库' })).toBeTruthy())
+    fireEvent.click(addCard().getByRole('button', { name: '打开仓库' }))
     await waitFor(() => expect(addCard().getByRole('checkbox', { name: /alpha-skill/ })).toBeTruthy())
 
     fireEvent.click(addCard().getByRole('checkbox', { name: /alpha-skill/ }))
-    fireEvent.click(addCard().getByRole('button', { name: 'Install selected (1)' }))
+    fireEvent.click(addCard().getByRole('button', { name: '安装选中 (1)' }))
     view.unmount()
     const listsBefore = listGets().length
     rejectInstall()
@@ -1081,7 +1081,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
     fireEvent.change(input, { target: { value: 'react' } })
     // 300 ms debounce still pending — the explicit button fires the wire now,
     // and the debounce must NOT fire a second search afterwards.
-    fireEvent.click(addCard().getByRole('button', { name: 'Search' }))
+    fireEvent.click(addCard().getByRole('button', { name: '搜索' }))
     await waitFor(() => expect(addCard().getByText('react-helper')).toBeTruthy())
     expect(searchGets()).toHaveLength(1)
   })
@@ -1094,7 +1094,7 @@ describe('GlobalSettingsModal Skills unified add card', () => {
       return base(url)
     })
     fireEvent.change(input, { target: { value: 'react' } })
-    const searchBtn = await waitFor(() => addCard().getByRole('button', { name: 'Search' }) as HTMLButtonElement)
+    const searchBtn = await waitFor(() => addCard().getByRole('button', { name: '搜索' }) as HTMLButtonElement)
     fireEvent.click(searchBtn)
     await waitFor(() => expect(addCard().getByText('Searching…')).toBeTruthy())
     expect(searchBtn.disabled).toBe(false)

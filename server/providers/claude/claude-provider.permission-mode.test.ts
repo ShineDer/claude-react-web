@@ -40,11 +40,11 @@ describe('ClaudeProvider.createSession spawn permission mode', () => {
     queryMock.mockReset()
   })
 
-  it("pins 'default' when no mode is requested", async () => {
+  it("falls back to 'auto' when no mode is requested", async () => {
     queryMock.mockReturnValue(fakeQuery())
     makeProvider().createSession({ id: 'pm-1' } as CreateSessionOptions)
     await flush()
-    expect(spawnedOptions().permissionMode).toBe('default')
+    expect(spawnedOptions().permissionMode).toBe('auto')
   })
 
   it("pins 'default' for app-side broker modes (acceptEdits)", async () => {

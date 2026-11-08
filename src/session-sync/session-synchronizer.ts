@@ -3,7 +3,7 @@
 // This module owns the per-session WS listener, force subscribe/release,
 // REST tail page, generation/clear-epoch page validation, and loadOlder
 // paging. It is deliberately React-free: a Task-4 React adapter
-// (useSessionSynchronizer) will drive start/stop from a `running` effect and
+// (useSessionSynchronizer) will drive start/stop from a `运行中` effect and
 // expose paging via useSyncExternalStore.
 //
 // The full WS frame-routing switch (message, attached, permission-*,
@@ -759,4 +759,4 @@ export class SessionSynchronizer {
 
 // The class is exported as `SessionSynchronizer` so callers can `new` it
 // directly. Task 4's React adapter will import this class and drive
-// start/stop from a `running` effect.
+// start/stop from a `运行中` effect.

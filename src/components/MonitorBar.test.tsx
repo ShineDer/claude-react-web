@@ -354,10 +354,10 @@ describe('MonitorBar — collapsed dock + header rotor', () => {
     vi.useFakeTimers()
     const { container } = render(<MonitorBar messages={two} />)
     collapse(container)
-    // The docked bar KEEPS the "Monitors" title — the rotor joins it with the
+    // The docked bar KEEPS the "显示器" title — the rotor joins it with the
     // first running monitor's description and the position chip. No spinner
     // glyph; the shimmer on the label is the running signal.
-    expect(container.querySelector('.monitor-bar-title')?.textContent).toBe('Monitors')
+    expect(container.querySelector('.monitor-bar-title')?.textContent).toBe('显示器')
     expect(rotorText(container)).toBe('Watch build')
     expect(container.querySelector('.dock-rotor-index')?.textContent).toBe('1/2')
     expect(container.querySelector('.dock-rotor-slide .monitor-text-shimmer')).not.toBeNull()
@@ -385,7 +385,7 @@ describe('MonitorBar — collapsed dock + header rotor', () => {
   it('never rotates while expanded', () => {
     vi.useFakeTimers()
     const { container } = render(<MonitorBar messages={two} />)
-    expect(container.querySelector('.monitor-bar-title')?.textContent).toBe('Monitors')
+    expect(container.querySelector('.monitor-bar-title')?.textContent).toBe('显示器')
     expect(container.querySelector('.dock-rotor')).toBeNull()
     act(() => {
       vi.advanceTimersByTime(6000)

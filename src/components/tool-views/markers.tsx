@@ -20,12 +20,12 @@ import { IconClipboardList, IconGitBranch } from '../icons/ToolIcons'
  */
 export function EnterPlanModeMarker() {
   return (
-    <div className="enter-plan-marker" role="note" aria-label="Claude entered plan mode">
+    <div className="enter-plan-marker" role="note" aria-label="Claude 已进入计划模式">
       <span className="enter-plan-marker-icon" aria-hidden>
         <IconClipboardList size={13} />
       </span>
-      <span className="enter-plan-marker-label">Entered plan mode</span>
-      <span className="enter-plan-marker-sub truncate">Claude is planning before acting</span>
+      <span className="enter-plan-marker-label">已进入计划模式</span>
+      <span className="enter-plan-marker-sub truncate">Claude 正在规划再行动</span>
     </div>
   )
 }
@@ -62,11 +62,11 @@ export function WorktreeMarker({ input, action }: { input?: Record<string, unkno
     : input?.action === 'keep' ? 'kept on disk'
     : 'exited'
   return (
-    <div className="worktree-marker" role="note" aria-label="Exited worktree">
+    <div className="worktree-marker" role="note" aria-label="已退出 worktree">
       <span className="worktree-marker-icon" aria-hidden>
         <IconGitBranch size={13} />
       </span>
-      <span className="worktree-marker-label">Exited worktree</span>
+      <span className="worktree-marker-label">已退出 worktree</span>
       <span className="worktree-marker-sub truncate">{act}</span>
     </div>
   )

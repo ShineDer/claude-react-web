@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-/** Severity controls colour + icon. `info` is the neutral accent variant.
+/** Severity controls colour + icon. `信息` is the neutral accent variant.
  *  Add new kinds here AND in `ToastHost`'s class-name map. */
 export type ToastKind = 'error' | 'success' | 'info'
 
@@ -21,9 +21,9 @@ export type Toast = {
    *  the list briefly so CSS can animate out before the provider removes it. */
   exiting?: boolean
   /** Optional click handler. When set, the toast becomes interactive:
-   *  - If `actionLabel` is also provided, it renders as a separate action
+   *  - If `action标签` is also provided, it renders as a separate action
    *    button between the message and the dismiss ✕.
-   *  - If `actionLabel` is omitted, the message itself becomes a button
+   *  - If `action标签` is omitted, the message itself becomes a button
    *    (cursor pointer + hover state). Useful for "Open session" jumps.
    *  Clicking the action auto-dismisses the toast. */
   onClick?: () => void
@@ -71,7 +71,7 @@ export const ToastContext = createContext<ToastContextValue | null>(null)
 /** Identity-stable slice of the toast hub, for consumers that only PUSH a
  *  toast and never render the list.
  *
- *  `ToastContext`'s value is memoised on `toasts`, so its identity changes
+ *  `Toast上下文`'s value is memoised on `toasts`, so its identity changes
  *  ~3x per toast (push → exiting → removal). React cannot bail out of a
  *  context update, so any component subscribed to it re-renders every time —
  *  which is fine for `ToastHost`, but not for the copy affordances (every code
@@ -81,7 +81,7 @@ export const ToastContext = createContext<ToastContextValue | null>(null)
  *  never changes identity and those consumers never re-render on toast
  *  traffic.
  *
- *  Null (not an error) when no provider is mounted — `useCopy` reads it
+ *  Null (not an error) when no provider is mounted — `use复制` reads it
  *  directly and simply skips the report, which is what lets the crash screen
  *  copy from outside `ToastProvider`. */
 export const ToastShowContext = createContext<ToastContextValue['show'] | null>(null)

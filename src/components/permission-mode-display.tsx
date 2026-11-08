@@ -16,12 +16,12 @@ import { IconFileText, IconZap, IconPencil, IconBot, IconShield, IconLock } from
  *  bother me" (which is bypass, not lockdown). */
 // eslint-disable-next-line react-refresh/only-export-components -- shared constants tightly coupled with this file's components
 export const PERMISSION_MODE_LABELS: Record<PermissionMode, string> = {
-  default: 'Default (ask)',
-  plan: 'Plan mode',
-  acceptEdits: 'Auto-accept edits',
-  bypassPermissions: 'Bypass (allow all)',
-  dontAsk: 'Lockdown (deny unless pre-approved)',
-  auto: 'Autonomous',
+  default: '默认（每次询问）',
+  plan: '计划模式',
+  acceptEdits: '自动接受编辑',
+  bypassPermissions: '跳过权限（全部允许）',
+  dontAsk: '锁定（未经预批准即拒绝）',
+  auto: '自动（分类器判断）',
 }
 
 /** Compact label for chip bodies, context menus and selects — places where
@@ -29,17 +29,17 @@ export const PERMISSION_MODE_LABELS: Record<PermissionMode, string> = {
  *  would misread as a developer string. */
 // eslint-disable-next-line react-refresh/only-export-components -- shared constants tightly coupled with this file's components
 export const PERMISSION_MODE_SHORT_LABELS: Record<PermissionMode, string> = {
-  default: 'ask',
-  plan: 'plan',
-  acceptEdits: 'accept edits',
-  bypassPermissions: 'bypass',
-  dontAsk: 'lockdown',
-  auto: 'auto',
+  default: '询问',
+  plan: '计划',
+  acceptEdits: '自动接受',
+  bypassPermissions: '跳过',
+  dontAsk: '锁定',
+  auto: '自动',
 }
 
 // eslint-disable-next-line react-refresh/only-export-components -- shared helper tightly coupled with this file's components
 export function permissionModeLabel(mode: PermissionMode | undefined): string {
-  return mode ? (PERMISSION_MODE_LABELS[mode] ?? mode) : 'Default (ask)'
+  return mode ? (PERMISSION_MODE_LABELS[mode] ?? mode) : '默认（每次询问）'
 }
 
 /** Short label with a raw-enum fallback, mirroring `permissionModeLabel` so

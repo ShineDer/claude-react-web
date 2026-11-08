@@ -28,7 +28,7 @@ export function buildUpgradeCommand(
 }
 
 /** Build an install command for a SPECIFIC version (the version switcher and
- *  the recovery copy-command). Mirrors `buildUpgradeCommand` but pins
+ *  the recovery copy-command). Mirrors `buildUpgrade命令` but pins
  *  `@<version>` instead of `@latest`. This is the exact command the user can
  *  paste into a terminal to roll back even when the app is bricked — so it
  *  must reflect the real package name + registry, never a hardcoded guess.

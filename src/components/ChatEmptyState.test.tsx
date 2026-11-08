@@ -8,7 +8,7 @@ describe('ChatEmptyState easter-egg trigger', () => {
 
   it('renders the title and icon with no prop', () => {
     render(<ChatEmptyState />)
-    expect(screen.getByText('Start a conversation')).toBeTruthy()
+    expect(screen.getByText('开始对话')).toBeTruthy()
     expect(document.querySelector('.chat-empty-icon')).toBeTruthy()
   })
 
@@ -97,7 +97,7 @@ describe('ChatEmptyState easter-egg trigger', () => {
 describe('ChatEmptyState env section', () => {
   it('renders the env node below the subtitle when provided', () => {
     render(<ChatEmptyState env={<div data-testid="env-section">MCP: github</div>} />)
-    const subtitle = screen.getByText('Type a message below, or paste an image to begin')
+    const subtitle = screen.getByText('在下方输入消息，或粘贴图片开始')
     const env = screen.getByTestId('env-section')
     // env follows the subtitle in DOM order, inside the .chat-empty stack
     expect(subtitle.compareDocumentPosition(env) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()

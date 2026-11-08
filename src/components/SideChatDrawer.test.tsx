@@ -87,7 +87,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 function makeSession(overrides: Partial<SessionInfo> = {}): SessionInfo {
   return {
     id: 'side-1',
-    title: 'Side Chat',
+    title: '侧边聊天',
     cwd: '/tmp/side',
     running: true,
     working: false,
@@ -127,7 +127,7 @@ function makeProps(opts: {
   const session = opts.session ?? makeSession()
   return {
     session,
-    parentSession: makeSession({ id: 'main-1', title: 'Main' }),
+    parentSession: makeSession({ id: 'main-1', title: '主' }),
     paging: opts.paging ?? noopPaging,
     permissions: opts.permissions ?? noopPermissions,
     toolGroupCards: true,
@@ -287,7 +287,7 @@ describe('SideChatDrawer (session-synchronizer migration)', () => {
     await act(() => sleep(50))
     const pill = container.querySelector('.chat-older-float-pill')
     expect(pill).toBeTruthy()
-    // Loading pill text (matches transcript-chrome's "Loading…"-ish copy).
+    // Loading pill text (matches transcript-chrome's "正在加载…"-ish copy).
     expect(pill?.textContent).toBeTruthy()
   })
 

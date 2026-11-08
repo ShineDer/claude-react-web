@@ -35,6 +35,18 @@ describe('generated app icons', () => {
     expect(pngSize(buf)).toEqual({ w: 192, h: 192 })
   })
 
+  it('public/icon-512.png is a real 512x512 PNG (PWA install icon)', async () => {
+    const buf = await read('public/icon-512.png')
+    expect([...buf.subarray(0, 4)]).toEqual(PNG_MAGIC)
+    expect(pngSize(buf)).toEqual({ w: 512, h: 512 })
+  })
+
+  it('public/icon-maskable.png is a real 512x512 PNG (PWA maskable)', async () => {
+    const buf = await read('public/icon-maskable.png')
+    expect([...buf.subarray(0, 4)]).toEqual(PNG_MAGIC)
+    expect(pngSize(buf)).toEqual({ w: 512, h: 512 })
+  })
+
   it('desktop/build/icon.png is a real 512x512 PNG (Linux)', async () => {
     const buf = await read('desktop/build/icon.png')
     expect([...buf.subarray(0, 4)]).toEqual(PNG_MAGIC)

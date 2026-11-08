@@ -13,7 +13,7 @@ import { api } from './useApi'
 import type { PermissionRequest, PermissionResolved } from '../types'
 
 export type PermissionDecision =
-  // `planTargetMode` only applies when approving a plan proposal (ExitPlanMode):
+  // `planTarget模式` only applies when approving a plan proposal (ExitPlanMode):
   // the execution mode the session switches to after the plan is approved.
   | { behavior: 'allow'; persistForSession: boolean; planTargetMode?: PlanTargetMode }
   // `interrupt` defaults to false (model re-plans). `interrupt: true` aborts

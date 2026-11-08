@@ -125,7 +125,7 @@ export function recordCrash(crash: CrashRecord): CrashRecord {
  *     `error` printed as the ErrorEvent itself, i.e. `e.error ?? e` took the
  *     event. Without this half, a real error that merely *begins* with the
  *     guard wording — a layout wrapper throwing `ResizeObserver loop …: re-pin
- *     failed`, say — would be swallowed at exactly the moment a white screen is
+ *     失败`, say — would be swallowed at exactly the moment a white screen is
  *     being diagnosed. It reflects engine behaviour rather than a spec
  *     guarantee, so it rides *alongside* the wording match, never in place of
  *     it.

@@ -34,7 +34,7 @@ import { useLayoutEffect, useRef } from 'react'
  * passes through the window capture path, so no React context provider is
  * needed.
  *
- * A `canClose` return of false still swallows the keypress (stopPropagation),
+ * A `can关闭` return of false still swallows the keypress (stopPropagation),
  * so a busy dialog's Escape doesn't close the overlay beneath it — matching the
  * old ConfirmDialog behavior of stopping propagation unconditionally.
  */
@@ -118,7 +118,7 @@ export function useEscapeStack(opts: {
   const active = opts.active ?? true
   // useLayoutEffect, not useEffect: the stack entry must exist BEFORE the
   // owning overlay moves focus into itself, or a parent focus trap observing
-  // the resulting `focusin` will find isFocusInsideOtherOverlay(target) false
+  // the resulting `focus输入` will find isFocusInsideOtherOverlay(target) false
   // and steal focus back. That mis-location is then read by the Escape
   // dispatch's containment scan, so Esc closes the wrong layer (a parent
   // modal instead of the popover on top). Layout-phase registration runs

@@ -79,7 +79,7 @@ describe('FindingsCard', () => {
 
   it('shows the empty placeholder when findings is missing or empty', () => {
     const { container } = render(<FindingsCard input={{ level: 'low' }} />)
-    expect(container.querySelector('.findings-empty')?.textContent).toMatch(/No structured findings/)
+    expect(container.querySelector('.findings-empty')?.textContent).toMatch(/此报告中无结构化发现/)
     expect(container.querySelector('.findings-count')?.textContent).toBe('0 findings')
   })
 
@@ -89,7 +89,7 @@ describe('FindingsCard', () => {
         input={{ level: 'medium', findings: [{ file: 'a.ts', summary: 'fixed already', verdict: 'CONFIRMED', outcome: 'fixed' }] }}
       />,
     )
-    expect(container.querySelector('.findings-chip.findings-outcome-fixed')?.textContent).toBe('fixed')
+    expect(container.querySelector('.findings-chip.findings-outcome-fixed')?.textContent).toBe('已修复')
     // A resolved outcome takes over BOTH the chip and the row severity — the
     // row must NOT carry the old verdict class (no red border on a fixed item).
     expect(container.querySelector('.finding-row.findings-outcome-fixed')).toBeTruthy()
@@ -106,7 +106,7 @@ describe('FindingsCard', () => {
     )
     // Both the verdict chip (confirmed) and a skipped marker render.
     expect(container.querySelector('.findings-chip.findings-verdict-confirmed')?.textContent).toBe('confirmed')
-    expect(container.querySelector('.findings-chip.findings-outcome-skipped')?.textContent).toBe('skipped')
+    expect(container.querySelector('.findings-chip.findings-outcome-skipped')?.textContent).toBe('已跳过')
     // The row keeps the confirmed severity (red), not a neutral outcome colour.
     expect(container.querySelector('.finding-row.findings-verdict-confirmed')).toBeTruthy()
     expect(container.querySelector('.finding-row.findings-outcome-fixed')).toBeNull()
@@ -118,7 +118,7 @@ describe('FindingsCard', () => {
         input={{ level: 'low', findings: [{ file: 'a.ts', summary: 'not a bug', verdict: 'PLAUSIBLE', outcome: 'no_change_needed' }] }}
       />,
     )
-    expect(container.querySelector('.findings-chip.findings-outcome-none')?.textContent).toBe('no change needed')
+    expect(container.querySelector('.findings-chip.findings-outcome-none')?.textContent).toBe('无需更改')
     // Resolved → no verdict chip, neutral row.
     expect(container.querySelector('.findings-chip.findings-verdict-plausible')).toBeNull()
     expect(container.querySelector('.finding-row.findings-verdict-plausible')).toBeNull()

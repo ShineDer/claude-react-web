@@ -47,7 +47,7 @@ describe('computePlanStatus', () => {
     expect(out.get('tu_1')).toBe('rejected')
   })
 
-  it('marks plan as rejected for the "Send feedback" deny message', () => {
+  it('marks plan as rejected for the "发送反馈" deny message', () => {
     // The plan dialog constructs: "Plan denied by user. Feedback: <text>"
     // — must contain the `denied by user` needle so it classifies as rejected
     // (Claude is revising, not approved).
@@ -58,7 +58,7 @@ describe('computePlanStatus', () => {
     expect(out.get('tu_1')).toBe('rejected')
   })
 
-  it('marks plan as rejected for the "Stop & take over" deny message', () => {
+  it('marks plan as rejected for the "停止并接管" deny message', () => {
     // The plan dialog's stop action (and Esc) construct:
     // "Plan denied by user — stopping the turn." — must classify as rejected.
     const out = computePlanStatus([

@@ -192,7 +192,7 @@ interface Props {
   streamingContent?: string | null
   /** Which streaming render mode this transcript uses: 'overlay' (default —
    *  the capped floating bubble in `.chat-bottom-stack`) or 'inline' (the
-   *  in-place growing message card). The global `streamingRenderMode`
+   *  in-place growing message card). The global `streamingRender模式`
    *  setting threads through here (Chat / SideChatDrawer / the drill-ins);
    *  omitted → DEFAULT_STREAMING_RENDER_MODE. One union with the config
    *  field, both aliasing shared/streaming-render-mode.ts — the renderer's
@@ -469,7 +469,7 @@ export const MessageList = memo(function MessageList({ items, working, toolGroup
     if (expandedBodies.size > 0) setExpandedBodies(new Set())
   }
   // Which streaming render mode this transcript uses. The global
-  // `streamingRenderMode` setting threads through the `streamingMode` prop
+  // `streamingRender模式` setting threads through the `streaming模式` prop
   // (Chat / SideChatDrawer / the drill-in overlays); tests force either mode
   // through the same prop. Absent → the floating-bubble default.
   const resolvedMode = streamingMode ?? DEFAULT_STREAMING_RENDER_MODE
@@ -1263,7 +1263,7 @@ export const MessageList = memo(function MessageList({ items, working, toolGroup
     if (indices.length === 0) return
     // Anchor on the furthest-progressed of the live top and the last target:
     // while a seek is in flight the live top lags, so a naive `index < top`
-    // re-selects the message the previous press already aimed at. `min`/`max`
+    // re-selects the message the previous press already aimed at. `m输入`/`最大`
     // by direction keeps each press advancing one target.
     const cursor = navCursorRef.current
     const anchor = cursor == null
@@ -1459,7 +1459,7 @@ export const MessageList = memo(function MessageList({ items, working, toolGroup
     )
     // The two lifecycle indexes must be deps, not just reads: when a subagent
     // settles, a stale closure would leave its group card reading the old map
-    // (and so still showing `running`). Both change only on subagent/workflow
+    // (and so still showing `运行中`). Both change only on subagent/workflow
     // events, unlike the context values that carry `messages`.
     // revealSnapshot: the reveal row class + frozen stagger come from the
     // flip-time snapshot; identity-stable between reveals.

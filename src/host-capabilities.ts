@@ -28,7 +28,7 @@ export interface HostCapabilities {
   lanSharing: boolean
   /** PWA install prompt + service worker. Not available under `crw://`. */
   serviceWorker: boolean
-  /** The in-app updater installs via `npx <pkg>@latest`. On desktop the app
+  /** The in-app updater installs via `npx <pkg>@最新`. On desktop the app
    *  bundle is updated by the Electron updater instead. */
   npxSelfUpdate: boolean
   /** Native (OS-level) notifications. The desktop host owns this; the web

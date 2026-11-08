@@ -113,11 +113,11 @@ function PluginPopover({ entry, execute }: { entry: ActiveResult; execute: (opts
               }
             }}
           >
-            Retry
+            重试
           </button>
         )}
         {dismissible && (
-          <button className="btn plugin-popover-close" onClick={dismiss} aria-label="Close">Close</button>
+          <button className="btn plugin-popover-close" onClick={dismiss} aria-label="关闭">关闭</button>
         )}
       </div>
     </motion.div>
@@ -159,7 +159,7 @@ function PluginDialog({ entry, execute: _execute }: { entry: ActiveResult; execu
               {a.label}
             </button>
           ))}
-          {(result.actions ?? []).length === 0 && <button className="btn" onClick={dismiss}>Close</button>}
+          {(result.actions ?? []).length === 0 && <button className="btn" onClick={dismiss}>关闭</button>}
         </div>
       </motion.div>
     </div>

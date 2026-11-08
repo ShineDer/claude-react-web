@@ -47,10 +47,10 @@ export interface LocalCommandContext {
   showHelp: (commands: SlashCommand[]) => void
   /** Clear this session's conversation context via the server control path. */
   clearSession: (sessionId: string) => void
-  /** `/handoff` this panel — POST /sessions/:id/handoff (summarize + spawn a
+  /** `/hand关` this panel — POST /sessions/:id/handoff (summarize + spawn a
    *  fresh seeded continuation session Y) and swap X → Y like /clear.
    *  Required (like /clear) so a missing pass-through fails loudly rather
-   *  than silently swallowing `/handoff`. */
+   *  than silently swallowing `/hand关`. */
   handoffSession: (sessionId: string) => void
 }
 

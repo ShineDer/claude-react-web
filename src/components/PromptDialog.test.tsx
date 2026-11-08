@@ -10,10 +10,10 @@ afterEach(() => {
 
 function baseProps(overrides: Partial<React.ComponentProps<typeof PromptDialog>> = {}) {
   return {
-    title: 'Rename group',
+    title: '重命名分组',
     message: 'Enter a new name.',
     defaultValue: 'old',
-    confirmLabel: 'Rename',
+    confirmLabel: '重命名',
     onConfirm: vi.fn(),
     onCancel: vi.fn(),
     ...overrides,
@@ -25,7 +25,7 @@ describe('PromptDialog', () => {
     const onConfirm = vi.fn()
     const { getByRole } = render(<PromptDialog {...baseProps({ onConfirm })} />)
     const input = getByRole('textbox') as HTMLInputElement
-    const confirmBtn = getByRole('button', { name: 'Rename' }) as HTMLButtonElement
+    const confirmBtn = getByRole('button', { name: '重命名' }) as HTMLButtonElement
     // Same value as default -> canSubmit false.
     expect(confirmBtn.disabled).toBe(true)
     fireEvent.change(input, { target: { value: 'new name' } })

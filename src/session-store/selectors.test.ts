@@ -129,7 +129,7 @@ describe('useSessionActiveWorktree', () => {
         type: 'REPLAY_REPLACE',
         messages: [
           asst('a1', [enter('x')]),
-          asst('a2', [{ type: 'tool_use', id: 'e1', name: 'Edit', input: { file_path: 'a.ts' } }]),
+          asst('a2', [{ type: 'tool_use', id: 'e1', name: '编辑', input: { file_path: 'a.ts' } }]),
         ],
         permissions: [],
       })

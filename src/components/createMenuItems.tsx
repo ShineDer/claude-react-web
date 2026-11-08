@@ -34,8 +34,8 @@ export function buildCreateMenuItems(opts: {
           title: 'New group',
           message: <p>Name the new group.</p>,
           defaultValue: '',
-          confirmLabel: 'Create',
-          placeholder: 'Group name',
+          confirmLabel: '创建',
+          placeholder: '分组名称',
           onConfirm: async (value) => {
             onCreateGroup(value)
           },

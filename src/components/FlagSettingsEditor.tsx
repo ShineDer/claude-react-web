@@ -113,7 +113,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
   const pushUp = useCallback(
     (overrides: Record<string, unknown>) => {
       // Merge with whatever the raw JSON already contains (so power-user
-      // keys like `hooks`, `model`, etc. survive structured edits).
+      // keys like `hooks`, `模型`, etc. survive structured edits).
       const base = parseSettings(value)
       const next = { ...base, ...overrides }
       // Remove empty permissions/env keys so they don't appear as `{}`.
@@ -200,14 +200,14 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
   }
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: 'permissions', label: 'Permissions' },
-    { id: 'env', label: 'Env' },
-    { id: 'raw', label: 'Raw JSON' },
+    { id: 'permissions', label: '权限' },
+    { id: 'env', label: '环境变量' },
+    { id: 'raw', label: '原始 JSON' },
   ]
 
   return (
     <div className="settings-field">
-      <label>Flag settings</label>
+      <label>标志设置</label>
       <div className="fse-tabs">
         {tabs.map((t) => (
           <button
@@ -225,7 +225,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
         {tab === 'permissions' && (
           <div className="fse-permissions">
             <div className="settings-field" style={{ marginBottom: 8 }}>
-              <label style={{ fontSize: 'var(--fs-sm)' }} htmlFor={uid + '-default-mode'}>Default mode</label>
+              <label style={{ fontSize: 'var(--fs-sm)' }} htmlFor={uid + '-default-mode'}>默认模式</label>
               <select
                 className="select"
                 id={uid + '-default-mode'}
@@ -242,7 +242,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
               <div style={{ flex: 1 }}>
                 <label style={{ fontSize: 'var(--fs-sm)', display: 'block', marginBottom: 4 }} htmlFor={uid + '-allow'}>
                   Allow rules
-                  <span className="hint" style={{ marginLeft: 6 }}>one per line</span>
+                  <span className="hint" style={{ marginLeft: 6 }}>每行一个</span>
                 </label>
                 <textarea
                   className="textarea"
@@ -258,7 +258,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
               <div style={{ flex: 1 }}>
                 <label style={{ fontSize: 'var(--fs-sm)', display: 'block', marginBottom: 4 }} htmlFor={uid + '-deny'}>
                   Deny rules
-                  <span className="hint" style={{ marginLeft: 6 }}>one per line</span>
+                  <span className="hint" style={{ marginLeft: 6 }}>每行一个</span>
                 </label>
                 <textarea
                   className="textarea"
@@ -273,7 +273,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
               </div>
             </div>
             <span className="hint" style={{ marginTop: 4 }}>
-              Rules use <code>Tool(pattern)</code> syntax. Leave empty to use the session&apos;s default permissions.
+              Rules use <code>工具（模式）</code> syntax. Leave empty to use the session&apos;s default permissions.
             </span>
           </div>
         )}
@@ -285,7 +285,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
                   <input
                     className="input"
                     style={{ flex: 1, fontSize: 'var(--fs-sm)' }}
-                    aria-label="Environment variable key"
+                    aria-label="环境变量名"
                     placeholder="key"
                     value={row.key}
                     onChange={(e) => updateEnvRow(row.id, 'key', e.target.value)}
@@ -294,7 +294,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
                   <input
                     className="input"
                     style={{ flex: 1, fontSize: 'var(--fs-sm)' }}
-                    aria-label="Environment variable value"
+                    aria-label="环境变量值"
                     placeholder="value"
                     value={row.value}
                     onChange={(e) => updateEnvRow(row.id, 'value', e.target.value)}
@@ -306,8 +306,8 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
                     style={{ fontSize: 'var(--fs-xs)', padding: '2px 6px' }}
                     onClick={() => removeEnvRow(row.id)}
                     disabled={disabled}
-                    title="Remove row"
-                    aria-label="Remove row"
+                    title="移除行"
+                    aria-label="移除行"
                   >
                     <IconX size={12} />
                   </button>
@@ -324,7 +324,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
               + Add variable
             </button>
             <span className="hint" style={{ marginTop: 4 }}>
-              Environment variables passed to the SDK subprocess.
+              传递给 SDK 子进程的环境变量。
             </span>
           </div>
         )}
@@ -336,7 +336,7 @@ export function FlagSettingsEditor({ value, onChange, disabled }: Props) {
               value={value}
               onChange={(e) => onChange(e.target.value)}
               disabled={disabled}
-              aria-label="Flag settings JSON"
+              aria-label="标志设置 JSON"
               placeholder={'{"permissions": {...}, "env": {...}}'}
               style={{ fontFamily: 'var(--mono)', fontSize: 'var(--fs-sm)' }}
             />

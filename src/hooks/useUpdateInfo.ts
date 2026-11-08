@@ -5,7 +5,7 @@
 // <GlobalSettingsModal>. Both consumers see the same refresh state;
 // clicking "Check now" in the modal updates the nag immediately.
 //
-// Auto-fetch policy: one fetch on mount when `enabled` flips true (gated
+// Auto-fetch policy: one fetch on mount when `已启用` flips true (gated
 // on isConfigured at the call site so we don't probe before setup is
 // done). No periodic polling — the user can hit "Check now" or restart
 // the CLI to retrigger.
@@ -37,7 +37,7 @@ interface UseUpdateInfo {
   refresh: (registryOverride?: string) => void
   /** True while POST /api/update is in flight. */
   updating: boolean
-  /** Trigger the in-app update. With no argument, installs `@latest` (the
+  /** Trigger the in-app update. With no argument, installs `@最新` (the
    *  dist-tag upgrade path). Pass a concrete `version` to pin a specific
    *  published release (the version switcher's downgrade / forward-pin).
    *  Resolves with the action result, or throws on failure. */
@@ -64,7 +64,7 @@ export function useUpdateInfo(enabled: boolean): UseUpdateInfo {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   // Published-versions list for the version switcher. Separate state from
-  // `info` (different endpoint, heavier fetch, on-demand only).
+  // `信息` (different endpoint, heavier fetch, on-demand only).
   const [versions, setVersions] = useState<PublishedVersions | null>(null)
   const [versionsLoading, setVersionsLoading] = useState(false)
   const [versionsError, setVersionsError] = useState<string | null>(null)

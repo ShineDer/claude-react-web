@@ -37,15 +37,18 @@ function toolRequest(): Extract<PermissionRequest, { kind: 'permission' }> {
   }
 }
 
-/** Text of every footer button, in DOM order. */
+/** Text of the three plan-approval buttons, in DOM order. */
 function buttonLabels(container: HTMLElement): string[] {
   return within(container)
     .getAllByRole('button')
     .map((b) => b.textContent?.trim() ?? '')
-    // Drop the "Show raw input" toggle and the new deny actions; the plan
-    // ordering tests only assert on Approve labels.
-    .filter((t) => t.startsWith('Approve'))
+    // Drop the "Show raw input" toggle and the deny actions; the plan ordering
+    // tests only assert on the approve labels. The UI copy is Chinese, so this
+    // matches the approve labels by name rather than by an English prefix.
+    .filter((t) => APPROVE_LABELS.includes(t.replace(/（当前）$/, '')))
 }
+
+const APPROVE_LABELS = ['批准并自动接受编辑', '批准并逐项审阅', '批准并跳过']
 
 describe('PermissionDialog plan approval', () => {
   it('promotes the option matching the current mode to the primary (first) button', () => {
@@ -54,9 +57,9 @@ describe('PermissionDialog plan approval', () => {
     )
     const labels = buttonLabels(container)
     // bypass option floated to front and marked (current).
-    expect(labels[0]).toBe('Approve & bypass (current)')
+    expect(labels[0]).toBe('批准并跳过（当前）')
     // The primary button carries btn-primary.
-    const primary = within(container).getByRole('button', { name: /Approve & bypass/ })
+    const primary = within(container).getByRole('button', { name: /批准并跳过/ })
     expect(primary.className).toContain('btn-primary')
   })
 
@@ -64,7 +67,7 @@ describe('PermissionDialog plan approval', () => {
     const { container } = render(
       <PermissionDialog request={planRequest()} onDecide={vi.fn()} currentMode={'acceptEdits'} />,
     )
-    expect(buttonLabels(container)[0]).toBe('Approve & auto-accept edits (current)')
+    expect(buttonLabels(container)[0]).toBe('批准并自动接受编辑（当前）')
   })
 
   it('falls back to the default ordering when current mode has no plan option (e.g. plan/dontAsk)', () => {
@@ -73,8 +76,8 @@ describe('PermissionDialog plan approval', () => {
     )
     // No option equals 'plan', so original order is preserved; first is acceptEdits.
     const labels = buttonLabels(container)
-    expect(labels[0]).toBe('Approve & auto-accept edits')
-    expect(labels.some((l) => l.includes('(current)'))).toBe(false)
+    expect(labels[0]).toBe('批准并自动接受编辑')
+    expect(labels.some((l) => l.includes('（当前）'))).toBe(false)
   })
 
   it('passes the chosen execution mode through onDecide', () => {
@@ -82,7 +85,7 @@ describe('PermissionDialog plan approval', () => {
     const { container } = render(
       <PermissionDialog request={planRequest()} onDecide={onDecide} currentMode={'default'} />,
     )
-    fireEvent.click(within(container).getByRole('button', { name: /Approve & bypass/ }))
+    fireEvent.click(within(container).getByRole('button', { name: /批准并跳过/ }))
     expect(onDecide).toHaveBeenCalledWith({
       behavior: 'allow',
       persistForSession: false,
@@ -97,8 +100,8 @@ describe('PermissionDialog plan approval', () => {
     const labels = within(container)
       .getAllByRole('button')
       .map((b) => b.textContent?.trim() ?? '')
-    expect(labels).toContain('Allow once')
-    expect(labels).toContain('Deny')
+    expect(labels).toContain('允许一次')
+    expect(labels).toContain('拒绝')
     expect(labels.some((l) => l.startsWith('Approve'))).toBe(false)
   })
 
@@ -106,16 +109,16 @@ describe('PermissionDialog plan approval', () => {
     const { container } = render(
       <PermissionDialog request={planRequest()} onDecide={vi.fn()} currentMode={'default'} />,
     )
-    expect(within(container).getByPlaceholderText('Tell Claude what to change')).toBeTruthy()
-    expect(within(container).getByRole('button', { name: /Send feedback/i })).toBeTruthy()
-    expect(within(container).getByRole('button', { name: /Stop & take over/i })).toBeTruthy()
+    expect(within(container).getByPlaceholderText('告诉 Claude 要改什么')).toBeTruthy()
+    expect(within(container).getByRole('button', { name: /发送反馈/i })).toBeTruthy()
+    expect(within(container).getByRole('button', { name: /停止并接管/i })).toBeTruthy()
   })
 
   it('disables Send feedback when the input is empty', () => {
     const { container } = render(
       <PermissionDialog request={planRequest()} onDecide={vi.fn()} currentMode={'default'} />,
     )
-    const btn = within(container).getByRole('button', { name: /Send feedback/i }) as HTMLButtonElement
+    const btn = within(container).getByRole('button', { name: /发送反馈/i }) as HTMLButtonElement
     expect(btn.disabled).toBe(true)
   })
 
@@ -124,9 +127,9 @@ describe('PermissionDialog plan approval', () => {
     const { container } = render(
       <PermissionDialog request={planRequest()} onDecide={onDecide} currentMode={'default'} />,
     )
-    const input = within(container).getByPlaceholderText('Tell Claude what to change') as HTMLTextAreaElement
+    const input = within(container).getByPlaceholderText('告诉 Claude 要改什么') as HTMLTextAreaElement
     fireEvent.change(input, { target: { value: 'add more tests' } })
-    fireEvent.click(within(container).getByRole('button', { name: /Send feedback/i }))
+    fireEvent.click(within(container).getByRole('button', { name: /发送反馈/i }))
     expect(onDecide).toHaveBeenCalledWith({
       behavior: 'deny',
       message: 'Plan denied by user. Feedback: add more tests',
@@ -138,7 +141,7 @@ describe('PermissionDialog plan approval', () => {
     const { container } = render(
       <PermissionDialog request={planRequest()} onDecide={onDecide} currentMode={'default'} />,
     )
-    fireEvent.click(within(container).getByRole('button', { name: /Stop & take over/i }))
+    fireEvent.click(within(container).getByRole('button', { name: /停止并接管/i }))
     expect(onDecide).toHaveBeenCalledWith({
       behavior: 'deny',
       message: 'Plan denied by user — stopping the turn.',
@@ -198,7 +201,7 @@ describe('PermissionDialog minimize button', () => {
     const { container } = render(
       <PermissionDialog request={toolRequest()} onDecide={vi.fn()} onMinimize={onMinimize} />,
     )
-    const btn = within(container).getByRole('button', { name: 'Minimize' })
+    const btn = within(container).getByRole('button', { name: '最小化' })
     expect(btn).toBeTruthy()
   })
 
@@ -206,7 +209,7 @@ describe('PermissionDialog minimize button', () => {
     const { container } = render(
       <PermissionDialog request={toolRequest()} onDecide={vi.fn()} />,
     )
-    expect(within(container).queryByRole('button', { name: 'Minimize' })).toBeNull()
+    expect(within(container).queryByRole('button', { name: '最小化' })).toBeNull()
   })
 
   it('clicking the Minimize button calls onMinimize', () => {
@@ -214,7 +217,7 @@ describe('PermissionDialog minimize button', () => {
     const { container } = render(
       <PermissionDialog request={toolRequest()} onDecide={vi.fn()} onMinimize={onMinimize} />,
     )
-    fireEvent.click(within(container).getByRole('button', { name: 'Minimize' }))
+    fireEvent.click(within(container).getByRole('button', { name: '最小化' }))
     expect(onMinimize).toHaveBeenCalledTimes(1)
   })
 
@@ -223,7 +226,7 @@ describe('PermissionDialog minimize button', () => {
     const { container } = render(
       <PermissionDialog request={planRequest()} onDecide={vi.fn()} onMinimize={onMinimize} />,
     )
-    expect(within(container).getByRole('button', { name: 'Minimize' })).toBeTruthy()
+    expect(within(container).getByRole('button', { name: '最小化' })).toBeTruthy()
   })
 })
 
@@ -235,7 +238,7 @@ describe('PermissionDialog security hints', () => {
         onDecide={vi.fn()}
       />,
     )
-    expect(within(container).queryByRole('button', { name: 'Allow for session' })).toBeNull()
+    expect(within(container).queryByRole('button', { name: '本次会话允许' })).toBeNull()
     expect(container.textContent).toContain("isn't offered")
   })
 
@@ -246,14 +249,14 @@ describe('PermissionDialog security hints', () => {
         onDecide={vi.fn()}
       />,
     )
-    expect(within(container).getByRole('button', { name: 'Allow for session' })).toBeTruthy()
+    expect(within(container).getByRole('button', { name: '本次会话允许' })).toBeTruthy()
   })
 
   it('opens on the decline option when defaultToNo is set', () => {
     const { container } = render(
       <PermissionDialog request={{ ...toolRequest(), defaultToNo: true }} onDecide={vi.fn()} />,
     )
-    const deny = within(container).getByRole('button', { name: 'Deny' })
+    const deny = within(container).getByRole('button', { name: '拒绝' })
     expect(document.activeElement).toBe(deny)
   })
 

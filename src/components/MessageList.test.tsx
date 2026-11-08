@@ -373,7 +373,7 @@ describe('MessageList', () => {
       <MessageList items={[]} />,
     )
     // Default empty state renders a titled stack (not the old bare string).
-    expect(container.textContent).toContain('Start a conversation')
+    expect(container.textContent).toContain('开始对话')
     expect(container.querySelector('.chat-empty')).toBeTruthy()
   })
 
@@ -385,7 +385,7 @@ describe('MessageList', () => {
       <MessageList items={[]} expectHistory replayReady={false} />,
     )
     expect(container.querySelector('.chat-messages-empty')).toBeNull()
-    expect(container.textContent).not.toContain('Start a conversation')
+    expect(container.textContent).not.toContain('开始对话')
   })
 
   it('shows the empty state once replay lands even with expectHistory (history was empty)', () => {
@@ -399,7 +399,7 @@ describe('MessageList', () => {
   })
 
   it('does NOT show the new-chat empty state when items exist but every row is filtered out', () => {
-    // "Start a conversation" is for a transcript with NO data. A session whose
+    // "开始对话" is for a transcript with NO data. A session whose
     // only frame is a dropped orphan result (e.g. a spawn-failure footer) HAS
     // data — it just renders no rows after the orphan-`result` guard. Showing
     // the new-chat empty state there would tell the user this is a fresh chat,
@@ -409,7 +409,7 @@ describe('MessageList', () => {
       <MessageList items={toItems(msgs as SdkMessage[])} expectHistory replayReady />,
     )
     expect(container.querySelector('.chat-empty')).toBeNull()
-    expect(container.textContent).not.toContain('Start a conversation')
+    expect(container.textContent).not.toContain('开始对话')
   })
 
   // Keep this the FIRST test that opens the game: the lazy component's payload
@@ -440,7 +440,7 @@ describe('MessageList', () => {
     // React.lazy: the game mounts once its chunk has resolved.
     await waitFor(() => expect(container.querySelector('.easter-egg-game')).toBeTruthy())
     // exit returns to the empty state
-    fireEvent.click(container.querySelector('[aria-label="Exit game"]') as HTMLElement)
+    fireEvent.click(container.querySelector('[aria-label="退出游戏"]') as HTMLElement)
     expect(container.querySelector('.easter-egg-game')).toBeNull()
     expect(container.querySelector('.chat-empty')).toBeTruthy()
   })
@@ -3562,7 +3562,7 @@ describe('MessageList', () => {
       <MessageList items={toItems(msgs as SdkMessage[])} />,
     )
 
-    expect(container.querySelector('.result-meta')?.textContent).toBe('3 turns \u00b7 129.1s \u00b7 337k in \u00b7 3.1k out \u00b7 $18.8910')
+    expect(container.querySelector('.result-meta')?.textContent).toBe('3 轮 \u00b7 129.1s \u00b7 入 337k \u00b7 出 3.1k \u00b7 $18.8910')
   })
 
   describe('orphan result rows', () => {
@@ -4140,7 +4140,7 @@ describe('TaskOutput tool card', () => {
     expect(container.querySelector('.taskoutput-tool-to')?.getAttribute('title')).toBe('bash-7')
     // blocking chip (accent) + timeout rendered as seconds.
     const chips = Array.from(container.querySelectorAll('.tool-chip')).map((c) => c.textContent)
-    expect(chips).toContain('blocking')
+    expect(chips).toContain('阻塞')
     expect(chips.some((c) => c === '180s')).toBe(true)
     // No body of its own — the result section is rendered separately by ToolCard.
     expect(container.querySelector('.tool-card-body')).toBeNull()
@@ -4165,9 +4165,9 @@ describe('TaskOutput tool card', () => {
       <MessageList items={toItems(msgs as SdkMessage[])} />,
     )
     const chips = Array.from(container.querySelectorAll('.tool-chip')).map((c) => c.textContent)
-    // No block field → neither "blocking" nor "non-blocking" chip.
-    expect(chips).not.toContain('blocking')
-    expect(chips).not.toContain('non-blocking')
+    // No block field → neither "阻塞" nor "非阻塞" chip.
+    expect(chips).not.toContain('阻塞')
+    expect(chips).not.toContain('非阻塞')
     // Sub-second timeout stays in ms.
     expect(chips.some((c) => c === '500ms')).toBe(true)
   })
@@ -4208,7 +4208,7 @@ describe('system error divider', () => {
 
     const mark = divider?.querySelector('.result-mark')
     expect(mark?.textContent).toContain('✕')
-    expect(mark?.textContent).toContain('rate limited')
+    expect(mark?.textContent).toContain('已限流')
 
     const meta = divider?.querySelector('.result-meta')
     expect(meta?.textContent).toContain('send again')
@@ -4305,7 +4305,7 @@ describe('system error divider', () => {
 
     const mark = divider?.querySelector('.result-mark')
     expect(mark?.textContent).toContain('✕')
-    expect(mark?.textContent).toContain('error')
+    expect(mark?.textContent).toContain('错误')
 
     // Meta carries the raw text (may be ellipsis-truncated in the DOM, but
     // textContent holds the full string); title holds it verbatim too.
@@ -4348,7 +4348,7 @@ describe('system error divider', () => {
 
     const mark = divider?.querySelector('.result-mark')
     expect(mark?.textContent).toContain('✕')
-    expect(mark?.textContent).toContain('rate limited')
+    expect(mark?.textContent).toContain('已限流')
 
     const meta = divider?.querySelector('.result-meta')
     expect(meta?.textContent).toContain('send again')
@@ -4571,7 +4571,7 @@ describe('memory_recall rendering', () => {
     expect(card?.textContent).toContain('synthesized')
     const entry = card?.querySelector('.memory-recall-entry--synthesis')
     expect(entry).toBeTruthy()
-    expect(entry?.querySelector('.memory-recall-name')?.textContent).toBe('Synthesized summary')
+    expect(entry?.querySelector('.memory-recall-name')?.textContent).toBe('综合摘要')
     // The sentinel path itself must never be shown as a name/title.
     expect(entry?.getAttribute('title')).toBeNull()
     // Source dir shown as muted line; body markdown rendered.
@@ -4788,7 +4788,7 @@ describe('worktree markers', () => {
     const { container } = render(<MessageList items={items} />)
     const marker = container.querySelector('.worktree-marker')
     expect(marker).toBeTruthy()
-    expect(marker?.textContent).toContain('Exited worktree')
+    expect(marker?.textContent).toContain('已退出 worktree')
     expect(marker?.textContent).toContain('kept on disk')
   })
 })

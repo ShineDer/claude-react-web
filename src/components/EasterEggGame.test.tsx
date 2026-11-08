@@ -8,7 +8,7 @@ describe('EasterEggGame', () => {
     const onExit = vi.fn()
     const { container, unmount } = render(<EasterEggGame onExit={onExit} />)
     expect(container.querySelector('canvas')).toBeTruthy()
-    fireEvent.click(screen.getByLabelText('Exit game'))
+    fireEvent.click(screen.getByLabelText('退出游戏'))
     expect(onExit).toHaveBeenCalledTimes(1)
     unmount()
   })
@@ -47,7 +47,7 @@ describe('updateRunning scoring', () => {
       }
       updateRunning(s)
       // `updateRunning` may mutate s.status to 'gameOver', but TS keeps the
-      // post-assignment narrowing of 'running' since it can't see through the
+      // post-assignment narrowing of '运行中' since it can't see through the
       // call — cast to widen.
       if ((s.status as string) === 'gameOver') break
     }

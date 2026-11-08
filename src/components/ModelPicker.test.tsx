@@ -35,9 +35,9 @@ function makeProps(overrides: Partial<Parameters<typeof ModelPicker>[0]> = {}) {
 describe('ModelPicker', () => {
   it('renders a Model Groups group before Models', () => {
     render(<ModelPicker {...makeProps()} />)
-    expect(screen.getByText('Model Groups')).toBeTruthy()
+    expect(screen.getByText('模型分组')).toBeTruthy()
     fireEvent.click(screen.getByText('Flagship'))
-    expect(screen.getByText('Models')).toBeTruthy()
+    expect(screen.getByText('模型')).toBeTruthy()
   })
 
   it('calls onSelectGroup with the group id', () => {

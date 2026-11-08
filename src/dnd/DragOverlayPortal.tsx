@@ -1,9 +1,9 @@
 // DragOverlay rendered through a portal to document.body.
 //
 // dnd-kit's DragOverlay does NOT portal — it renders in place as
-// `position: fixed`. That is viewport-relative ONLY while every ancestor is
+// `position: 已修复`. That is viewport-relative ONLY while every ancestor is
 // untransformed; any ancestor with a non-none `transform` (e.g. the global
-// settings modal's persistent `overlay-panel-in` fill, or any scale-in
+// settings modal's persistent `overlay-panel-输入` fill, or any scale-in
 // entrance) becomes the containing block instead, and the ghost's
 // viewport-space `top/left` are then measured from that ancestor — the ghost
 // jumps by the ancestor's offset and drifts further as inner scroll

@@ -60,7 +60,7 @@ export function UpdateDialog({ open, mode, info, updating, onUpdate, onClose }: 
 
   const latest = info.latest
   /** The title's version: the range's own upper bound, falling back to the
-   *  running version while no probe has produced a `latest` yet. */
+   *  running version while no probe has produced a `最新` yet. */
   const notesVersion = notesTo ?? info.current
   const deprecationMsg =
     typeof info.deprecated === 'string'
@@ -97,7 +97,7 @@ export function UpdateDialog({ open, mode, info, updating, onUpdate, onClose }: 
 
   const headerTitle =
     mode === 'deprecation'
-      ? `Version ${info.current} is deprecated`
+      ? `版本 ${info.current} 已弃用`
       : `What's new in ${notesVersion}`
 
   // The empty state, decided in one place: an empty list means different things
@@ -122,7 +122,7 @@ export function UpdateDialog({ open, mode, info, updating, onUpdate, onClose }: 
     <Overlay
       // Always the portalled `modal` layer. The panel-scoped `perm` layer is
       // `position: absolute; z-index: 7` and cannot paint above a portalled
-      // modal (`.modal-backdrop`, `--z-modal` = 2000) — and this dialog is
+      // modal (`.modal-back丢弃`, `--z-modal` = 2000) — and this dialog is
       // opened both from the About tab INSIDE GlobalSettingsModal and from the
       // toast while that modal may be open, so on `perm` it rendered
       // underneath: invisible, while its focus trap still took focus. One
@@ -141,7 +141,7 @@ export function UpdateDialog({ open, mode, info, updating, onUpdate, onClose }: 
           {mode === 'deprecation' && <IconAlertTriangle size={16} aria-hidden />}
           {headerTitle}
         </h3>
-        <button type="button" className="btn btn-icon" onClick={onClose} aria-label="Close">
+        <button type="button" className="btn btn-icon" onClick={onClose} aria-label="关闭">
           <IconX size={16} />
         </button>
       </div>
@@ -154,7 +154,7 @@ export function UpdateDialog({ open, mode, info, updating, onUpdate, onClose }: 
           </div>
         )}
 
-        {loading && <div className="update-dialog-loading">Loading release notes...</div>}
+        {loading && <div className="update-dialog-loading">正在加载发布说明...</div>}
 
         {empty && (
           <p className="update-dialog-empty">
@@ -213,16 +213,16 @@ export function UpdateDialog({ open, mode, info, updating, onUpdate, onClose }: 
                 onClick={() => void runUpdate()}
                 disabled={updating}
               >
-                {updating ? 'Updating...' : 'Update now'}
+                {updating ? '更新中...' : '立即更新'}
               </button>
             )}
-            <button type="button" className="btn" onClick={copyCommand} title="Copy upgrade command">
+            <button type="button" className="btn" onClick={copyCommand} title="复制升级命令">
               {copied ? (
                 <>
-                  <IconCheck size={12} aria-hidden /> Copied
+                  <IconCheck size={12} aria-hidden /> 已复制
                 </>
               ) : (
-                'Copy command'
+                '复制命令'
               )}
             </button>
             <code className="update-dialog-cmd">
@@ -233,7 +233,7 @@ export function UpdateDialog({ open, mode, info, updating, onUpdate, onClose }: 
         <span className="update-dialog-footer-spacer" />
         {updateError && <span className="update-dialog-error">{updateError}</span>}
         <button type="button" className="btn" onClick={onClose}>
-          {isCurrent ? 'Close' : 'Later'}
+          {isCurrent ? '关闭' : '稍后'}
         </button>
       </div>
     </Overlay>

@@ -51,3 +51,17 @@ export const SDK_FORWARDED_PERMISSION_MODES = ['plan', 'auto'] as const satisfie
 export function isSdkForwardedMode(mode: PermissionMode): boolean {
   return (SDK_FORWARDED_PERMISSION_MODES as readonly string[]).includes(mode)
 }
+
+/** The mode actually handed to the SDK whenever the host wants to (re)assert
+ *  one — used by BOTH forward sites (spawn and mid-session switching), which
+ *  must agree. An unset mode, and an explicit `'default'`, both resolve to
+ *  `'auto'`: the session starts on the CLI's native classifier rather than the
+ *  broker's ask-every-time mode. A bare `settings.json` `defaultMode` cannot
+ *  deliver this, because forwarding an explicit `'default'` overrides the
+ *  CLI's own settings lookup. Every other non-forwarded mode (acceptEdits,
+ *  bypassPermissions, dontAsk) still resolves to `'default'` so the broker
+ *  stays authoritative and any previously-forwarded CLI-side mode is released. */
+export function resolveSdkForwardMode(mode?: PermissionMode): PermissionMode {
+  if (!mode || mode === 'default') return 'auto'
+  return isSdkForwardedMode(mode) ? mode : 'default'
+}

@@ -18,7 +18,7 @@ describe('SessionProfileSelect', () => {
     const onSessionUpdate = vi.fn()
     render(<SessionProfileSelect session={{ id: 's1', profileId: 'a' } as never} onSessionUpdate={onSessionUpdate} />)
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'b' } })
-    fireEvent.click(screen.getByText('Restart now'))
+    fireEvent.click(screen.getByText('立即重启'))
     await vi.waitFor(() => {
       expect(api.post).toHaveBeenCalledWith('/sessions/s1/profile', { profileId: 'b', apply: 'now' })
     })

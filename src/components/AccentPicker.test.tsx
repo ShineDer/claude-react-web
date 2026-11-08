@@ -14,7 +14,7 @@ describe('AccentSwatchGrid', () => {
   it('with allowDefault, offers the global-default swatch and reports undefined', () => {
     const onChange = vi.fn()
     render(<AccentSwatchGrid value="#7b8cde" onChange={onChange} allowDefault />)
-    fireEvent.click(screen.getByRole('radio', { name: 'Use global accent' }))
+    fireEvent.click(screen.getByRole('radio', { name: '使用全局强调色' }))
     expect(onChange).toHaveBeenCalledWith(undefined)
   })
 

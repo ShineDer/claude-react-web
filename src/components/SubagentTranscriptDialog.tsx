@@ -53,9 +53,9 @@ export const SubagentTranscriptDialog = function SubagentTranscriptDialog({
           <span className="subagent-transcript-title" title={agentId}>
             {label || agentId}
           </span>
-          <span className="subagent-transcript-sub">disk transcript</span>
+          <span className="subagent-transcript-sub">磁盘记录</span>
           <span className="subagent-transcript-spacer" />
-          <button type="button" className="subagent-transcript-close" onClick={onClose} aria-label="Close">
+          <button type="button" className="subagent-transcript-close" onClick={onClose} aria-label="关闭">
             <IconX size={14} />
           </button>
         </header>
@@ -87,7 +87,7 @@ export const SubagentTranscriptDialog = function SubagentTranscriptDialog({
                 streamingMode={streamingMode}
                 emptyStateContent={(
                   <div className="chat-messages-empty-side">
-                    <div className="chat-messages-empty-title">No transcript on disk for this subagent.</div>
+                    <div className="chat-messages-empty-title">此子 agent 在磁盘上无对话记录。</div>
                     <div className="chat-messages-empty-hint">
                       Background subagents write their transcript when they run — nothing was recorded.
                     </div>

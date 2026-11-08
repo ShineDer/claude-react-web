@@ -48,7 +48,7 @@ function NewButton(props: {
   return (
     <CreateMenuButton
       className="titlebar-tab-new btn btn-icon"
-      aria-label="Create"
+      aria-label="创建"
       title="New session or group"
       onNewSession={props.onNewSession}
       onCreateGroup={props.onCreateGroup}
@@ -78,7 +78,7 @@ export const DesktopTitlebarTabs = memo(function DesktopTitlebarTabs({
   if (sessions.length === 0) {
     // Still render the + so the empty titlebar offers a create path.
     return (
-      <div className="titlebar-tabs" role="group" aria-label="Open sessions">
+      <div className="titlebar-tabs" role="group" aria-label="打开会话">
         <NewButton
           onNewSession={onNewSession}
           onCreateGroup={onCreateGroup}
@@ -93,7 +93,7 @@ export const DesktopTitlebarTabs = memo(function DesktopTitlebarTabs({
     // role="group" not "tablist": the ARIA tab pattern promises Left/Right
     // roving focus, which this strip does not implement (same call as
     // App.tsx's .main-toolbar). Tabs remain clickable/focusable buttons.
-    <div className="titlebar-tabs" role="group" aria-label="Open sessions">
+    <div className="titlebar-tabs" role="group" aria-label="打开会话">
       {sessions.map((s) => {
         const selected = s.id === focusedId
         const label = tabLabel(s)
@@ -127,7 +127,7 @@ export const DesktopTitlebarTabs = memo(function DesktopTitlebarTabs({
               type="button"
               className="titlebar-tab-close"
               aria-label={`Close ${label}`}
-              title="Close panel"
+              title="关闭面板"
               onClick={(e) => {
                 e.stopPropagation()
                 onClose(s.id)

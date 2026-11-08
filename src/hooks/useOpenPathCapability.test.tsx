@@ -16,10 +16,10 @@ const { useOpenPathCapability, __resetOpenPathCapabilityForTest } = await import
 
 /** The hook's value is rendered into the DOM (an outer-variable assignment
  *  during render would violate the react-hooks purity rules the repo lints
- *  on): 'pending' → probe in flight, 'local' / 'remote' → settled. */
+ *  on): 'pending' → probe in flight, 'local' / '远程' → settled. */
 function Probe() {
   const local = useOpenPathCapability()
-  return <div data-testid="cap">{local === null ? 'pending' : local ? 'local' : 'remote'}</div>
+  return <div data-testid="cap">{local === null ? 'pending' : local ? 'local' : '远程'}</div>
 }
 
 function capText(): string {
@@ -45,19 +45,19 @@ describe('useOpenPathCapability', () => {
   it('caches one probe for the page lifetime (second mount does not refetch)', async () => {
     getMock.mockResolvedValue({ local: false })
     render(<Probe />)
-    await waitFor(() => expect(capText()).toBe('remote'))
+    await waitFor(() => expect(capText()).toBe('远程'))
     expect(getMock).toHaveBeenCalledTimes(1)
     cleanup()
     render(<Probe />)
     expect(getMock).toHaveBeenCalledTimes(1)
-    expect(capText()).toBe('remote')
+    expect(capText()).toBe('远程')
     cleanup()
   })
 
   it('maps a failed probe to false (buttons hidden) but retries on the next mount', async () => {
     getMock.mockRejectedValueOnce(new Error('network down'))
     render(<Probe />)
-    await waitFor(() => expect(capText()).toBe('remote'))
+    await waitFor(() => expect(capText()).toBe('远程'))
     expect(getMock).toHaveBeenCalledTimes(1)
     cleanup()
     // Next mount probes again — the failure was NOT cached.

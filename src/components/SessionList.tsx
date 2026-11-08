@@ -96,7 +96,7 @@ interface Props {
   /** Server-configured model list (from /api/config). Shown first in the
    *  new-session dialog's Model picker so the user always has a baseline. */
   serverModels?: string[]
-  /** Model Groups from the same /config snapshot as `serverModels`. */
+  /** Model Groups from the same /config snapshot as `server模型`. */
   modelGroups?: ModelGroupConfig[]
   /** Ids currently being resumed — item is disabled while the POST is in flight. */
   resumingIds?: Set<string>
@@ -382,7 +382,7 @@ export const SessionList = memo(function SessionList({
 
   /** Commit an inline rename.
    *
-   *  `previousTitle` is the session's CURRENT title at commit time (the card
+   *  `previous标题` is the session's CURRENT title at commit time (the card
    *  passes `s.title`, which tracks the WS broadcast), not the snapshot taken
    *  at startRename — a rename that re-asserts the value seen at open must
    *  still be sent if some other surface (SettingsPanel's title field, fork,
@@ -420,7 +420,7 @@ export const SessionList = memo(function SessionList({
         renameOpenedRef.current = next
         renameOwnerRef.current = id
       }
-      toast.error(`Couldn't rename session: ${(err as Error).message}`)
+      toast.error(`重命名会话失败：${(err as Error).message}`)
     }
   }, [toast])
 
@@ -545,7 +545,7 @@ export const SessionList = memo(function SessionList({
   )
 
   /** Resolve which ordered list a session belongs to and, when it lives in
-   *  a group, that group's id. The flat view orders `visibleSessions`; the
+   *  a group, that group's id. The flat view orders `visible会话`; the
    *  grouped view splits across sections. Returns the sibling list (in
    *  display order) plus the containing groupId (undefined for the flat
    *  view or the Ungrouped section). */
@@ -622,7 +622,7 @@ export const SessionList = memo(function SessionList({
           }}
           onDragLeave={() => setDropZoneActive(false)}
           onDrop={(e) => void handleFolderDrop(e)}
-          title="New session (Alt+N) · drop a folder here to prefill cwd"
+          title="新会话 (Alt+N) · 拖放文件夹到此处以预填 cwd"
         >
           + New session
         </button>
@@ -636,8 +636,8 @@ export const SessionList = memo(function SessionList({
           <input
             className="input"
             type="text"
-            aria-label="Filter sessions"
-            placeholder="Filter by title / cwd / id..."
+            aria-label="筛选会话"
+            placeholder="按标题 / cwd / id 筛选..."
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             tabIndex={sessions.length > 3 || filter ? 0 : -1}
@@ -647,8 +647,8 @@ export const SessionList = memo(function SessionList({
               type="button"
               className="session-filter-clear"
               onClick={() => setFilter('')}
-              aria-label="Clear filter"
-              title="Clear"
+              aria-label="清除筛选"
+              title="清除"
             >
               <IconX size={12} />
             </button>
@@ -706,8 +706,8 @@ export const SessionList = memo(function SessionList({
             <input
               ref={newGroupInputRef}
               className="group-pill-input"
-              aria-label="New group name"
-              placeholder="Group name…"
+              aria-label="新分组名称"
+              placeholder="分组名称…"
               value={newGroupName}
               onChange={(e) => setNewGroupName(e.target.value)}
               onKeyDown={(e) => {
@@ -747,7 +747,7 @@ export const SessionList = memo(function SessionList({
               type="button"
               className="group-pill group-pill-new"
               onClick={() => setShowNewGroupInput(true)}
-              title="Create a new session group"
+              title="新建会话组"
             >
               + Group
             </button>
@@ -760,7 +760,7 @@ export const SessionList = memo(function SessionList({
               <Skeleton rows={5} className="sidebar-skeleton" />
             ) : (
               <div className="sidebar-empty-note">
-                No sessions yet.
+                尚无会话。
               </div>
             )
           ) : filteredSections.length > 0 ? (
@@ -937,7 +937,7 @@ export const SessionList = memo(function SessionList({
                 <div key="ungrouped" className="session-section session-section-ungrouped">
                   <div className="session-section-header ungrouped-header">
                     <span className="ungrouped-header-icon"><IconSquare size={12} /></span>
-                    <span className="group-header-name">Ungrouped</span>
+                    <span className="group-header-name">未分组</span>
                     <span className="group-header-count">{sec.sessions.length}</span>
                   </div>
                   <div className="group-sessions">

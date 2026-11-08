@@ -52,20 +52,20 @@ afterEach(() => { vi.clearAllMocks() })
 
 /** Walk the wizard to the AUTOSTART step (web host). */
 async function driveToAutostartStep() {
-  fireEvent.click(await screen.findByText('Continue'))
+  fireEvent.click(await screen.findByText('继续'))
   fireEvent.change(screen.getByPlaceholderText('sk-ant-...'), { target: { value: 'sk-test' } })
-  for (let i = 0; i < 5; i++) fireEvent.click(screen.getByText('Next'))
+  for (let i = 0; i < 5; i++) fireEvent.click(screen.getByText('下一个'))
   return screen.findByRole('switch', { name: /run automatically at login/i })
 }
 
 /** Walk the 8-step wizard to the last step and return its primary button. */
 async function driveToFinishStep() {
   // Step 0 disables Continue until the CLI probe settles.
-  fireEvent.click(await screen.findByText('Continue'))
+  fireEvent.click(await screen.findByText('继续'))
   // By placeholder, not by label text: the progress dots carry aria-labels like
-  // "Step 2 of 8: Auth Token (current step)", so /Auth Token/ is ambiguous.
+  // "Step 2 of 8: Auth Token (current step)", so /认证 Token/ is ambiguous.
   fireEvent.change(screen.getByPlaceholderText('sk-ant-...'), { target: { value: 'sk-test' } })
-  for (let i = 0; i < 6; i++) fireEvent.click(screen.getByText('Next'))
+  for (let i = 0; i < 6; i++) fireEvent.click(screen.getByText('下一个'))
   return screen.findByText('Create New Session')
 }
 
@@ -140,7 +140,7 @@ describe('SetupPage — the autostart step', () => {
 
     const toggle = await driveToAutostartStep()
     fireEvent.click(toggle)
-    fireEvent.click(await screen.findByText('Next'))
+    fireEvent.click(await screen.findByText('下一个'))
     fireEvent.click(await screen.findByText('Create New Session'))
 
     await waitFor(() => expect(onConfigured).toHaveBeenCalled())
@@ -161,7 +161,7 @@ describe('SetupPage — the autostart step', () => {
 
     const toggle = await driveToAutostartStep()
     fireEvent.click(toggle)
-    fireEvent.click(await screen.findByText('Next'))
+    fireEvent.click(await screen.findByText('下一个'))
     fireEvent.click(await screen.findByText('Create New Session'))
 
     await waitFor(() => expect(onConfigured).toHaveBeenCalled())

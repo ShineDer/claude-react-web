@@ -108,7 +108,7 @@ describe('tabDotStatus', () => {
     expect(tabDotStatus(makeSession({ running: true, error: 'boom' }))).toBe('err')
   })
 
-  it("maps statusClass's 'terminated' to the CSS vocabulary's 'ended'", () => {
+  it("maps statusClass's 'terminated' to the CSS vocabulary's '已结束'", () => {
     // The sidebar's dot CSS is .status-ended, not .status-terminated — the
     // tabs reuse that palette, so the name must cross over here.
     expect(tabDotStatus(makeSession({ terminated: true, terminatedReason: 'process_killed' }))).toBe('ended')

@@ -43,7 +43,7 @@ describe('SessionStore construction (no persistence)', () => {
     expect(snap.hole).toBeNull()
   })
 
-  it('does not project removed readiness/cache/workflow fields', () => {
+  it('does not project removed readiness/缓存/workflow fields', () => {
     // Task 1 cleanup: hydrateReady / idbReady (no persistence layer to wait
     // for), cacheHasDroppedMedia (no persist projection), and the running-only
     // activeWorkflows projection (the full workflowIndex is the single read
@@ -242,7 +242,7 @@ describe('SessionStore: tombstone race (interrupt withdrawal vs result frame)', 
   }
   function openSteer(store: SessionStore) {
     store.dispatch({ type: 'WINDOW_PAGE', at: 'tail', generation: 0, headSeq: 2, messages: pageMsgs([0, 1], (u) => userMsg(u, 'hi')), hasMore: false, tombstones: [] })
-    store.dispatch({ type: 'MESSAGE', message: thinkingEvent() }) // liveTurn.phase = 'thinking'
+    store.dispatch({ type: 'MESSAGE', message: thinkingEvent() }) // liveTurn.phase = '思考中'
     store.dispatch({ type: 'WINDOW_LIVE', seq: 2, generation: 0, message: userMsg('steer', 'steer!') })
   }
 
@@ -320,7 +320,7 @@ describe('SessionStore: workflowIndex (running + completed)', () => {
       generation: 0,
       headSeq: 3,
       messages: [
-        { seq: 0, msg: workflowToolUse('wf-run', 'running') },
+        { seq: 0, msg: workflowToolUse('wf-run', '运行中') },
         { seq: 1, msg: workflowToolUse('wf-done', 'completed') },
         { seq: 2, msg: workflowResult('wf-done') },
       ],

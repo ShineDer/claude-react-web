@@ -18,7 +18,7 @@
 //       kept separate so the picker can show a "Recent" group and so the
 //       list isn't empty while the API call is in flight / fails.
 //
-// Fetching is gated on `enabled`. ChatPanel only enables this when the
+// Fetching is gated on `已启用`. ChatPanel only enables this when the
 // picker is open, so we don't fire a request per open panel on every page
 // load — and every open (enabled false → true) force-refetches through the
 // store, so edits made in Settings → Profile while the picker was closed

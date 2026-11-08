@@ -188,16 +188,16 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
         <header className="git-panel-header">
           <span className="git-panel-branch"><IconGitBranch size={13} /> git</span>
           <span className="git-panel-spacer" />
-          <Tooltip label="Refresh" placement="bottom">
-            <button className="git-panel-icon-btn" onClick={onRefresh} aria-label="Refresh"><IconRefresh size={14} /></button>
+          <Tooltip label="刷新" placement="bottom">
+            <button className="git-panel-icon-btn" onClick={onRefresh} aria-label="刷新"><IconRefresh size={14} /></button>
           </Tooltip>
-          <Tooltip label="Close" placement="bottom">
-            <button className="git-panel-icon-btn" onClick={onClose} aria-label="Close"><IconX size={14} /></button>
+          <Tooltip label="关闭" placement="bottom">
+            <button className="git-panel-icon-btn" onClick={onClose} aria-label="关闭"><IconX size={14} /></button>
           </Tooltip>
         </header>
         <div className="git-panel-empty">
           <p className="git-panel-error">{error}</p>
-          <button className="git-panel-action" onClick={onRefresh}>Try again</button>
+          <button className="git-panel-action" onClick={onRefresh}>重试</button>
         </div>
       </aside>
     )
@@ -209,12 +209,12 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
         <header className="git-panel-header">
           <span className="git-panel-branch"><IconGitBranch size={13} /> git</span>
           <span className="git-panel-spacer" />
-          <Tooltip label="Close" placement="bottom">
-            <button className="git-panel-icon-btn" onClick={onClose} aria-label="Close"><IconX size={14} /></button>
+          <Tooltip label="关闭" placement="bottom">
+            <button className="git-panel-icon-btn" onClick={onClose} aria-label="关闭"><IconX size={14} /></button>
           </Tooltip>
         </header>
         <div className="git-panel-empty">
-          <p>Not a git repository.</p>
+          <p>不是 Git 仓库。</p>
         </div>
       </aside>
     )
@@ -226,12 +226,12 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
         <header className="git-panel-header">
           <span className="git-panel-branch"><IconGitBranch size={13} /> …</span>
           <span className="git-panel-spacer" />
-          <Tooltip label="Close" placement="bottom">
-            <button className="git-panel-icon-btn" onClick={onClose} aria-label="Close"><IconX size={14} /></button>
+          <Tooltip label="关闭" placement="bottom">
+            <button className="git-panel-icon-btn" onClick={onClose} aria-label="关闭"><IconX size={14} /></button>
           </Tooltip>
         </header>
         <div className="git-panel-empty">
-          <p>Loading git status…</p>
+          <p>正在加载 Git 状态…</p>
         </div>
       </aside>
     )
@@ -314,20 +314,20 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
       const untracked = selected.kind === 'untracked'
       askThenRun(
         {
-          title: untracked ? 'Delete untracked file?' : 'Discard changes?',
+          title: untracked ? '删除未跟踪的文件？' : '丢弃更改？',
           message: untracked
             ? (
               <>
                 <p>Permanently remove <code>{selected.file.path}</code> from disk.</p>
-                <p><strong>This file is not tracked by git — there is no way to recover it.</strong></p>
+                <p><strong>此文件未被 git 跟踪 — 无法恢复。</strong></p>
               </>
             )
             : <>Revert <code>{selected.file.path}</code> to its committed state. This cannot be undone.</>,
-          confirmLabel: untracked ? 'Delete file' : 'Discard',
+          confirmLabel: untracked ? '删除文件' : '丢弃',
           destructive: true,
         },
         () => writeOps.discard([selected.file.path], untracked),
-        untracked ? 'Delete' : 'Discard',
+        untracked ? '删除' : '丢弃',
       )
     } else if (e.key === 'Enter') {
       e.preventDefault()
@@ -349,14 +349,14 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
     if (files.length === 0) return
     askThenRun(
       {
-        title: 'Discard all changes?',
+        title: '丢弃所有更改？',
         message: (
           <>
             <p>This will revert {files.length} file{files.length === 1 ? '' : 's'} to their last committed state.</p>
-            <p><strong>This cannot be undone.</strong></p>
+            <p><strong>此操作无法撤销。</strong></p>
           </>
         ),
-        confirmLabel: 'Discard',
+        confirmLabel: '丢弃',
         destructive: true,
       },
       () => writeOps.discard(files.map((f) => f.path), false),
@@ -385,7 +385,7 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
             {status.upstream && (
               <span className="git-panel-sync-actions">
                 {status.behind > 0 && (
-                  <Tooltip label="Pull (fast-forward only)" placement="bottom">
+                  <Tooltip label="拉取（仅快进）" placement="bottom">
                     <button
                       className="git-panel-icon-btn"
                       disabled={writeOps.busyOps.has('pull') || writeOps.busyOps.has('push')}
@@ -396,14 +396,14 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
                           if (!result.updated) toast.success('Already up to date')
                         })
                       }}
-                      aria-label="Pull from remote"
+                      aria-label="从远程拉取"
                     >
                       <IconArrowDown size={13} />
                     </button>
                   </Tooltip>
                 )}
                 {status.ahead > 0 && (
-                  <Tooltip label="Push to remote" placement="bottom">
+                  <Tooltip label="推送到远程" placement="bottom">
                     <button
                       className="git-panel-icon-btn"
                       disabled={writeOps.busyOps.has('pull') || writeOps.busyOps.has('push')}
@@ -411,7 +411,7 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
                         e.preventDefault()
                         void runOp('Push', () => writeOps.push())
                       }}
-                      aria-label="Push to remote"
+                      aria-label="推送到远程"
                     >
                       <IconArrowUp size={13} />
                     </button>
@@ -433,18 +433,18 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
             </span>
           </Tooltip>
         )}
-        <Tooltip label={loading ? 'Refreshing…' : 'Refresh'} placement="bottom">
+        <Tooltip label={loading ? 'Refreshing…' : '刷新'} placement="bottom">
           <button
             className="git-panel-icon-btn"
             onClick={onRefresh}
             disabled={loading}
-            aria-label="Refresh"
+            aria-label="刷新"
           >
             {loading ? <IconLoader size={14} className="git-panel-spin" /> : <IconRefresh size={14} />}
           </button>
         </Tooltip>
-        <Tooltip label="Close" placement="bottom">
-          <button className="git-panel-icon-btn" onClick={onClose} aria-label="Close"><IconX size={14} /></button>
+        <Tooltip label="关闭" placement="bottom">
+          <button className="git-panel-icon-btn" onClick={onClose} aria-label="关闭"><IconX size={14} /></button>
         </Tooltip>
       </header>
 
@@ -454,13 +454,13 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
           <input
             type="text"
             className="git-panel-filter-input"
-            aria-label="Filter files"
-            placeholder="Filter files…"
+            aria-label="筛选文件"
+            placeholder="筛选文件…"
             value={filter}
             onChange={(e) => { setFilter(e.target.value); setSelectedIdx(0) }}
           />
           {filter && (
-            <button className="git-panel-icon-btn" onClick={() => setFilter('')} aria-label="Clear filter"><IconX size={12} /></button>
+            <button className="git-panel-icon-btn" onClick={() => setFilter('')} aria-label="清除筛选"><IconX size={12} /></button>
           )}
         </div>
       )}
@@ -475,16 +475,16 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
               onClick={() =>
                 askThenRun(
                   {
-                    title: 'Abort merge?',
+                    title: '中止合并？',
                     message: 'Discards in-progress merge state. Local changes that were not yet committed will be lost.',
-                    confirmLabel: 'Abort merge',
+                    confirmLabel: '中止合并',
                     destructive: true,
                   },
                   () => writeOps.abortMerge(),
                   'Abort merge',
                 )
               }
-            >Abort merge</button>
+            >中止合并</button>
           )}
           {status.state === 'rebasing' && (
             <button
@@ -492,16 +492,16 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
               onClick={() =>
                 askThenRun(
                   {
-                    title: 'Abort rebase?',
+                    title: '中止变基？',
                     message: 'Returns the branch to its pre-rebase state. Any conflict resolutions made so far will be discarded.',
-                    confirmLabel: 'Abort rebase',
+                    confirmLabel: '中止变基',
                     destructive: true,
                   },
                   () => writeOps.abortRebase(),
                   'Abort rebase',
                 )
               }
-            >Abort rebase</button>
+            >中止变基</button>
           )}
         </div>
       )}
@@ -512,7 +512,7 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
           on the way to commit. Untracked is collapsed by default;
           new files only matter once the user wants to add them. */}
       <Section
-        title="Changes"
+        title="更改"
         count={status.unstaged.length}
         changeTotals={sumChanges(status.unstaged)}
         defaultOpen={status.unstaged.length > 0}
@@ -522,19 +522,19 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
               className="git-section-action"
               onClick={(e) => { e.preventDefault(); stageAll(status.unstaged) }}
               disabled={writeOps.busyOps.size > 0}
-            >Stage all</button>
+            >全部暂存</button>
             <button
               className="git-section-action danger"
               onClick={(e) => { e.preventDefault(); discardAllUnstaged(status.unstaged) }}
               disabled={writeOps.busyOps.size > 0}
-            >Discard all</button>
+            >全部丢弃</button>
           </>
         ) : null}
       >
         {status.unstaged.length === 0 ? (
-          <EmptyHint>No unstaged changes</EmptyHint>
+          <EmptyHint>无未暂存更改</EmptyHint>
         ) : unstagedVisible.length === 0 ? (
-          <EmptyHint>No matching files</EmptyHint>
+          <EmptyHint>无匹配文件</EmptyHint>
         ) : (
           unstagedVisible.map((f, idx) => (
             <FileRow
@@ -555,7 +555,7 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
       </Section>
 
       <Section
-        title="Staged"
+        title="已暂存"
         count={status.staged.length}
         changeTotals={sumChanges(status.staged)}
         defaultOpen={status.staged.length > 0}
@@ -564,13 +564,13 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
             className="git-section-action"
             onClick={(e) => { e.preventDefault(); unstageAll(status.staged) }}
             disabled={writeOps.busyOps.size > 0}
-          >Unstage all</button>
+          >全部取消暂存</button>
         ) : null}
       >
         {status.staged.length === 0 ? (
-          <EmptyHint>No staged changes</EmptyHint>
+          <EmptyHint>无暂存更改</EmptyHint>
         ) : stagedVisible.length === 0 ? (
-          <EmptyHint>No matching files</EmptyHint>
+          <EmptyHint>无匹配文件</EmptyHint>
         ) : (
           stagedVisible.map((f, idx) => (
             <FileRow
@@ -591,7 +591,7 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
       </Section>
 
       <Section
-        title="Untracked"
+        title="未跟踪"
         count={status.untracked.length}
         defaultOpen={false}
         actions={status.untracked.length > 0 ? (
@@ -599,13 +599,13 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
             className="git-section-action"
             onClick={(e) => { e.preventDefault(); stageAll(status.untracked) }}
             disabled={writeOps.busyOps.size > 0}
-          >Stage all</button>
+          >全部暂存</button>
         ) : null}
       >
         {status.untracked.length === 0 ? (
-          <EmptyHint>No untracked files</EmptyHint>
+          <EmptyHint>无未跟踪文件</EmptyHint>
         ) : untrackedVisible.length === 0 ? (
-          <EmptyHint>No matching files</EmptyHint>
+          <EmptyHint>无匹配文件</EmptyHint>
         ) : (
           untrackedVisible.map((f, idx) => (
             <UntrackedRow
@@ -640,7 +640,7 @@ export const GitPanel = memo(function GitPanel({ sessionId, cwd, status, loading
         askConfirm={askThenRun}
       />
 
-      <Section title="Recent commits" count={null} defaultOpen={false}>
+      <Section title="最近提交" count={null} defaultOpen={false}>
         <CommitList
           cwd={cwd}
           expandedCommit={expandedCommit}
@@ -819,20 +819,20 @@ const FileRow = memo(function FileRow({ file, cwd, staged, selected, selectIndex
       fetchFullText={fetchFullText}
       actions={(
         <>
-          <Tooltip label="View file content" placement="left">
+          <Tooltip label="查看文件内容" placement="left">
             <button
               type="button"
               className="git-action-btn"
-              aria-label="View file content"
+              aria-label="查看文件内容"
               onClick={(e) => { e.stopPropagation(); onOpenFile(file.path) }}
             ><IconSearch size={13} /></button>
           </Tooltip>
           {staged ? (
-            <Tooltip label="Unstage" placement="left">
+            <Tooltip label="取消暂存" placement="left">
               <button
                 type="button"
                 className="git-action-btn"
-                aria-label="Unstage"
+                aria-label="取消暂存"
                 disabled={anyBusy}
                 onClick={async () => {
                   try { await writeOps.unstage([file.path]) } catch (e) { onError('Unstage', (e as Error).message) }
@@ -841,31 +841,31 @@ const FileRow = memo(function FileRow({ file, cwd, staged, selected, selectIndex
             </Tooltip>
           ) : (
             <>
-              <Tooltip label="Stage" placement="left">
+              <Tooltip label="暂存" placement="left">
                 <button
                   type="button"
                   className="git-action-btn"
-                  aria-label="Stage"
+                  aria-label="暂存"
                   disabled={anyBusy}
                   onClick={async () => {
                     try { await writeOps.stage([file.path]) } catch (e) { onError('Stage', (e as Error).message) }
                   }}
                 >+</button>
               </Tooltip>
-              <Tooltip label="Discard changes" placement="left">
+              <Tooltip label="丢弃更改" placement="left">
                 <button
                   type="button"
                   className="git-action-btn danger"
-                  aria-label="Discard changes"
+                  aria-label="丢弃更改"
                   disabled={anyBusy}
                   onClick={() =>
                     askConfirm(
                       {
-                        title: 'Discard changes?',
+                        title: '丢弃更改？',
                         message: (
                           <>Revert <code>{file.path}</code> to its committed state. This cannot be undone.</>
                         ),
-                        confirmLabel: 'Discard',
+                        confirmLabel: '丢弃',
                         destructive: true,
                       },
                       () => writeOps.discard([file.path], false),
@@ -921,42 +921,42 @@ function UntrackedRow({ file, selected, selectIndex, onSelect, writeOps, onError
           </span>
         </span>
         <div className="git-file-actions">
-          <Tooltip label="View file content" placement="left">
+          <Tooltip label="查看文件内容" placement="left">
             <button
               type="button"
               className="git-action-btn"
-              aria-label="View file content"
+              aria-label="查看文件内容"
               onClick={(e) => { e.stopPropagation(); onOpenFile(file.path) }}
             ><IconSearch size={13} /></button>
           </Tooltip>
-          <Tooltip label="Stage" placement="left">
+          <Tooltip label="暂存" placement="left">
             <button
               type="button"
               className="git-action-btn"
-              aria-label="Stage"
+              aria-label="暂存"
               disabled={anyBusy}
               onClick={async () => {
                 try { await writeOps.stage([file.path]) } catch (e) { onError('Stage', (e as Error).message) }
               }}
             >+</button>
           </Tooltip>
-          <Tooltip label="Delete from disk" placement="left">
+          <Tooltip label="从磁盘删除" placement="left">
           <button
             type="button"
             className="git-action-btn danger"
-            aria-label="Delete from disk"
+            aria-label="从磁盘删除"
             disabled={anyBusy}
             onClick={() =>
               askConfirm(
                 {
-                  title: 'Delete untracked file?',
+                  title: '删除未跟踪的文件？',
                   message: (
                     <>
                       <p>Permanently remove <code>{file.path}</code> from disk.</p>
-                      <p><strong>This file is not tracked by git — there is no way to recover it.</strong></p>
+                      <p><strong>此文件未被 git 跟踪 — 无法恢复。</strong></p>
                     </>
                   ),
-                  confirmLabel: 'Delete file',
+                  confirmLabel: '删除文件',
                   destructive: true,
                 },
                 () => writeOps.discard([file.path], true),
@@ -1037,8 +1037,8 @@ function CommitBar({
     <footer className="git-commit-footer">
       <textarea
         className="git-commit-textarea"
-        aria-label="Commit message"
-        placeholder="Commit message… (⌘/Ctrl+Enter)"
+        aria-label="提交信息"
+        placeholder="提交信息… (⌘/Ctrl+Enter)"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         rows={2}
@@ -1073,12 +1073,12 @@ function CommitBar({
             onClick={() =>
               askConfirm(
                 {
-                  title: 'Amend last commit?',
+                  title: '修改上一次提交？',
                   message: (
                     <>
                       <p>Replaces the previous commit with the staged changes (if any) and
                       {message.trim() ? ' the new message.' : ' keeps its existing message.'}</p>
-                      <p>Don't amend a commit that has already been pushed to a shared branch.</p>
+                      <p>不要修改已推送到共享分支的提交。</p>
                     </>
                   ),
                   confirmLabel: 'Amend',
@@ -1088,7 +1088,7 @@ function CommitBar({
                 'Amend',
               )
             }
-          >Amend last</button>
+          >修改上一次提交</button>
         )}
         <span className="git-commit-hint" aria-hidden>
           {readOnlySelection ? '↑↓ select · Enter expand' : '↑↓ select · s stage · u unstage · x discard · Enter expand'}
@@ -1098,7 +1098,7 @@ function CommitBar({
           className="btn btn-primary"
           disabled={busy || !message.trim()}
           onClick={() => doCommit(false)}
-        >Commit</button>
+        >提交</button>
       </div>
     </footer>
   )
@@ -1131,7 +1131,7 @@ function BranchesSection({ cwd, sessionId, currentBranch, writeOps, onError, ask
       if (err.status === 409) {
         askConfirm(
           {
-            title: 'Uncommitted changes block this checkout',
+            title: '有未提交的更改，无法切换到此版本',
             message: (
               <>
                 <p>Switching to <code>{name}</code> would overwrite uncommitted changes in your working tree.</p>
@@ -1161,7 +1161,7 @@ function BranchesSection({ cwd, sessionId, currentBranch, writeOps, onError, ask
       if (checkout && err.status === 409) {
         askConfirm(
           {
-            title: 'Uncommitted changes block branch creation',
+            title: '有未提交的更改，无法创建分支',
             message: (
               <>
                 <p>Creating and switching to <code>{newName.trim()}</code> would overwrite uncommitted changes.</p>
@@ -1191,7 +1191,7 @@ function BranchesSection({ cwd, sessionId, currentBranch, writeOps, onError, ask
       onOpenChange={setOpen}
       summary={(
         <>
-        <span className="git-panel-section-title">Branches</span>
+        <span className="git-panel-section-title">分支</span>
         <span
           className="git-panel-section-actions"
           onClick={(e) => e.stopPropagation()}
@@ -1211,7 +1211,7 @@ function BranchesSection({ cwd, sessionId, currentBranch, writeOps, onError, ask
             <input
               type="text"
               className="git-new-branch-input"
-              aria-label="New branch name"
+              aria-label="新分支名称"
               placeholder="branch name…"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
@@ -1225,18 +1225,18 @@ function BranchesSection({ cwd, sessionId, currentBranch, writeOps, onError, ask
               className="btn btn-primary"
               disabled={!newName.trim() || writeOps.busyOps.size > 0}
               onClick={() => createNewBranch(true)}
-            >Create & checkout</button>
+            >创建并检出</button>
             <button
               className="btn"
               disabled={!newName.trim() || writeOps.busyOps.size > 0}
               onClick={() => createNewBranch(false)}
-            >Create</button>
+            >创建</button>
           </div>
         )}
         {branches.loading && <Skeleton rows={3} className="git-section-skeleton" />}
         {branches.error && <div className="git-section-empty git-commits-error">{branches.error}</div>}
         {branches.data && branches.data.length === 0 && (
-          <div className="git-section-empty">No local branches</div>
+          <div className="git-section-empty">无本地分支</div>
         )}
         {branches.data && branches.data.map((b) => {
           const isCurrent = b.name === currentBranch
@@ -1286,7 +1286,7 @@ function StashesSection({ cwd, sessionId, writeOps, onError, askConfirm }: Stash
       onOpenChange={setOpen}
       summary={(
         <>
-        <span className="git-panel-section-title">Stashes</span>
+        <span className="git-panel-section-title">贮藏</span>
         <span className="git-panel-section-count">{stashes.data?.length ?? '·'}</span>
         <span
           className="git-panel-section-actions"
@@ -1301,7 +1301,7 @@ function StashesSection({ cwd, sessionId, writeOps, onError, askConfirm }: Stash
               try { await writeOps.stashCreate({ includeUntracked: true }) }
               catch (err) { onError('Stash all', (err as Error).message) }
             }}
-          >Stash all</button>
+          >全部贮藏</button>
         </span>
         </>
       )}
@@ -1310,7 +1310,7 @@ function StashesSection({ cwd, sessionId, writeOps, onError, askConfirm }: Stash
         {stashes.loading && <Skeleton rows={2} className="git-section-skeleton" />}
         {stashes.error && <div className="git-section-empty git-commits-error">{stashes.error}</div>}
         {stashes.data && stashes.data.length === 0 && (
-          <div className="git-section-empty">No stashes</div>
+          <div className="git-section-empty">无储藏</div>
         )}
         {stashes.data && stashes.data.map((s) => {
           const popBusy = writeOps.busyOps.has(`stash-pop:${s.index}`)
@@ -1320,7 +1320,7 @@ function StashesSection({ cwd, sessionId, writeOps, onError, askConfirm }: Stash
               <code className="git-stash-ref">{s.ref}</code>
               <span className="git-stash-message">{s.message}</span>
               <div className="git-stash-actions">
-                <Tooltip label="Pop (apply and remove)" placement="left">
+                <Tooltip label="弹出（应用并移除）" placement="left">
                   <button
                     className="git-action-btn"
                     disabled={popBusy || dropBusy}
@@ -1328,21 +1328,21 @@ function StashesSection({ cwd, sessionId, writeOps, onError, askConfirm }: Stash
                       try { await writeOps.stashPop(s.index) }
                       catch (err) { onError('Pop stash', (err as Error).message) }
                     }}
-                    aria-label="Pop stash"
-                  >pop</button>
+                    aria-label="弹出暂存"
+                  >弹出</button>
                 </Tooltip>
-                <Tooltip label="Drop (delete)" placement="left">
+                <Tooltip label="丢弃（删除）" placement="left">
                   <button
                     className="git-action-btn danger"
                     disabled={popBusy || dropBusy}
                     onClick={() =>
                       askConfirm(
                         {
-                          title: 'Drop this stash?',
+                          title: '丢弃此贮藏？',
                           message: (
                             <>
                               <p>Permanently remove <code>{s.ref}</code>.</p>
-                              <p><strong>This cannot be undone.</strong></p>
+                              <p><strong>此操作无法撤销。</strong></p>
                             </>
                           ),
                           confirmLabel: 'Drop',
@@ -1352,8 +1352,8 @@ function StashesSection({ cwd, sessionId, writeOps, onError, askConfirm }: Stash
                         'Drop stash',
                       )
                     }
-                    aria-label="Drop stash"
-                  >drop</button>
+                    aria-label="丢弃贮藏"
+                  >丢弃</button>
                 </Tooltip>
               </div>
             </div>
@@ -1387,10 +1387,10 @@ function CommitList({
   onSelectFile,
 }: CommitListProps) {
   const { data: commits, loading, error } = useGitLog(cwd, 30, true)
-  if (loading) return <div className="git-commits-empty">Loading commits…</div>
+  if (loading) return <div className="git-commits-empty">正在加载提交…</div>
   if (error) return <div className="git-commits-empty git-commits-error">{error}</div>
   // Without a cwd nothing can have loaded, so the same empty state covers it.
-  if (!cwd || !commits || commits.length === 0) return <div className="git-commits-empty">No commits yet</div>
+  if (!cwd || !commits || commits.length === 0) return <div className="git-commits-empty">暂无提交</div>
   return (
     <ul className="git-commits-list">
       {commits.map((c) => (

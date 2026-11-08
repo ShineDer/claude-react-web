@@ -235,13 +235,13 @@ export function EasterEggGame({ onExit }: { onExit: () => void }) {
     <div className="easter-egg-game">
       <canvas
         ref={canvasRef}
-        aria-label="Easter egg sparkle dino game"
+        aria-label="彩蛋：闪光恐龙小游戏"
         onMouseDown={() => jumpRef.current()}
         onTouchStart={(e) => { e.preventDefault(); jumpRef.current() }}
       />
       <div className="easter-egg-game-toolbar">
         <button className="easter-egg-game-btn" aria-label={muted ? 'Unmute sound' : 'Mute sound'} onClick={() => setMutedAll(!mutedRef.current)}>{muted ? <IconVolumeX size={14} /> : <IconVolume2 size={14} />}</button>
-        <button className="easter-egg-game-btn" aria-label="Exit game" onClick={onExit}><IconX size={14} /> Exit</button>
+        <button className="easter-egg-game-btn" aria-label="退出游戏" onClick={onExit}><IconX size={14} /> Exit</button>
       </div>
     </div>
   )

@@ -77,13 +77,13 @@ export function FileViewer({ open, onClose, sessionId, path, name }: Props) {
     >
       <div className="modal-header">
         <h3 className="file-viewer-title" title={path ?? undefined}>{title}</h3>
-        <button className="btn btn-icon-sm" onClick={onClose} aria-label="Close"><IconX /></button>
+        <button className="btn btn-icon-sm" onClick={onClose} aria-label="关闭"><IconX /></button>
       </div>
       <div className="modal-section file-viewer-body">
-        {pending && <div className="hint">Reading…</div>}
+        {pending && <div className="hint">读取中…</div>}
         {!pending && error && <div className="field-error">{error}</div>}
         {!pending && !error && !available && (
-          <div className="hint">Needs read permission, or the file is missing.</div>
+          <div className="hint">需要读取权限，或文件不存在。</div>
         )}
         {!pending && !error && available && contents !== undefined && (
           // An image only becomes a preview when the read really returned

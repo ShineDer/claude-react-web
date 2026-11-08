@@ -14,7 +14,7 @@ function storeWith(entries: Array<{ text: string; sessionId: string | null }>) {
 }
 
 describe('useInputHistoryPanel', () => {
-  it('promotes the focused session to "This session"', () => {
+  it('promotes the focused session to "本会话"', () => {
     const store = storeWith([
       { text: 'a1', sessionId: 'sa' },
       { text: 'b1', sessionId: 'sb' },

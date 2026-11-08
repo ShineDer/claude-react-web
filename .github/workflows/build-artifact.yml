@@ -1,0 +1,66 @@
+name: Build artifact
+
+# Produces the deployable build (dist/ + package files) as a workflow artifact.
+# Deployment pulls the artifact — never a local build. Install with:
+#   tar -xzf dist.tar.gz -C /usr/local/lib/node_modules/claude-react-web
+#
+# Pinned to the commit, so the running build and the repo always agree.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-artifact-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Package the build
+        run: |
+          mkdir -p artifact
+          cp -a dist artifact/dist
+          cp package.json package-lock.json artifact/
+          tar -czf dist.tar.gz -C artifact .
+          shasum -a 256 dist.tar.gz > dist.tar.gz.sha256
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: |
+            dist.tar.gz
+            dist.tar.gz.sha256
+          retention-days: 30

@@ -3,7 +3,7 @@
 //
 // The App Plugin analogue of the Claude Plugin Marketplace (MarketplaceTab) —
 // deliberately a separate subsystem (own store/parser/routes) but the SAME
-// update surface: one row-level `Update` control (MarketplaceUpdateButton) and
+// update surface: one row-level `更新` control (MarketplaceUpdateButton) and
 // the same status-line wording, so the two settings panels read as one.
 //
 // Installing a plugin routes through AppPluginManager, so the WS state-changed
@@ -67,7 +67,7 @@ export function AppPluginMarketplaceSection() {
 
   // Bulk "Update all" — refresh every https marketplace, then reinstall every
   // installed plugin whose catalog version changed. `bulkProgress` shows the
-  // current phase; `bulkResult` is the completion summary.
+  // current phase; `bulk结果` is the completion summary.
   const [bulkBusy, setBulkBusy] = useState(false)
   const [bulkProgress, setBulkProgress] = useState<string | null>(null)
   const [bulkResult, setBulkResult] = useState<string | null>(null)
@@ -342,7 +342,7 @@ export function AppPluginMarketplaceSection() {
   return (
     <section className="settings-group">
       <div className="settings-group-head">
-        <h4>Marketplace</h4>
+        <h4>市场</h4>
         <span className="settings-group-desc">
           App Plugins (Mods) add menus, commands, and panels to the app; Claude
           Plugins (Marketplace) add tools and servers to the agent — the two are
@@ -357,7 +357,7 @@ export function AppPluginMarketplaceSection() {
           placeholder="https://github.com/owner/app-plugins-repo"
           value={addUrl}
           onChange={(e) => setAddUrl(e.target.value)}
-          aria-label="Marketplace URL"
+          aria-label="市场 URL"
           disabled={busy || bulkBusy}
           onKeyDown={(e) => { if (e.key === 'Enter') void add() }}
         />
@@ -367,12 +367,12 @@ export function AppPluginMarketplaceSection() {
           placeholder="plugins"
           value={addSubdir}
           onChange={(e) => setAddSubdir(e.target.value)}
-          aria-label="Marketplace content subfolder (optional)"
+          aria-label="市场内容子文件夹（可选）"
           aria-describedby="app-plugin-subdir-hint"
           disabled={busy || bulkBusy}
           onKeyDown={(e) => { if (e.key === 'Enter') void add() }}
         />
-        <button className="btn btn-primary" disabled={busy || bulkBusy || !addUrl.trim()} onClick={add}>Add</button>
+        <button className="btn btn-primary" disabled={busy || bulkBusy || !addUrl.trim()} onClick={add}>添加</button>
       </div>
       <p id="app-plugin-subdir-hint" className="app-plugins-subdir-hint">
         Optional: usually auto-detected. Only needed when a repo nests its catalog in a subfolder that auto-detection can’t pick, e.g. “plugins”.
@@ -410,7 +410,7 @@ export function AppPluginMarketplaceSection() {
             // start an overlapping batch that shares this one's pull epoch, so
             // the two responses could each half-apply).
             checking ? (
-              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>Checking for updates…</span>
+              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--fg-muted)' }}>正在检查更新…</span>
             ) : updateCheckError || anyCheckError ? (
               <>
                 {/* Two different failures land here: the whole request failed
@@ -433,13 +433,13 @@ export function AppPluginMarketplaceSection() {
                   className="btn"
                   style={{ padding: '1px 8px', fontSize: 'var(--fs-xs)' }}
                   onClick={() => void fetchUpdates()}
-                  title="Retry the update check"
+                  title="重试更新检查"
                 >
-                  Retry
+                  重试
                 </button>
               </>
             ) : (
-              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--ok-text)' }}>All marketplaces up to date</span>
+              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--ok-text)' }}>所有市场均为最新</span>
             )
           )}
           {bulkResult && (
@@ -449,7 +449,7 @@ export function AppPluginMarketplaceSection() {
       )}
 
       <ul className="app-plugins-list">
-        {marketplaces.length === 0 && <li className="app-plugins-empty">No marketplaces added.</li>}
+        {marketplaces.length === 0 && <li className="app-plugins-empty">未添加市场。</li>}
         {marketplaces.map((mp) => (
           <MarketplaceRow
             key={mp.id}
@@ -541,7 +541,7 @@ function MarketplaceRow(props: {
       <div className="app-plugins-row-head">
         <button className="app-plugins-row-toggle" onClick={props.onToggle} aria-expanded={expanded}>
           <span className="app-plugins-name">{mp.displayName}</span>
-          {mp.sourceType === 'local' && <StatusBadge tone="muted">Bundled</StatusBadge>}
+          {mp.sourceType === 'local' && <StatusBadge tone="muted">已捆绑</StatusBadge>}
           <StatusBadge tone="muted">{mp.pluginCount} plugins</StatusBadge>
         </button>
         <div className="app-plugins-row-actions">
@@ -561,17 +561,17 @@ function MarketplaceRow(props: {
           {/* Blocked while this row's own pull runs: the server is inside
               `git pull` on this very clone dir, and a DELETE would remove the
               directory underneath it. */}
-          <button className="btn" disabled={props.updating || props.busy} onClick={props.onRemove}>Remove</button>
+          <button className="btn" disabled={props.updating || props.busy} onClick={props.onRemove}>移除</button>
         </div>
       </div>
       <div className="app-plugins-meta">
-        {mp.sourceType === 'local' ? <span>Bundled with app</span> : <span>{mp.url}{mp.subdir ? ` / ${mp.subdir}` : ''}</span>}
+        {mp.sourceType === 'local' ? <span>随应用捆绑</span> : <span>{mp.url}{mp.subdir ? ` / ${mp.subdir}` : ''}</span>}
         {mp.sourceType !== 'local' && mp.ref && <span>@ {mp.ref}</span>}
       </div>
       {expanded && (
         <ul className="app-plugins-mp-plugins">
-          {plugins === null && <li>Loading…</li>}
-          {plugins !== null && plugins.length === 0 && <li>No plugins in this marketplace.</li>}
+          {plugins === null && <li>正在加载…</li>}
+          {plugins !== null && plugins.length === 0 && <li>此市场中没有插件。</li>}
           {plugins?.map((p) => {
             const installed = p.installed === true
             // A catalog version that differs from what's installed means an
@@ -590,13 +590,13 @@ function MarketplaceRow(props: {
                 </div>
                 {installed ? (
                   updateAvailable ? (
-                    <button className="btn" disabled={installing === p.name || pluginActionsBlocked} onClick={() => install(p.name)}>Update</button>
+                    <button className="btn" disabled={installing === p.name || pluginActionsBlocked} onClick={() => install(p.name)}>更新</button>
                   ) : (
-                    <button className="btn" disabled>Installed</button>
+                    <button className="btn" disabled>已安装</button>
                   )
                 ) : (
                   <button className="btn btn-primary" disabled={installing === p.name || pluginActionsBlocked} onClick={() => install(p.name)}>
-                    {installing === p.name ? 'Installing…' : 'Install'}
+                    {installing === p.name ? 'Installing…' : '安装'}
                   </button>
                 )}
               </li>

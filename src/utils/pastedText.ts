@@ -61,7 +61,7 @@ export const PASTED_TEXT_COLLAPSE_CHARS = 8_000
  * Folding CRLF/CR to LF leaves the newline count unchanged (see the test), so
  * normalizing cannot desync the label.
  *
- * ANSI escapes are deliberately left alone — browser `text/plain` clips don't
+ * ANSI escapes are deliberately left alone — browser `text/pla输入` clips don't
  * carry them, and the package that strips them is only a transitive
  * dependency here.
  */

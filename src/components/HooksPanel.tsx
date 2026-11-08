@@ -22,11 +22,11 @@ interface EventCategory {
 }
 
 const EVENT_CATEGORIES: EventCategory[] = [
-  { label: 'Tool', events: ['PreToolUse', 'PostToolUse', 'PostToolUseFailure'] },
-  { label: 'Session', events: ['SessionStart', 'SessionEnd', 'Stop', 'StopFailure', 'Setup'] },
+  { label: '工具', events: ['PreToolUse', 'PostToolUse', 'PostToolUseFailure'] },
+  { label: 'session', events: ['SessionStart', 'SessionEnd', 'Stop', 'StopFailure', 'Setup'] },
   { label: 'Agent', events: ['SubagentStart', 'SubagentStop', 'PreCompact', 'PostCompact', 'TeammateIdle'] },
-  { label: 'Permission & Input', events: ['PermissionRequest', 'PermissionDenied', 'UserPromptSubmit', 'Notification', 'Elicitation', 'ElicitationResult'] },
-  { label: 'Lifecycle & Config', events: ['TaskCreated', 'TaskCompleted', 'ConfigChange', 'WorktreeCreate', 'WorktreeRemove', 'InstructionsLoaded', 'CwdChanged', 'FileChanged'] },
+  { label: '权限与输入', events: ['PermissionRequest', 'PermissionDenied', 'UserPromptSubmit', 'Notification', 'Elicitation', 'ElicitationResult'] },
+  { label: '生命周期与配置', events: ['TaskCreated', 'TaskCompleted', 'ConfigChange', 'WorktreeCreate', 'WorktreeRemove', 'InstructionsLoaded', 'CwdChanged', 'FileChanged'] },
 ]
 
 // Status → dot color and CSS class mapping
@@ -250,7 +250,7 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
     // .settings-stack`), so a bare node would render flush to the edge.
     return (
       <div className="settings-stack">
-        <div className="settings-note">Loading hooks…</div>
+        <div className="settings-note">正在加载钩子…</div>
       </div>
     )
   }
@@ -260,7 +260,7 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
       {/* ── Configured Hooks ──────────────────────────────────────── */}
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Configured Hooks</h4>
+          <h4>已配置的 Hooks</h4>
           <span className="settings-group-desc">Hook matchers registered on this session's events.</span>
         </div>
         <div className="settings-group-body">
@@ -285,9 +285,9 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
                       className="btn btn-xs"
                       onClick={() => removeMatcher(event, matcherIdx)}
                       disabled={disabled || saving}
-                      title="Remove this matcher"
+                      title="移除此匹配器"
                     >
-                      Remove
+                      移除
                     </button>
                   </div>
                 </div>
@@ -296,25 +296,25 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
                     <div key={hi}>
                       {'command' in hook && hook.command && (
                         <div className="hooks-detail-row">
-                          <span className="hooks-detail-label">command</span>
+                          <span className="hooks-detail-label">命令</span>
                           <span className="hooks-detail-value">{hook.command}</span>
                         </div>
                       )}
                       {'url' in hook && hook.url && (
                         <div className="hooks-detail-row">
-                          <span className="hooks-detail-label">url</span>
+                          <span className="hooks-detail-label">URL</span>
                           <span className="hooks-detail-value">{hook.url}</span>
                         </div>
                       )}
                       {'prompt' in hook && hook.prompt && (
                         <div className="hooks-detail-row">
-                          <span className="hooks-detail-label">prompt</span>
+                          <span className="hooks-detail-label">提示词</span>
                           <span className="hooks-detail-value">{hook.prompt}</span>
                         </div>
                       )}
                       {hook.timeout != null && (
                         <div className="hooks-detail-row">
-                          <span className="hooks-detail-label">timeout</span>
+                          <span className="hooks-detail-label">超时</span>
                           <span className="hooks-detail-value">{hook.timeout}s</span>
                         </div>
                       )}
@@ -331,7 +331,7 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
             ))}
           </div>
         ) : (
-          <EmptyState icon={<IconZap size={16} />} title="No hooks configured" />
+          <EmptyState icon={<IconZap size={16} />} title="未配置 hook" />
         )}
 
           {dirty && (
@@ -349,7 +349,7 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
       {/* ── Available Events ──────────────────────────────────────── */}
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Available Events</h4>
+          <h4>可用事件</h4>
           <span className="settings-group-desc">Click an event to toggle it for this session.</span>
         </div>
         <div className="settings-group-body">
@@ -404,10 +404,10 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
       <section className="settings-group">
         <div className="settings-group-head">
           <div className="settings-group-head-row">
-            <h4>Advanced</h4>
+            <h4>高级</h4>
             <div className="settings-section-head-actions">
               <button className="btn btn-sm" onClick={insertTemplate} disabled={disabled || saving}>
-                Template
+                模板
               </button>
               <button
                 className="btn btn-sm btn-primary"
@@ -421,7 +421,7 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
           <span className="settings-group-desc">Edit the raw hooks JSON this session sends to the SDK.</span>
         </div>
         <div className="settings-group-body">
-          {dirty && <span className="hint" style={{ fontSize: 'var(--fs-xs)' }}>Unsaved changes</span>}
+          {dirty && <span className="hint" style={{ fontSize: 'var(--fs-xs)' }}>未保存的更改</span>}
           <AnimatedDetails className="hooks-json-toggle" summary="Raw JSON editor">
             <textarea
               className="textarea"
@@ -440,11 +440,11 @@ export function HooksPanel({ session, disabled, onSessionUpdate }: Props) {
       {/* ── Hook Activity ─────────────────────────────────────────── */}
       <section className="settings-group">
         <div className="settings-group-head">
-          <h4>Hook Activity</h4>
+          <h4>Hook 活动</h4>
           <span className="settings-group-desc">Live hook executions, streamed as they run.</span>
         </div>
         <div className="settings-group-body">
-          {runs.length === 0 && <EmptyState icon={<IconClock size={16} />} title="No hook runs yet" />}
+          {runs.length === 0 && <EmptyState icon={<IconClock size={16} />} title="暂无 hook 运行记录" />}
           {runs.map((run) => {
           const meta = STATUS_META[run.status] ?? STATUS_META.cancelled
           return (

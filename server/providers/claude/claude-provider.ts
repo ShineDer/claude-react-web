@@ -17,7 +17,7 @@ import { join } from 'node:path'
 import { config as defaultConfig, DEFAULT_PROFILE } from '../../config.js'
 import type { ModelGroupConfig, ProviderProfile } from '../../config.js'
 import { profileDefaultModel, resolveActiveProfile } from '../../profiles.js'
-import { isSdkForwardedMode } from '../../permission-modes.js'
+import { resolveSdkForwardMode } from '../../permission-modes.js'
 import {
   capabilitiesForTier,
   fallbackAliasesFor,
@@ -856,7 +856,7 @@ export class ClaudeProvider implements AgentProvider {
    *  them would be dead weight (and bypass is unreliable mid-session — see
    *  permission-broker.ts). */
   private sdkForwardMode(mode?: PermissionMode): PermissionMode {
-    return mode && isSdkForwardedMode(mode) ? mode : 'default'
+    return resolveSdkForwardMode(mode)
   }
 
   private applyStandardQueryOpts(

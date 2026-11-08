@@ -178,7 +178,7 @@ export const SubagentOverlay = memo(function SubagentOverlay({
       className="subagent-overlay"
       role="dialog"
       aria-modal="false"
-      aria-label="Subagent details"
+      aria-label="子 agent 详情"
       onMouseDown={(e) => {
         if (isExiting) return
         // Click-outside-to-close. The scrim is what actually covers the region
@@ -193,7 +193,7 @@ export const SubagentOverlay = memo(function SubagentOverlay({
       onAnimationEnd={(e) => {
         // The exit fade runs on the scrim, so this arrives via bubbling rather
         // than on the container itself. Match on BOTH the source element and
-        // the animation name: `overlay-backdrop-out` is shared by every overlay
+        // the animation name: `overlay-backdrop-输出` is shared by every overlay
         // in the app, so a name-only check would let a nested overlay's exit
         // fade close this one.
         if (!isExiting) return
@@ -215,7 +215,7 @@ export const SubagentOverlay = memo(function SubagentOverlay({
             onClick={stack.length > 1 ? onPop : onClose}
             disabled={isExiting}
             title={stack.length > 1 ? 'Back to outer subagent' : 'Back to conversation'}
-            aria-label="Back"
+            aria-label="返回"
           >
             <IconArrowLeft size={14} />
           </button>
@@ -253,8 +253,8 @@ export const SubagentOverlay = memo(function SubagentOverlay({
               onClose()
             }}
             disabled={isExiting}
-            title={current && (current.status === 'running' || current.status === 'background' || current.status === 'pending') && onDismiss ? 'Dismiss and close' : 'Close (Esc)'}
-            aria-label={current && (current.status === 'running' || current.status === 'background' || current.status === 'pending') && onDismiss ? 'Dismiss and close' : 'Close'}
+            title={current && (current.status === 'running' || current.status === 'background' || current.status === 'pending') && onDismiss ? 'Dismiss and close' : '关闭 (Esc)'}
+            aria-label={current && (current.status === 'running' || current.status === 'background' || current.status === 'pending') && onDismiss ? 'Dismiss and close' : '关闭'}
           >
             <IconX size={14} />
           </button>

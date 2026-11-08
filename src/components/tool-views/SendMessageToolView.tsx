@@ -78,7 +78,7 @@ export function SendMessageToolView({ input, toolUseId, searchQuery, activeMatch
           {message ? (
             <Markdown text={message} searchQuery={searchQuery} activeMatchIdx={activeMatchIdx} />
           ) : (
-            <div className="tool-input">(empty message)</div>
+            <div className="tool-input">（空消息）</div>
           )}
         </div>
       </AnimatedDetails>

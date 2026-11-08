@@ -133,7 +133,7 @@ describe('joinGroupOfSource', () => {
 
   it('appends newId to a FULL group when evicting is true (clear/restart — X is leaving)', () => {
     // Regression: this is the /clear-on-a-full-group flash. Without the
-    // evicting bypass, Y would stay ungrouped and flash under "Ungrouped".
+    // evicting bypass, Y would stay ungrouped and flash under "未分组".
     const groups = [g('G1', ['a', 'b', 'x'])] // full at maxGroupSize=3
     expect(joinGroupOfSource(groups, 'x', 'y', { evicting: true, maxGroupSize: 3 })[0].sessionIds).toEqual(['a', 'b', 'x', 'y'])
   })

@@ -64,10 +64,10 @@ describe('useUpdateNag', () => {
     const { result } = useHarness(baseInfo())
     expect(result.current).toHaveLength(1)
     const t = result.current[0]
-    expect(t.title).toBe('New version available')
+    expect(t.title).toBe('有新版本可用')
     expect(t.message).toContain('0.7.2')
     expect(t.message).toContain('0.8.0')
-    expect(t.actionLabel).toBe('Update')
+    expect(t.actionLabel).toBe('更新')
     expect(t.durationMs).toBe(0) // sticky
   })
 
@@ -139,7 +139,7 @@ describe('useUpdateNag', () => {
       baseInfo({ latest: undefined, hasUpdate: false, deprecated: 'Use 0.9.' }),
     )
     expect(result.current).toHaveLength(1)
-    expect(result.current[0].title).toBe('Version 0.7.2 is deprecated')
+    expect(result.current[0].title).toBe('版本 0.7.2 已弃用')
     expect(result.current[0].message).toBe('Use 0.9.')
     act(() => {
       result.current[0].onClick?.()
@@ -152,7 +152,7 @@ describe('useUpdateNag', () => {
       baseInfo({ deprecated: 'old' }), // latest 0.8.0 > current -> update branch first
     )
     expect(result.current).toHaveLength(1)
-    expect(result.current[0].title).toBe('New version available')
+    expect(result.current[0].title).toBe('有新版本可用')
   })
 })
 

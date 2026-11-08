@@ -95,13 +95,13 @@ export function SessionContextMenu({
   if (!session) return null
   const items: ContextMenuItem[] = [
     {
-      label: 'Rename',
+      label: '重命名',
       icon: <IconPencil size={14} />,
       onClick: () => onRename(session),
       disabled: !!session.parentId,
     },
     {
-      label: 'Fork from this point',
+      label: '从此处分叉',
       icon: <IconGitFork size={14} />,
       // Disabled until the SDK has flushed at least one completed turn to
       // ~/.claude/projects/<cwd>/<id>.jsonl — the CLI otherwise errors with
@@ -117,7 +117,7 @@ export function SessionContextMenu({
       onClick: () => onFork(anchor.id),
     },
     {
-      label: 'New session like this',
+      label: '新建相同配置的会话',
       icon: <IconCopy size={14} />,
       onClick: () => {
         // If the source is in a group that's already full, the copy can't
@@ -130,7 +130,7 @@ export function SessionContextMenu({
           onAskConfirm
         ) {
           onAskConfirm({
-            title: 'Group is full',
+            title: '分组已满',
             message: (
               <p>
                 Group &ldquo;{sessionGroup.name}&rdquo; is full ({maxGroupSize} sessions).
@@ -146,16 +146,16 @@ export function SessionContextMenu({
       },
     },
     {
-      label: 'Restart',
+      label: '重启',
       icon: <IconRefresh size={14} />,
       onClick: () => {
         if (session.messageCount > 0) {
           const title = sessionTitleOrFallback(session)
           if (onAskConfirm) {
             onAskConfirm({
-              title: 'Restart session?',
+              title: '重启会话？',
               message: <p>Restart &ldquo;{title}&rdquo;? This will delete the current session and create a fresh one with the same settings.</p>,
-              confirmLabel: 'Restart',
+              confirmLabel: '重启',
               onConfirm: () => onRestart(anchor.id),
             })
             return
@@ -171,7 +171,7 @@ export function SessionContextMenu({
       // offered for idle live sessions — the server's idle guard rejects
       // anything mid-turn (working / pending permission / queued input),
       // and dormant / terminated sessions have nothing to release.
-      label: 'Sleep (release resources)',
+      label: '休眠（释放资源）',
       icon: <IconMoon size={14} />,
       disabled: session.phase !== 'idle',
       onClick: () => onSleep(anchor.id),
@@ -182,13 +182,13 @@ export function SessionContextMenu({
       ? [
           { label: '' } as ContextMenuItem,
           {
-            label: 'Move up',
+            label: '上移',
             icon: <IconArrowUp size={14} />,
             disabled: !canMoveUp,
             onClick: () => onMove(anchor.id, 'up'),
           } as ContextMenuItem,
           {
-            label: 'Move down',
+            label: '下移',
             icon: <IconArrowDown size={14} />,
             disabled: !canMoveDown,
             onClick: () => onMove(anchor.id, 'down'),
@@ -207,13 +207,13 @@ export function SessionContextMenu({
       // "Remove from group" — only if session is currently in a group
       if (sessionGroup) {
         items.push({
-          label: 'Remove from group',
+          label: '从分组移除',
           icon: <IconX size={14} />,
           onClick: () => onAddToGroup(anchor.id, ''),
         })
       }
       if (availableGroups.length > 0) {
-        items.push({ label: 'Move to group ▸', icon: '→', disabled: true })
+        items.push({ label: '移至分组 ▸', icon: '→', disabled: true })
         for (const g of availableGroups) {
           items.push({
             label: `  ${g.name} (${g.sessionIds.length}/${maxGroupSize})`,
@@ -225,7 +225,7 @@ export function SessionContextMenu({
       return items
     })(),
     {
-      label: 'Copy session ID',
+      label: '复制会话 ID',
       icon: <IconClipboard size={14} />,
       onClick: async () => {
         if (await writeClipboard(session.id)) onShowSuccess?.('Session ID copied')
@@ -233,7 +233,7 @@ export function SessionContextMenu({
       },
     },
     {
-      label: 'Copy working directory',
+      label: '复制工作目录',
       icon: <IconFolder size={14} />,
       disabled: !session.cwd,
       onClick: async () => {
@@ -253,7 +253,7 @@ export function SessionContextMenu({
     ...(isOpen && !groups.some((g) => g.sessionIds.includes(anchor.id))
       ? [
           {
-            label: 'Close panel',
+            label: '关闭面板',
             icon: <IconX size={14} />,
             onClick: () => onClosePanel(anchor.id),
           } as ContextMenuItem,
@@ -261,7 +261,7 @@ export function SessionContextMenu({
       : []),
     { label: '' }, // separator
     {
-      label: 'Delete session',
+      label: '删除会话',
       icon: <IconTrash size={14} />,
       danger: true,
       onClick: async () => {
@@ -273,7 +273,7 @@ export function SessionContextMenu({
         const title = sessionTitleOrFallback(session)
         if (onAskConfirm) {
           onAskConfirm({
-            title: 'Delete session?',
+            title: '删除会话？',
             message: (
               <>
                 <p>Delete &ldquo;{title}&rdquo;?</p>
@@ -281,7 +281,7 @@ export function SessionContextMenu({
                 {await worktreeDeleteWarning(session)}
               </>
             ),
-            confirmLabel: 'Delete',
+            confirmLabel: '删除',
             destructive: true,
             onConfirm: () => onDelete(anchor.id),
           })

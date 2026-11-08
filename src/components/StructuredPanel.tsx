@@ -19,11 +19,11 @@ const DEFAULT_SCHEMA = JSON.stringify(
 )
 
 const PERMISSION_MODES: { value: StructuredPermissionMode; label: string }[] = [
-  { value: 'default', label: 'Default (read: auto-allow, risky: denied)' },
-  { value: 'acceptEdits', label: 'Accept edits' },
-  { value: 'dontAsk', label: 'Don’t ask (deny unless pre-approved)' },
+  { value: 'default', label: '默认（读取：自动允许，高风险：拒绝）' },
+  { value: 'acceptEdits', label: '接受编辑' },
+  { value: 'dontAsk', label: '不询问（除非已预先批准，否则拒绝）' },
   { value: 'auto', label: 'Auto (model classifier)' },
-  { value: 'bypassPermissions', label: 'Bypass permissions (dangerous)' },
+  { value: 'bypassPermissions', label: '跳过权限（危险）' },
 ]
 
 function errorMessage(sub?: StructuredRunResult['errorSubtype'], errors?: string[]): string {
@@ -99,19 +99,19 @@ export function StructuredPanel({ open, onClose }: { open: boolean; onClose: () 
       open={open}
       onClose={close}
       variant="modal"
-      ariaLabel="Structured output"
+      ariaLabel="结构化输出"
       cardClassName="structured-panel"
       cardStyle={{ width: 720, maxWidth: '92vw' }}
     >
       <div className="modal-header">
-        <h3>Structured output</h3>
-        <button className="btn btn-icon-sm" onClick={close} aria-label="Close">
+        <h3>结构化输出</h3>
+        <button className="btn btn-icon-sm" onClick={close} aria-label="关闭">
           <IconX />
         </button>
       </div>
 
       <div className="modal-section structured-body">
-        <label className="field-label">Prompt</label>
+        <label className="field-label">提示词</label>
         <textarea
           className="textarea"
           rows={3}
@@ -138,22 +138,22 @@ export function StructuredPanel({ open, onClose }: { open: boolean; onClose: () 
         {schemaError && <div className="field-error">{schemaError}</div>}
 
         <button className="btn btn-sm" onClick={() => setShowAdvanced((s) => !s)}>
-          {showAdvanced ? 'Hide' : 'Show'} advanced options
+          {showAdvanced ? '隐藏' : 'Show'} advanced options
         </button>
 
         {showAdvanced && (
           <div className="structured-advanced">
             <div className="structured-grid">
               <label className="field-label">
-                Model
-                <input className="input" value={model} onChange={(e) => setModel(e.target.value)} placeholder="(default)" disabled={running} />
+                模型
+                <input className="input" value={model} onChange={(e) => setModel(e.target.value)} placeholder="（默认）" disabled={running} />
               </label>
               <label className="field-label">
                 CWD
-                <input className="input" value={cwd} onChange={(e) => setCwd(e.target.value)} placeholder="(default)" disabled={running} />
+                <input className="input" value={cwd} onChange={(e) => setCwd(e.target.value)} placeholder="（默认）" disabled={running} />
               </label>
               <label className="field-label">
-                Max turns
+                最大轮数
                 <input className="input" value={maxTurns} onChange={(e) => setMaxTurns(e.target.value)} placeholder="(unset)" disabled={running} />
               </label>
               <label className="field-label">
@@ -162,7 +162,7 @@ export function StructuredPanel({ open, onClose }: { open: boolean; onClose: () 
               </label>
             </div>
             <label className="field-label">
-              Permission mode
+              权限模式
               <select className="select" value={permissionMode} onChange={(e) => setPermissionMode(e.target.value as StructuredPermissionMode)} disabled={running}>
                 {PERMISSION_MODES.map((m) => (
                   <option key={m.value} value={m.value}>{m.label}</option>
@@ -182,9 +182,9 @@ export function StructuredPanel({ open, onClose }: { open: boolean; onClose: () 
           {result && result.ok && (
             <>
               <div className="structured-subrow">
-                <label className="field-label">Result</label>
+                <label className="field-label">结果</label>
                 <button className="btn btn-sm" onClick={handleCopy} disabled={!result.structuredOutput}>
-                  {copied ? 'Copied' : 'Copy'}
+                  {copied ? 'Copied' : '复制'}
                 </button>
               </div>
               <pre className="code-block structured-json">{result.structuredOutput !== undefined ? formatJson(result.structuredOutput) : result.rawText ?? '(no output)'}</pre>
@@ -194,18 +194,18 @@ export function StructuredPanel({ open, onClose }: { open: boolean; onClose: () 
               </div>
             </>
           )}
-          {running && <div className="hint">Running…</div>}
+          {running && <div className="hint">运行中…</div>}
         </div>
       )}
 
       <div className="modal-footer">
         <span className="modal-footer-actions">
           {running ? (
-            <button className="btn btn-danger" onClick={cancel}>Cancel</button>
+            <button className="btn btn-danger" onClick={cancel}>取消</button>
           ) : (
             <>
-              <button className="btn" onClick={close}>Close</button>
-              <button className="btn btn-primary" onClick={submit} disabled={!prompt.trim()}>Run</button>
+              <button className="btn" onClick={close}>关闭</button>
+              <button className="btn btn-primary" onClick={submit} disabled={!prompt.trim()}>运行</button>
             </>
           )}
         </span>

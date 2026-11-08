@@ -59,9 +59,9 @@ describe('useInputHistory (facade)', () => {
   it('persists via the store (fresh hook on same store sees history)', () => {
     const store = createInputHistoryStore('facade-5')
     const { result } = renderHook(() => useInputHistory('s1', null, store))
-    act(() => result.current.add('persistent'))
+    act(() => result.current.add('持久'))
     const { result: result2 } = renderHook(() => useInputHistory('s1', null, store))
-    expect(result2.current.prev('draft')).toEqual({ text: 'persistent', id: null, isDraft: false })
+    expect(result2.current.prev('draft')).toEqual({ text: '持久', id: null, isDraft: false })
   })
 
   it('tags added entries with the current session id', () => {

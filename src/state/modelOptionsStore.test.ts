@@ -114,11 +114,11 @@ describe('modelOptionsStore', () => {
       }
       return { models: ['active-1'], modelGroups: [] }
     })
-    const snap = await fetchModelOptions('missing')
+    const snap = await fetchModelOptions('缺失')
     // Ephemeral fallback is returned for this call…
     expect(snap.models.map((m) => m.id)).toEqual(['active-1'])
-    // …but NOT stored under 'missing' (that would poison later peeks).
-    expect(peekModelOptions('missing')).toBeNull()
+    // …but NOT stored under '缺失' (that would poison later peeks).
+    expect(peekModelOptions('缺失')).toBeNull()
   })
 
   it('keeps the previous snapshot when a force refetch fails', async () => {

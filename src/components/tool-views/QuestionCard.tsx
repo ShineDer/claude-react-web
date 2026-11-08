@@ -102,9 +102,9 @@ export const QuestionCard = memo(function QuestionCard({
                 e.stopPropagation()
                 onReopen(toolUseId)
               }}
-              title="Reopen question dialog"
+              title="重新打开提问对话框"
             >
-              Click to answer
+              点击作答
             </button>
           )}
         </div>
@@ -112,7 +112,7 @@ export const QuestionCard = memo(function QuestionCard({
       contentClassName="question-inline-body"
     >
       {questions.length === 0 ? (
-        <div className="question-inline-empty">(no questions in tool input)</div>
+        <div className="question-inline-empty">（工具输入中无问题）</div>
       ) : (
         questions.map((q, i) => (
           <QuestionItemView
@@ -166,8 +166,8 @@ function QuestionItemView({
       <div className="question-inline-item-header">
         {question.header && <span className="question-chip">{question.header}</span>}
         <span className="question-index">Q{index + 1}</span>
-        {isMulti && <span className="question-mode">multi-select</span>}
-        {skipped && <span className="question-inline-skipped-badge">skipped</span>}
+        {isMulti && <span className="question-mode">多选</span>}
+        {skipped && <span className="question-inline-skipped-badge">已跳过</span>}
       </div>
       <div className="question-text">{question.question}</div>
       <ul className="question-inline-options">
@@ -200,7 +200,7 @@ function QuestionItemView({
             </span>
             <div className="question-inline-option-body">
               <div className="question-inline-option-label">
-                {custom} <span className="question-inline-option-custom-tag">(custom)</span>
+                {custom} <span className="question-inline-option-custom-tag">（自定义）</span>
               </div>
             </div>
           </li>

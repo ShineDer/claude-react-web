@@ -6,7 +6,7 @@
 // .perm-card / .modal-* structure used by ConfirmDialog and PromptDialog
 // so it inherits dark/light theme handling without bespoke CSS.
 //
-// Close / dismiss handling deliberately routes through `tryClose`:
+// Close / dismiss handling deliberately routes through `try关闭`:
 // pressing Escape, clicking the backdrop, or clicking the Close button
 // all check `isDirty` (any unsaved edit or non-empty new-form draft)
 // and switch the footer into a "Discard unsaved changes?" mode rather
@@ -120,7 +120,7 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
       onClose={tryClose}
     >
       <div className="modal-header">
-        <h3>Composer snippets</h3>
+        <h3>输入框片段</h3>
       </div>
 
       <div className="modal-section snippets-manager-list">
@@ -140,21 +140,21 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
                       className="input"
                       value={editLabel}
                       onChange={(e) => setEditLabel(e.target.value)}
-                      aria-label="Snippet label"
-                      placeholder="Label"
+                      aria-label="片段标签"
+                      placeholder="标签"
                       autoFocus
                     />
                     <textarea
                       className="textarea"
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      aria-label="Snippet content"
-                      placeholder="Snippet content"
+                      aria-label="片段内容"
+                      placeholder="片段内容"
                       rows={4}
                     />
                     <div className="snippet-edit-actions">
                       <button type="button" className="btn" onClick={cancelEdit}>
-                        Cancel
+                        取消
                       </button>
                       <button
                         type="button"
@@ -162,7 +162,7 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
                         onClick={commitEdit}
                         disabled={!canCommitEdit}
                       >
-                        Save
+                        保存
                       </button>
                     </div>
                   </div>
@@ -176,8 +176,8 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
                       <button
                         type="button"
                         className="btn btn-icon"
-                        title="Move up"
-                        aria-label="Move up"
+                        title="上移"
+                        aria-label="上移"
                         disabled={i === 0}
                         onClick={() => api.move(i, -1)}
                       >
@@ -186,8 +186,8 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
                       <button
                         type="button"
                         className="btn btn-icon"
-                        title="Move down"
-                        aria-label="Move down"
+                        title="下移"
+                        aria-label="下移"
                         disabled={i === api.snippets.length - 1}
                         onClick={() => api.move(i, 1)}
                       >
@@ -196,8 +196,8 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
                       <button
                         type="button"
                         className="btn btn-icon"
-                        title="Edit"
-                        aria-label="Edit"
+                        title="编辑"
+                        aria-label="编辑"
                         onClick={() => startEdit(s)}
                       >
                         <IconPencil size={14} />
@@ -205,8 +205,8 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
                       <button
                         type="button"
                         className="btn btn-icon btn-danger"
-                        title="Delete"
-                        aria-label="Delete"
+                        title="删除"
+                        aria-label="删除"
                         onClick={() => api.remove(s.id)}
                       >
                         <IconTrash size={14} />
@@ -221,27 +221,27 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
       </div>
 
       <div className="modal-section snippets-manager-add">
-        <div className="snippets-manager-add-title">Add new snippet</div>
+        <div className="snippets-manager-add-title">添加新片段</div>
         <input
           ref={initialFocusRef}
           type="text"
           className="input"
           value={newLabel}
           onChange={(e) => setNewLabel(e.target.value)}
-          aria-label="Snippet label"
-          placeholder="Label (shown in the menu)"
+          aria-label="片段标签"
+          placeholder="标签（显示在菜单中）"
         />
         <textarea
           className="textarea"
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
-          aria-label="Snippet content"
-          placeholder="Snippet content (inserted at caret)"
+          aria-label="片段内容"
+          placeholder="片段内容（插入到光标处）"
           rows={3}
         />
         <div className="snippet-edit-actions">
           <button type="button" className="btn btn-primary" onClick={addNew} disabled={!canAdd}>
-            Add snippet
+            添加片段
           </button>
         </div>
       </div>
@@ -249,7 +249,7 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
       <div className="modal-footer">
         {confirmingDiscard ? (
           <>
-            <span className="snippets-discard-warning">Discard unsaved changes?</span>
+            <span className="snippets-discard-warning">丢弃未保存的更改？</span>
             <div className="snippets-discard-actions">
               <button
                 type="button"
@@ -257,16 +257,16 @@ export function SnippetsManagerDialog({ open = true, api, onClose }: Props) {
                 onClick={() => setConfirmingDiscard(false)}
                 autoFocus
               >
-                Keep editing
+                继续编辑
               </button>
               <button type="button" className="btn btn-danger" onClick={onClose}>
-                Discard
+                丢弃
               </button>
             </div>
           </>
         ) : (
           <button type="button" className="btn" onClick={tryClose}>
-            Close
+            关闭
           </button>
         )}
       </div>

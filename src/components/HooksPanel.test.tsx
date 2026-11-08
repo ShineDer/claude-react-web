@@ -30,7 +30,7 @@ describe('HooksPanel run log', () => {
       id: 'r1',
       hookId: 'r1',
       hookName: 'inproc:Stop',
-      event: 'Stop',
+      event: '停止',
       status: 'success',
       startedAt: 1,
       updatedAt: 1,

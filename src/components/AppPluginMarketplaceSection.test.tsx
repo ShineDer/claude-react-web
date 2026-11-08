@@ -83,7 +83,7 @@ describe('AppPluginMarketplaceSection row Update control', () => {
     // https → a row Update control; local (bundled) → nothing at all.
     expect(updateBtnOf(container, 'MP mp1')).toBeDefined()
     expect(updateBtnOf(container, 'MP mp2')).toBeUndefined()
-    expect(rowOf(container, 'MP mp2')?.textContent).toContain('Bundled')
+    expect(rowOf(container, 'MP mp2')?.textContent).toContain('已捆绑')
   })
 
   it('puts the row control in its warn state when the check reports an update', async () => {
@@ -91,13 +91,13 @@ describe('AppPluginMarketplaceSection row Update control', () => {
     await waitFor(() =>
       expect(updateBtnOf(container, 'MP mp1')?.className).toContain('marketplace-update-available'),
     )
-    expect(updateBtnOf(container, 'MP mp1')?.textContent).toBe('Update')
+    expect(updateBtnOf(container, 'MP mp1')?.textContent).toBe('更新')
   })
 
   it('leaves the row control neutral when the marketplace is current', async () => {
     mockDefaults([{ id: 'mp1', hasUpdate: false }])
     const { container } = render(<AppPluginMarketplaceSection />)
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
     expect(updateBtnOf(container, 'MP mp1')?.className).not.toContain('marketplace-update-available')
     // Nothing is behind upstream, so the bulk button drops its count and its
     // primary styling — but it stays available: an installed plugin can lag its
@@ -114,7 +114,7 @@ describe('AppPluginMarketplaceSection row Update control', () => {
     // per-plugin Update was never clicked. The bulk button must stay reachable.
     mockDefaults([{ id: 'mp1', hasUpdate: false }])
     const { container } = render(<AppPluginMarketplaceSection />)
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
 
     fireEvent.click(bulkBtn(container)!)
 
@@ -137,12 +137,12 @@ describe('AppPluginMarketplaceSection row Update control', () => {
     const { container, getByLabelText, getByRole } = render(<AppPluginMarketplaceSection />)
     await waitFor(() => expect(updateBtnOf(container, 'MP mp1')).toBeDefined())
 
-    fireEvent.change(getByLabelText('Marketplace URL'), { target: { value: 'https://github.com/x/new' } })
-    fireEvent.click(getByRole('button', { name: 'Add' }))
+    fireEvent.change(getByLabelText('市场 URL'), { target: { value: 'https://github.com/x/new' } })
+    fireEvent.click(getByRole('button', { name: '添加' }))
 
     // The Add blocks the row (disabled) but must not claim the row is updating.
     await waitFor(() => expect(updateBtnOf(container, 'MP mp1')?.disabled).toBe(true))
-    expect(updateBtnOf(container, 'MP mp1')?.textContent).toBe('Update')
+    expect(updateBtnOf(container, 'MP mp1')?.textContent).toBe('更新')
 
     await act(async () => { resolveAdd({ ok: true, marketplace: mkMp('added', 'https') }) })
   })
@@ -174,11 +174,11 @@ describe('AppPluginMarketplaceSection row Update control', () => {
     })
 
     const { container } = render(<AppPluginMarketplaceSection />)
-    await waitFor(() => expect(container.textContent).toContain('Checking for updates…'))
-    expect(container.textContent).not.toContain('All marketplaces up to date')
+    await waitFor(() => expect(container.textContent).toContain('正在检查更新…'))
+    expect(container.textContent).not.toContain('所有市场均为最新')
 
     await act(async () => { resolveCheck({ ok: true, updates: [{ id: 'mp1', hasUpdate: false }] }) })
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
   })
 
   it('hides the Retry while a re-check is in flight (checking outranks error)', async () => {
@@ -194,12 +194,12 @@ describe('AppPluginMarketplaceSection row Update control', () => {
     await waitFor(() => expect(container.textContent).toContain("Couldn't check for updates"))
 
     const retryOf = () =>
-      Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Retry')
+      Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '重试')
     fireEvent.click(retryOf()!)
 
     // Mid-retry the honest line is "checking" — and the Retry affordance is
     // gone, so a second click can't start an overlapping batch.
-    await waitFor(() => expect(container.textContent).toContain('Checking for updates…'))
+    await waitFor(() => expect(container.textContent).toContain('正在检查更新…'))
     expect(container.textContent).not.toContain("Couldn't check for updates")
     expect(retryOf()).toBeUndefined()
 
@@ -224,7 +224,7 @@ describe('AppPluginMarketplaceSection row Update control', () => {
     // the directory underneath it.
     const removeOf = () =>
       Array.from(rowOf(container, 'MP mp1')!.querySelectorAll('button'))
-        .find((b) => b.textContent?.trim() === 'Remove')!
+        .find((b) => b.textContent?.trim() === '移除')!
     await waitFor(() => expect(removeOf().disabled).toBe(true))
 
     await act(async () => {
@@ -245,10 +245,10 @@ describe('AppPluginMarketplaceSection row Update control', () => {
 
     const { container } = render(<AppPluginMarketplaceSection />)
     await waitFor(() => expect(container.textContent).toContain("Couldn't check for updates"))
-    expect(container.textContent).not.toContain('All marketplaces up to date')
+    expect(container.textContent).not.toContain('所有市场均为最新')
 
     fail = false
-    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === 'Retry')!
+    const retry = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.trim() === '重试')!
     fireEvent.click(retry)
     await waitFor(() => expect(container.textContent).toContain('Update all (1)'))
   })
@@ -280,7 +280,7 @@ describe('AppPluginMarketplaceSection check/pull races', () => {
     })
 
     const { container } = render(<AppPluginMarketplaceSection />)
-    await waitFor(() => expect(container.textContent).toContain('Checking for updates…'))
+    await waitFor(() => expect(container.textContent).toContain('正在检查更新…'))
 
     fireEvent.click(updateBtnOf(container, 'MP mp1')!)
     await act(async () => {
@@ -290,7 +290,7 @@ describe('AppPluginMarketplaceSection check/pull races', () => {
     // The check now lands with its PRE-pull snapshot.
     await act(async () => { resolveCheck({ ok: true, updates: [{ id: 'mp1', hasUpdate: true }] }) })
 
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
     expect(updateBtnOf(container, 'MP mp1')?.className).not.toContain('marketplace-update-available')
   })
 
@@ -311,7 +311,7 @@ describe('AppPluginMarketplaceSection check/pull races', () => {
     fireEvent.click(updateBtnOf(container, 'MP mp1')!)
     await waitFor(() => expect(postCalls()).toContain('/app-plugins/marketplaces/mp1/refresh'))
     expect(container.textContent).toContain("Couldn't check for updates")
-    expect(container.textContent).not.toContain('All marketplaces up to date')
+    expect(container.textContent).not.toContain('所有市场均为最新')
   })
 
   it('clears a stale whole-check error once the only marketplace has been synced', async () => {
@@ -329,7 +329,7 @@ describe('AppPluginMarketplaceSection check/pull races', () => {
 
     fireEvent.click(updateBtnOf(container, 'MP mp1')!)
     await waitFor(() => expect(container.textContent).not.toContain("Couldn't check for updates"))
-    await waitFor(() => expect(container.textContent).toContain('All marketplaces up to date'))
+    await waitFor(() => expect(container.textContent).toContain('所有市场均为最新'))
   })
 
   it("drops a removed marketplace's check state so a late response cannot revive it", async () => {
@@ -355,9 +355,9 @@ describe('AppPluginMarketplaceSection check/pull races', () => {
     // Remove while the check is still in flight.
     fireEvent.click(
       Array.from(rowOf(container, 'MP mp1')!.querySelectorAll('button'))
-        .find((b) => b.textContent?.trim() === 'Remove')!,
+        .find((b) => b.textContent?.trim() === '移除')!,
     )
-    await waitFor(() => expect(container.textContent).toContain('No marketplaces added.'))
+    await waitFor(() => expect(container.textContent).toContain('未添加市场。'))
 
     // The late response still names mp1 — it must not badge anything.
     await act(async () => { resolveCheck({ ok: true, updates: [{ id: 'mp1', hasUpdate: true }] }) })
@@ -510,11 +510,11 @@ describe('AppPluginMarketplaceSection add marketplace', () => {
 
   it('sends the trimmed subdir in the add request and clears both fields on success', async () => {
     const { getByLabelText, getByRole } = render(<AppPluginMarketplaceSection />)
-    const urlInput = getByLabelText('Marketplace URL') as HTMLInputElement
-    const subdirInput = getByLabelText('Marketplace content subfolder (optional)') as HTMLInputElement
+    const urlInput = getByLabelText('市场 URL') as HTMLInputElement
+    const subdirInput = getByLabelText('市场内容子文件夹（可选）') as HTMLInputElement
     fireEvent.change(urlInput, { target: { value: url } })
     fireEvent.change(subdirInput, { target: { value: '  plugins  ' } })
-    fireEvent.click(getByRole('button', { name: 'Add' }))
+    fireEvent.click(getByRole('button', { name: '添加' }))
 
     await waitFor(() =>
       expect(api.post).toHaveBeenCalledWith('/app-plugins/marketplaces', { url, subdir: 'plugins' }),
@@ -527,8 +527,8 @@ describe('AppPluginMarketplaceSection add marketplace', () => {
 
   it('omits subdir from the add request when the subfolder is blank', async () => {
     const { getByLabelText, getByRole } = render(<AppPluginMarketplaceSection />)
-    fireEvent.change(getByLabelText('Marketplace URL'), { target: { value: url } })
-    fireEvent.click(getByRole('button', { name: 'Add' }))
+    fireEvent.change(getByLabelText('市场 URL'), { target: { value: url } })
+    fireEvent.click(getByRole('button', { name: '添加' }))
 
     await waitFor(() =>
       expect(api.post).toHaveBeenCalledWith('/app-plugins/marketplaces', { url }),
@@ -537,16 +537,16 @@ describe('AppPluginMarketplaceSection add marketplace', () => {
 
   it('shows the marketplace returned by the add response without refetching the list', async () => {
     const { getByLabelText, getByRole, container } = render(<AppPluginMarketplaceSection />)
-    await waitFor(() => expect(container.textContent).toContain('No marketplaces added.'))
-    fireEvent.change(getByLabelText('Marketplace URL'), { target: { value: url } })
-    fireEvent.change(getByLabelText('Marketplace content subfolder (optional)'), {
+    await waitFor(() => expect(container.textContent).toContain('未添加市场。'))
+    fireEvent.change(getByLabelText('市场 URL'), { target: { value: url } })
+    fireEvent.change(getByLabelText('市场内容子文件夹（可选）'), {
       target: { value: 'plugins' },
     })
     ;(api.post as ReturnType<typeof vi.fn>).mockImplementation((u: string) => {
       if (u === '/app-plugins/marketplaces/check-updates') return Promise.resolve({ ok: true, updates: [] })
       return Promise.resolve({ ok: true, marketplace: mkMp('added-mp', 'https') })
     })
-    fireEvent.click(getByRole('button', { name: 'Add' }))
+    fireEvent.click(getByRole('button', { name: '添加' }))
 
     await waitFor(() => expect(container.textContent).toContain('MP added-mp'))
     const listGets = (api.get as ReturnType<typeof vi.fn>).mock.calls.filter(

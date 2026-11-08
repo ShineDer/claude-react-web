@@ -199,13 +199,13 @@ describe('subagent swarm popover', () => {
     const { container, rerender } = render(<WorkingBubble activeSubagents={agents(3)} />)
     openPopover(container)
     const pop = () => document.querySelector('.subagent-swarm-pop')!
-    expect(pop().getAttribute('aria-label')).toBe('Subagents in flight')
+    expect(pop().getAttribute('aria-label')).toBe('运行中的子 agent')
 
     // DERIVED, not stored: agents settling while the user reads the list must
     // re-label the dialog, or it announces the plural over a single row.
     rerender(<WorkingBubble activeSubagents={agents(1)} />)
-    expect(pop().getAttribute('aria-label')).toBe('Subagent in flight')
-    expect(pop().querySelector('.subagent-swarm-pop-title')!.textContent).toBe('Subagent in flight')
+    expect(pop().getAttribute('aria-label')).toBe('运行中的子 agent')
+    expect(pop().querySelector('.subagent-swarm-pop-title')!.textContent).toBe('运行中的子 agent')
   })
 
   it('labels a pending row as background work when it has no summary yet', () => {

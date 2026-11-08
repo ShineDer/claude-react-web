@@ -5,8 +5,8 @@
 //
 //   1. Construct one SessionSynchronizer per `sessionId` (re-created when the
 //      session changes), injecting the live WsHub and `api.get`.
-//   2. Drive start/stop from a `running` effect — the existing useChatStream
-//      behavior where every `running` flip forces a fresh subscribe is
+//   2. Drive start/stop from a `运行中` effect — the existing useChatStream
+//      behavior where every `运行中` flip forces a fresh subscribe is
 //      preserved (the synchronizer's `start()` calls `stopInternal()` first,
 //      so a re-run cleanly tears down the previous run).
 //   3. Forward `handlers` and `terminated` without resubscribing —
@@ -104,7 +104,7 @@ export function useSessionSynchronizer(
   // Forward terminated to the synchronizer. This effect runs AFTER the
   // start effect (React runs effects in declaration order), so a mount with
   // terminated already true sees the synchronizer started before
-  // setTerminated is called. `running` is in the deps because a running flip
+  // setTerminated is called. `运行中` is in the deps because a running flip
   // tears the synchronizer down and rebuilds it (the start effect above),
   // and `stopInternal()` resets `this.terminated = false` so a stale `true`
   // doesn't short-circuit the next setTerminated — which means this effect

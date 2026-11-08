@@ -130,7 +130,7 @@ export const TodoChecklist = memo(function TodoChecklist({ messages, working, sk
   // Freeze the last visible result so a /clear can keep rendering it
   // (fading) after the store wipes `messages`. Updated only while NOT
   // clearing — during a clear we read the frozen value, never overwrite.
-  // Setting it to `visibleResult` (which is null when hidden) also clears
+  // Setting it to `visible结果` (which is null when hidden) also clears
   // any stale capture, so a clear that starts while the panel is already
   // hidden doesn't resurrect a faded-out stale list.
   const frozenRef = useRef<ExtractResult | null>(null)
@@ -138,7 +138,7 @@ export const TodoChecklist = memo(function TodoChecklist({ messages, working, sk
 
   // During a clear, dissolve in sync with the transcript instead of
   // snapping out. Prefer the frozen capture (so the panel keeps fading after
-  // the store wipes `messages`); fall back to the live `visibleResult` when
+  // the store wipes `messages`); fall back to the live `visible结果` when
   // the capture is empty — e.g. a clear that lands on the very first render,
   // before any non-clearing render populated the ref. If both are null the
   // panel was hidden when the clear started, so there's nothing to fade.
@@ -287,7 +287,7 @@ export const TodoChecklist = memo(function TodoChecklist({ messages, working, sk
           <div
             className={`todo-panel${working ? ' todo-panel-working' : ''}${clearing ? ' todo-panel-clearing' : ''}${collapsed ? ' todo-panel-collapsed' : ''}`}
             role="status"
-            aria-label="Task checklist"
+            aria-label="任务清单"
           >
             <div
               className="todo-panel-header"

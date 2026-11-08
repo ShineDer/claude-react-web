@@ -48,7 +48,7 @@ export function useSkillContext(): SkillContextValue | null {
  *
  *  The overlay only needs identity + lifecycle + the final payload: it looks up
  *  `label` / `status` / `startedAt` / `endedAt` for its header and hands the
- *  record to MessageList, which uses `prompt` (absent for a skill — a skill has
+ *  record to MessageList, which uses `提示词` (absent for a skill — a skill has
  *  no input prompt, so no synthetic question row is injected) and `result` (the
  *  fork's final report, rendered as the closing row of the inner conversation).
  *

@@ -9,8 +9,8 @@
 //
 // `matchSearchHit` is deliberately fed the PREVIEW response's
 // `DiscoveredSkill[]` (clone-relative directories) and never the installed
-// `SkillRecord[]` prop: the two share `name`/`description`/`relativePath`
-// but `SkillRecord.relativePath` points at SKILL.md relative to cwd, so
+// `SkillRecord[]` prop: the two share `name`/`description`/`relative路径`
+// but `SkillRecord.relative路径` points at SKILL.md relative to cwd, so
 // passing the prop typechecks and silently installs the wrong path.
 
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -246,7 +246,7 @@ export function AddSkillCard({
       const preview = await api.post<RemotePreviewResponse>('/skills/remote/preview', { source: hit.source }, { timeoutMs: 60_000 })
       const { skill, matchCount } = matchSearchHit(preview.skills, hit)
       if (!skill) {
-        setRowError((prev) => ({ ...prev, [hit.id]: 'Not found in ' + hit.source }))
+        setRowError((prev) => ({ ...prev, [hit.id]: '在 ' + hit.source + ' 中找不到' }))
         return
       }
       if (matchCount > 1) {
@@ -535,7 +535,7 @@ export function AddSkillCard({
   return (
     <section className="settings-group settings-skill-add-group">
       <div className="settings-group-head">
-        <h4>Add skill</h4>
+        <h4>添加技能</h4>
         <span className="settings-group-desc">Install from the public catalog, a GitHub repository, or a local / server-side folder.</span>
       </div>
       <div className="settings-group-body">
@@ -545,21 +545,21 @@ export function AddSkillCard({
             className={`settings-skill-source-btn${tab === 'search' ? ' active' : ''}`}
             onClick={() => setTab('search')}
           >
-            Search catalog
+            搜索目录
           </button>
           <button
             type="button"
             className={`settings-skill-source-btn${tab === 'repository' ? ' active' : ''}`}
             onClick={() => setTab('repository')}
           >
-            Repository
+            仓库
           </button>
           <button
             type="button"
             className={`settings-skill-source-btn${tab === 'folder' ? ' active' : ''}`}
             onClick={() => setTab('folder')}
           >
-            Folder
+            文件夹
           </button>
         </div>
 
@@ -586,7 +586,7 @@ export function AddSkillCard({
                 disabled={!searchQuery.trim()}
                 onClick={searchNow}
               >
-                Search
+                搜索
               </button>
               {searching && <span className="settings-note">Searching…</span>}
             </div>
@@ -598,7 +598,7 @@ export function AddSkillCard({
                 disabled={busy}
                 onClick={() => openRepo(parsedRepo.owner + '/' + parsedRepo.repo)}
               >
-                Open repository
+                打开仓库
               </button>
             )}
             {searchResults.map((hit) => {
@@ -613,7 +613,7 @@ export function AddSkillCard({
                   <span className="settings-skill-result-source">{hit.source}</span>
                   <span className="settings-skill-result-installs">{hit.installs.toLocaleString()}</span>
                   {installed ? (
-                    <span className="settings-skill-installed-badge">✓ Installed</span>
+                    <span className="settings-skill-installed-badge">✓ 已安装</span>
                   ) : (
                     <button
                       type="button"
@@ -621,11 +621,11 @@ export function AddSkillCard({
                       disabled={installBlocked}
                       onClick={() => void installHit(hit)}
                     >
-                      {installingId === hit.id ? 'Installing…' : 'Install'}
+                      {installingId === hit.id ? '安装中…' : '安装'}
                     </button>
                   )}
                   <button type="button" className="btn" disabled={busy} onClick={() => openRepo(hit.source)}>
-                    Open repo
+                    打开仓库
                   </button>
                   <button
                     type="button"
@@ -637,7 +637,7 @@ export function AddSkillCard({
                     {expanded ? <IconChevronDown size={13} aria-hidden /> : <IconChevronRight size={13} aria-hidden />}
                   </button>
                   {expanded && description?.status === 'loading' && (
-                    <div className="settings-skill-desc">Loading…</div>
+                    <div className="settings-skill-desc">正在加载…</div>
                   )}
                   {expanded && description?.status === 'ok' && (
                     <div className="settings-skill-desc">
@@ -659,8 +659,8 @@ export function AddSkillCard({
             <div className="settings-skill-remote-head">
               <input
                 className="input"
-                aria-label="Repository source"
-                placeholder="owner/repo or GitHub URL"
+                aria-label="仓库来源"
+                placeholder="owner/repo 或 GitHub URL"
                 value={repoInput}
                 onChange={(e) => setRepoInput(e.target.value)}
                 spellCheck={false}
@@ -671,20 +671,20 @@ export function AddSkillCard({
                 disabled={busy || !repoInput.trim()}
                 onClick={() => openRepo(repoInput)}
               >
-                Open repository
+                打开仓库
               </button>
             </div>
             {repoSource && (
               <>
-                <div className="settings-skill-picker-sub">{`${repoSource} · ${repoSkills.length} skills found`}</div>
+                <div className="settings-skill-picker-sub">{`${repoSource} · ${repoSkills.length} 个技能`}</div>
                 <div className="settings-skill-picker-toolbar">
                   <label className="settings-skill-picker-search">
                     <IconSearch size={13} aria-hidden />
                     <input
                       value={repoFilter}
                       onChange={(e) => setRepoFilter(e.target.value)}
-                      placeholder="Search skills…"
-                      aria-label="Filter skills"
+                      placeholder="搜索技能…"
+                      aria-label="筛选技能"
                       spellCheck={false}
                       autoComplete="off"
                     />
@@ -696,11 +696,11 @@ export function AddSkillCard({
                       onChange={toggleAllVisible}
                       disabled={batchInstalling}
                     />
-                    <span>{`Select All (${repoSelected.size}/${repoSkills.length})`}</span>
+                    <span>{`全选 (${repoSelected.size}/${repoSkills.length})`}</span>
                   </label>
                 </div>
                 {repoError && <div className="settings-error">{repoError}</div>}
-                {repoLoading && <div className="settings-note">Loading…</div>}
+                {repoLoading && <div className="settings-note">正在加载…</div>}
                 <div className="settings-skill-picker-list">
                   {visibleRepoSkills.map((skill) => {
                     const status = batchStatus.get(skill.relativePath)
@@ -730,7 +730,7 @@ export function AddSkillCard({
                 </div>
                 {batchResults && (
                   <div className="settings-skill-picker-summary">
-                    {`${batchResults.installed.length} installed${batchResults.failed.length ? ` · ${batchResults.failed.length} failed` : ''}`}
+                    {`${batchResults.installed.length} 已安装${batchResults.failed.length ? ` · ${batchResults.failed.length} 失败` : ''}`}
                   </div>
                 )}
               </>
@@ -763,8 +763,8 @@ export function AddSkillCard({
             <div className="settings-skill-path-row">
               <input
                 className="input"
-                placeholder="Absolute server path to a skill folder"
-                aria-label="Server path to skill folder"
+                placeholder="技能文件夹的服务器绝对路径"
+                aria-label="技能文件夹的服务器路径"
                 value={importPath}
                 onChange={(event) => setImportPath(event.target.value)}
                 spellCheck={false}
@@ -780,8 +780,8 @@ export function AddSkillCard({
             </div>
             <input
               className="input"
-              placeholder="Optional import name"
-              aria-label="Import name"
+              placeholder="可选导入名称"
+              aria-label="导入名称"
               value={importName}
               onChange={(event) => setImportName(event.target.value)}
             />
@@ -807,7 +807,7 @@ export function AddSkillCard({
               disabled={busy}
               onClick={() => onScopeChange('project')}
             >
-              Project
+              项目
             </button>
             <button
               type="button"
@@ -815,7 +815,7 @@ export function AddSkillCard({
               disabled={busy}
               onClick={() => onScopeChange('user')}
             >
-              User
+              用户
             </button>
           </div>
           <div className="settings-skill-target">
@@ -850,7 +850,7 @@ export function AddSkillCard({
               disabled={installBlocked || repoSelected.size === 0}
               onClick={() => void installBatch()}
             >
-              {batchInstalling ? 'Installing…' : `Install selected (${repoSelected.size})`}
+              {batchInstalling ? '安装中…' : `安装选中 (${repoSelected.size})`}
             </button>
           )}
           {tab === 'folder' && (
@@ -860,7 +860,7 @@ export function AddSkillCard({
               disabled={installBlocked || !importPath.trim()}
               onClick={() => void importFromServerPath()}
             >
-              {importingSkill ? 'Installing…' : 'Install'}
+              {importingSkill ? '安装中…' : '安装'}
             </button>
           )}
         </div>
@@ -868,7 +868,7 @@ export function AddSkillCard({
 
       {showImportPicker && (
         <DirectoryPicker
-          title="Pick a skill folder"
+          title="选择技能文件夹"
           selectLabel="Install this folder"
           footerHint="Select a folder that contains SKILL.md"
           initialPath={importPath || cwd}

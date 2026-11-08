@@ -32,9 +32,9 @@ export function ShortcutHelp({ open, onClose, shortcuts, commands = [] }: Props)
   const [tab, setTab] = useState<Tab>(commands.length > 0 ? 'commands' : 'shortcuts')
 
   return (
-    <Overlay variant="modal" ariaLabel={showCommands ? 'Help' : 'Keyboard shortcuts'} open={open} onClose={onClose} cardStyle={{ maxWidth: 440 }}>
+    <Overlay variant="modal" ariaLabel={showCommands ? 'Help' : '键盘快捷键'} open={open} onClose={onClose} cardStyle={{ maxWidth: 440 }}>
         <div className="modal-header">
-          <h3>{showCommands ? 'Help' : 'Keyboard shortcuts'}</h3>
+          <h3>{showCommands ? 'Help' : '键盘快捷键'}</h3>
         </div>
 
         {showCommands && (
@@ -43,13 +43,13 @@ export function ShortcutHelp({ open, onClose, shortcuts, commands = [] }: Props)
               className={`global-settings-tab${tab === 'commands' ? ' active' : ''}`}
               onClick={() => setTab('commands')}
             >
-              Slash commands
+              斜杠命令
             </button>
             <button
               className={`global-settings-tab${tab === 'shortcuts' ? ' active' : ''}`}
               onClick={() => setTab('shortcuts')}
             >
-              Keyboard shortcuts
+              键盘快捷键
             </button>
           </div>
         )}
@@ -59,8 +59,8 @@ export function ShortcutHelp({ open, onClose, shortcuts, commands = [] }: Props)
             <table className="shortcut-table">
               <thead>
                 <tr>
-                  <th>Command</th>
-                  <th>Description</th>
+                  <th>命令</th>
+                  <th>描述</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,8 +78,8 @@ export function ShortcutHelp({ open, onClose, shortcuts, commands = [] }: Props)
             <table className="shortcut-table">
               <thead>
                 <tr>
-                  <th>Shortcut</th>
-                  <th>Action</th>
+                  <th>快捷键</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,7 +95,7 @@ export function ShortcutHelp({ open, onClose, shortcuts, commands = [] }: Props)
         </div>
 
         <div className="modal-footer" style={{ justifyContent: 'flex-end' }}>
-          <button className="btn" onClick={onClose}>Close</button>
+          <button className="btn" onClick={onClose}>关闭</button>
         </div>
     </Overlay>
   )

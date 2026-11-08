@@ -110,7 +110,7 @@ describe('SetupWebImport', () => {
   it('offers Retry when the probe itself fails', async () => {
     vi.mocked(api.get).mockRejectedValue(new Error('boom'))
     render(<SetupWebImport onContinue={vi.fn()} onConfigured={vi.fn()} />)
-    expect(await screen.findByText('Retry')).toBeTruthy()
+    expect(await screen.findByText('重试')).toBeTruthy()
   })
 
   // ── 勾选是"选择"，不是立刻写 ────────────────────────────────────────────────
@@ -128,7 +128,7 @@ describe('SetupWebImport', () => {
     expect(box('Import credentials').checked).toBe(true)
     // 一次勾选没有任何副作用：不发请求，行上也没有任何状态位。
     expect(vi.mocked(api.post)).not.toHaveBeenCalled()
-    expect(screen.queryByText('Importing…')).toBeNull()
+    expect(screen.queryByText('导入中…')).toBeNull()
     expect(importSelectedBtn().textContent).toBe('Import selected (1)')
     expect(importSelectedBtn().disabled).toBe(false)
 
@@ -260,7 +260,7 @@ describe('SetupWebImport', () => {
     fireEvent.click(importSelectedBtn())
 
     // 在飞：主按钮换成 Importing… 且禁用，Select all 与行上的勾选框一并锁住。
-    const importingBtn = screen.getByRole('button', { name: 'Importing…' }) as HTMLButtonElement
+    const importingBtn = screen.getByRole('button', { name: '导入中…' }) as HTMLButtonElement
     expect(importingBtn.disabled).toBe(true)
     expect(selectAllBtn().disabled).toBe(true)
     expect(box('Import ctx7').disabled).toBe(true)
@@ -509,12 +509,12 @@ describe('SetupWebImport', () => {
   it('renders an unusable credentials row as unavailable, and never counts a fallback list', async () => {
     vi.mocked(api.get).mockResolvedValue({
       ...ENUMERATION,
-      credentials: { available: false, hasToken: false, profileName: 'Default', baseUrl: 'https://api.anthropic.com' },
+      credentials: { available: false, hasToken: false, profileName: '默认', baseUrl: 'https://api.anthropic.com' },
       mcp: [],
       marketplaces: [],
     })
     render(<SetupWebImport onContinue={vi.fn()} onConfigured={vi.fn()} />)
-    await screen.findByText('Default')
+    await screen.findByText('默认')
 
     // 行照旧列出来（用户知道有这么一栏），但不可点、整行压暗。
     expect(screen.getByText('Credentials and models (1)')).toBeTruthy()
@@ -557,7 +557,7 @@ describe('SetupWebImport', () => {
     fireEvent.click(selectAllBtn())
     fireEvent.click(importSelectedBtn())
     // ctx7 落成 Failed —— 此时已经没有 idle 的项了。
-    await waitFor(() => expect(screen.getAllByText('Failed')).toHaveLength(1))
+    await waitFor(() => expect(screen.getAllByText('失败')).toHaveLength(1))
 
     // 控件仍在、行仍可导入：再点一次就是重试（不用重新勾）。
     expect(importSelectedBtn().textContent).toBe('Import selected (1)')
@@ -643,7 +643,7 @@ describe('SetupWebImport', () => {
 
     fireEvent.click(selectAllBtn())
     fireEvent.click(importSelectedBtn())
-    await waitFor(() => expect(screen.getByText('Failed')).toBeTruthy())
+    await waitFor(() => expect(screen.getByText('失败')).toBeTruthy())
     // 错误行照常渲染（role=alert 就是那句 error 行）。
     expect(screen.getByRole('alert').textContent).toContain('Request timed out after 180s')
     // 行可重试：勾选框不再禁用，选择也还在。
@@ -661,7 +661,7 @@ describe('SetupWebImport', () => {
     const longUrl = `https://git.example.com/${'a'.repeat(160)}/repo`
     vi.mocked(api.get).mockResolvedValue({
       ...ENUMERATION,
-      mcp: [{ name: 'remote', type: 'http' as const, url: 'https://mcp.example.com/some/very/long/path', exists: false, importErrors: [] }],
+      mcp: [{ name: '远程', type: 'http' as const, url: 'https://mcp.example.com/some/very/long/path', exists: false, importErrors: [] }],
       marketplaces: [{ ...ENUMERATION.marketplaces[0], exists: false, sourceUrl: longUrl }],
     })
     render(<SetupWebImport onContinue={vi.fn()} onConfigured={vi.fn()} />)
